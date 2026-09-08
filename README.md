@@ -128,7 +128,6 @@ Le style vient de Tailwind 4, chargé par `@import "tailwindcss"` en tête de
   coïncident pas sur tous les cours (Street Enfants mardi ou jeudi ?).
   Détail dans `content/cours.md`.
 - **Portraits des profs** : les originaux du shooting sont disponibles, il
-  reste à les recadrer en 1086 x 944 et à choisir la photo de Léna.
+  reste à les recadrer en 1086 x 944. Photo retenue pour Léna : `Lena.JPG`.
 - **Statut légal et SIRET**, pour les mentions légales.
-- **Ville** : le contenu d'amorçage indique Ars-Laquenexy (Metz).
 - **Cours privés** : poste du devis qui n'apparaît sur aucune maquette reçue.

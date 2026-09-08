@@ -119,8 +119,10 @@ restent hors du repo, dans `../BAPZ/maquette` et `../BAPZ/content`.
 - Planning du calendrier : la maquette et les horaires transmis ne coïncident
   pas sur tous les cours. Détail dans `content/cours.md`.
 - Portraits des profs : ceux de `public/images/profs/` viennent de l'export
-  Figma. Les originaux du shooting sont dans `../BAPZ/content`, à recadrer en
-  1086 x 944 ; la photo à retenir pour Léna reste à choisir.
-- Ville : le contenu d'amorçage indique Ars-Laquenexy (Metz).
+  Figma. Les originaux du shooting sont dans `../BAPZ/content`
+  (`Alessia.jpeg`, `Lara.JPG`, `Lena.JPG` — les variantes `lena_s` / `lena_v`
+  sont écartées), à recadrer en 1086 x 944. Ce sont des prises de vue
+  verticales : le cadrage paysage n'est pas mécanique, il se décide sur la
+  maquette.
 - Statut légal et SIRET manquants pour les mentions légales.
 - « Cours privés » : poste du devis absent de toutes les maquettes reçues.
