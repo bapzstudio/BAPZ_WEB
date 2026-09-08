@@ -21,7 +21,7 @@ export default async function TarifsPage() {
 
   return (
     <PageTransition>
-      <div className="container-page pt-26 pb-24">
+      <div className="container-page pt-[var(--vr-104)] pb-24">
         <h1 className="text-[clamp(38px,3.1vw,59px)] font-black uppercase leading-none tracking-tight">
           Tarifs
         </h1>
@@ -29,7 +29,7 @@ export default async function TarifsPage() {
           SANS ENGAGEMENT OU À L&apos;ANNÉE - À TOI DE VOIR
         </p>
 
-        <section className="mt-20">
+        <section className="mt-[var(--vr-80)]">
           <h2 className="eyebrow">À LA CARTE</h2>
           <div className="mt-7 grid gap-11.5 sm:grid-cols-2 xl:grid-cols-3">
             {aLaCarte.map((plan) => (
@@ -40,7 +40,7 @@ export default async function TarifsPage() {
 
         {/* La maquette prévoyait une seule carte d'abonnement mensuel ; l'offre
             réelle en compte quatre, à l'année, d'où une rangée dédiée. */}
-        <section className="mt-20">
+        <section className="mt-[var(--vr-80)]">
           <h2 className="eyebrow">ABONNEMENTS À L&apos;ANNÉE</h2>
           <div className="mt-7 grid gap-11.5 sm:grid-cols-2 xl:grid-cols-4">
             {abonnements.map((plan) => (

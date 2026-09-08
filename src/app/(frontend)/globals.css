@@ -16,6 +16,23 @@
   --glow: #8fb4ff; /* halo bleu du fond */
 }
 
+/* Rythme vertical élastique.
+   Les maquettes sont calées sur une fenêtre de 1080px de haut : leurs pages
+   tiennent pile dans un écran. Dans une fenêtre plus courte, ces écarts fixes
+   poussaient le contenu dehors et produisaient un scroll de quelques dizaines
+   de pixels qui ne révélait rien.
+   Chaque valeur vaut donc exactement celle relevée sur la maquette dès 1080px
+   de haut, et se comprime proportionnellement en dessous, sans jamais passer
+   sous 55% (plancher atteint vers 594px). `svh` plutôt que `vh` : la barre
+   d'URL mobile ne doit pas faire sauter la mise en page au défilement.
+   Le suffixe est la valeur de la maquette. */
+:root {
+  --vr-104: clamp(57px, 9.63svh, 104px); /* haut de page sous la nav */
+  --vr-92: clamp(51px, 8.52svh, 92px); /* titre -> calendrier */
+  --vr-80: clamp(44px, 7.41svh, 80px); /* titre -> sections de tarifs */
+  --vr-64: clamp(35px, 5.93svh, 64px); /* titre -> grille de cartes */
+}
+
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);

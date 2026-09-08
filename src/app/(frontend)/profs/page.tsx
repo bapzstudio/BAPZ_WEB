@@ -18,12 +18,15 @@ export default async function ProfsPage() {
 
   return (
     <PageTransition>
-      <div className="container-page pt-26 pb-24">
+      {/* pb-8.5 : la maquette laisse 34px entre le bas des cartes (y=993) et le
+          filet du footer (y=1027), ce qui fait tenir la page dans un écran de
+          1080. */}
+      <div className="container-page pt-[var(--vr-104)] pb-8.5">
         <h1 className="text-[clamp(38px,3.1vw,59px)] font-black uppercase leading-none tracking-tight">
           Les profs
         </h1>
 
-        <div className="mt-16 grid gap-8.5 md:grid-cols-2 xl:grid-cols-3">
+        <div className="mt-[var(--vr-64)] grid gap-8.5 md:grid-cols-2 xl:grid-cols-3">
           {profiles.map((teacher) => (
             <TeacherCard key={teacher._id} teacher={teacher} />
           ))}

@@ -14,12 +14,12 @@ export default async function LocationPage() {
 
   return (
     <PageTransition>
-      <div className="container-page pt-26 pb-24">
+      <div className="container-page pt-[var(--vr-104)] pb-24">
         <h1 className="text-[clamp(38px,3.1vw,59px)] font-black uppercase leading-none tracking-tight">
           Location de salle
         </h1>
 
-        <div className="mt-16 grid gap-11.5 lg:grid-cols-2">
+        <div className="mt-[var(--vr-64)] grid gap-11.5 lg:grid-cols-2">
           {rooms.map((room) => (
             <div key={room._id} className="cal-card flex flex-col p-7.5">
               <div className="flex items-baseline justify-between gap-4">

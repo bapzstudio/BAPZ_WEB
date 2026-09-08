@@ -14,7 +14,7 @@ export default async function CoursPage() {
 
   return (
     <PageTransition>
-      <div className="container-page pt-26 pb-24">
+      <div className="container-page pt-[var(--vr-104)] pb-24">
         <h1 className="text-[clamp(38px,3.1vw,59px)] font-black uppercase leading-none tracking-tight">
           Calendrier
         </h1>
@@ -22,7 +22,7 @@ export default async function CoursPage() {
           SEMAINE TYPE - CLIQUE SUR UN COURS POUR RÉSERVER
         </p>
 
-        <div className="mt-23">
+        <div className="mt-[var(--vr-92)]">
           <WeekSchedule courses={courses} />
         </div>
       </div>
