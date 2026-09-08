@@ -1,0 +1,418 @@
+@import "tailwindcss";
+
+/* Tokens mesurés au pixel sur la maquette Figma (maquette/ACCUEIL.png, export 2x
+   d'un design 1920x1080). Voir le tableau de correspondance dans le README. */
+:root {
+  --background: #080808;
+  --foreground: #ffffff; /* titres */
+  --text-secondary: #c8c8c8; /* sous-titres, liens nav, meta */
+  --text-tertiary: #9a9a9a; /* footer, marquee */
+  --card: #1d1d1d;
+  --card-border: #3c3c3c;
+  --rule: #707070; /* séparateurs de section + contour des boutons */
+  --rule-faint: #635b5b; /* filets du calendrier (sous les jours, bas de grille) */
+  --light: #d9d9d9; /* pastilles et boutons pleins */
+  --outline-fill: #2d2d2d; /* fond du bouton à contour */
+  --glow: #8fb4ff; /* halo bleu du fond */
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-secondary: var(--text-secondary);
+  --color-tertiary: var(--text-tertiary);
+  --color-card: var(--card);
+  --color-card-border: var(--card-border);
+  --color-rule: var(--rule);
+  --color-rule-faint: var(--rule-faint);
+  --color-light: var(--light);
+  --font-sans: var(--font-archivo);
+  --font-mono: var(--font-space-mono);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+}
+
+/* Conteneur : 1700px de contenu, centré (≈100px de marge à 1920) */
+.container-page {
+  width: 100%;
+  max-width: 1780px;
+  margin-inline: auto;
+  padding-inline: 24px;
+}
+@media (min-width: 1024px) {
+  .container-page {
+    padding-inline: 40px;
+  }
+}
+
+/* Pastilles : hauteur 28.5px sur la maquette, nav et CTA confondus */
+.pill {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  padding: 0 24px;
+  min-height: 38px;
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  transition: background-color 0.15s, border-color 0.15s, color 0.15s;
+}
+
+.pill-light {
+  background: var(--light);
+  color: var(--background);
+}
+.pill-light:hover {
+  background: #ffffff;
+}
+
+.pill-outline {
+  background: var(--outline-fill);
+  border: 1px solid var(--rule);
+  color: var(--foreground);
+}
+.pill-outline:hover {
+  background: #3a3a3a;
+}
+
+.eyebrow {
+  font-family: var(--font-mono);
+  font-size: 16px;
+  letter-spacing: 0.15em;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+}
+
+/* Cartes de cours */
+.card {
+  background: var(--card);
+  border: 1px solid var(--card-border);
+  border-radius: 12px;
+}
+
+/* Carte du calendrier et des profs.
+   Valeurs Figma : rayon 15, tracé en dégradé linéaire (et non une couleur
+   unie), plus un halo externe mesuré à ~#242424 au ras du bord.
+   Le dégradé est relevé sur les bords verticaux de l'export, les seuls
+   exploitables : le tracé fait 0,3px, donc les bords horizontaux tombent
+   entre deux pixels et leur teinte y est faussée.
+   Technique des deux fonds : `padding-box` porte le fond de la carte,
+   `border-box` le dégradé, ce qui respecte le rayon (contrairement à
+   `border-image`). */
+.cal-card {
+  /* Figma indique 0,3px, mais en dessous de 1px les navigateurs divergent et
+     certains arrondissent à zéro : la bordure disparaît. On garde donc 1px et
+     on compense sur l'opacité, sinon un trait plein de 1px fait trois fois la
+     matière lumineuse d'un trait de 0,3px et la grille paraît en fer forgé.
+     Seul réglage à toucher pour alléger ou renforcer le contour : */
+  --cal-card-border-alpha: 0.5;
+
+  border: 1px solid transparent;
+  border-radius: 15px;
+  background:
+    linear-gradient(var(--card), var(--card)) padding-box,
+    /* Le 0,84 conserve l'écart mesuré entre le bord gauche (#d5d5d5) et le
+       bord droit (#ffffff) quelle que soit l'opacité choisie. */
+      linear-gradient(
+        90deg,
+        rgb(255 255 255 / calc(var(--cal-card-border-alpha) * 0.84)),
+        rgb(255 255 255 / var(--cal-card-border-alpha))
+      )
+      border-box;
+  box-shadow: 0 0 22px rgba(255, 255, 255, 0.16);
+}
+
+/* Halo qui suit le curseur (cf. composant SpotlightCard).
+   Aucun style d'apparence ici : il vient de la classe .card associée. */
+.spotlight {
+  position: relative;
+  overflow: hidden;
+  --mouse-x: 50%;
+  --mouse-y: 50%;
+  --spotlight-color: rgba(255, 255, 255, 0.18);
+}
+
+.spotlight::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(
+    circle at var(--mouse-x) var(--mouse-y),
+    var(--spotlight-color),
+    transparent 80%
+  );
+  opacity: 0;
+  transition: opacity 0.5s ease;
+  pointer-events: none;
+}
+
+.spotlight:hover::before,
+.spotlight:focus-within::before {
+  opacity: 0.6;
+}
+
+/* Dépliage 3D du titre (cf. composant FoldText).
+   Typographie volontairement en `inherit` : les valeurs mesurées sur la
+   maquette (portées par le h1) priment sur celles du composant d'origine,
+   qui imposait line-height 0.95 et letter-spacing -0.04em. */
+.fold-text {
+  display: inline-block;
+  color: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+  line-height: inherit;
+  letter-spacing: inherit;
+  /* pre-wrap : conserve les espaces entre les mots (qui sont des inline-block)
+     tout en autorisant le retour à la ligne sur petit écran. */
+  white-space: pre-wrap;
+}
+
+/* Garde-fou entre le rendu serveur et l'hydratation : évite que le titre
+   s'affiche en entier avant que GSAP ne le replie. */
+.fold-text[data-fold-pending] .fold-text-piece {
+  opacity: 0;
+}
+
+.fold-text-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+.fold-text-visual {
+  display: inline;
+}
+
+.fold-text-line {
+  display: block;
+}
+
+.fold-text-whitespace {
+  display: inline;
+}
+
+.fold-text-segment {
+  display: inline-block;
+  line-height: inherit;
+  perspective: var(--fold-perspective, 700px);
+  transform-style: preserve-3d;
+  vertical-align: baseline;
+}
+
+.fold-text-segment[data-fold-split="line"] {
+  display: block;
+}
+
+.fold-text-piece {
+  position: relative;
+  display: inline-block;
+  color: inherit;
+  line-height: inherit;
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
+  will-change: transform, opacity;
+}
+
+.fold-text-piece::after {
+  content: "";
+  position: absolute;
+  inset: -0.08em -0.02em;
+  pointer-events: none;
+  opacity: var(--fold-crease, 0);
+  mix-blend-mode: multiply;
+  border-radius: 0.08em;
+}
+
+.fold-text-piece[data-fold-hinge="top"]::after {
+  background: linear-gradient(
+    180deg,
+    rgba(0, 0, 0, 0.58) 0%,
+    rgba(0, 0, 0, 0.22) 42%,
+    rgba(255, 255, 255, 0.26) 100%
+  );
+}
+
+.fold-text-piece[data-fold-hinge="bottom"]::after {
+  background: linear-gradient(
+    0deg,
+    rgba(0, 0, 0, 0.58) 0%,
+    rgba(0, 0, 0, 0.22) 42%,
+    rgba(255, 255, 255, 0.26) 100%
+  );
+}
+
+.fold-text-piece[data-fold-hinge="left"]::after {
+  background: linear-gradient(
+    90deg,
+    rgba(0, 0, 0, 0.58) 0%,
+    rgba(0, 0, 0, 0.22) 42%,
+    rgba(255, 255, 255, 0.26) 100%
+  );
+}
+
+.fold-text-piece[data-fold-hinge="right"]::after {
+  background: linear-gradient(
+    270deg,
+    rgba(0, 0, 0, 0.58) 0%,
+    rgba(0, 0, 0, 0.22) 42%,
+    rgba(255, 255, 255, 0.26) 100%
+  );
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .fold-text-piece {
+    transform: none !important;
+  }
+  .fold-text-piece::after {
+    opacity: 0 !important;
+  }
+}
+
+@keyframes marquee {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-50%);
+  }
+}
+
+.marquee-track {
+  animation: marquee 60s linear infinite;
+}
+
+/* Halo bleu diffus derrière le titre.
+   Mesuré sur la maquette : pic ~22% d'opacité vers x=330 y=190, éteint
+   horizontalement vers x=800 et verticalement vers y=620.
+   Rendu en dégradé de fond (et non en pseudo-élément clippé) : le dégradé
+   atteint la transparence avant le bord de la boîte, donc aucune coupure
+   visible à la jonction avec la section suivante. */
+.hero-glow {
+  position: relative;
+}
+
+/* Deux couches superposées de la même teinte, dérivant à des périodes
+   différentes (19s et 27s) : leur battement donne un mouvement organique qui
+   ne se répète pas de façon perceptible, tout en restant lu comme un seul
+   halo, fidèle à la maquette.
+   Animées en `transform` uniquement : composé par le GPU, aucun repaint. */
+.hero-glow::before,
+.hero-glow::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  will-change: transform;
+}
+
+.hero-glow::before {
+  background: radial-gradient(
+    ellipse 670px 615px at 17% 19%,
+    color-mix(in srgb, var(--glow) 22%, transparent) 0%,
+    transparent 70%
+  );
+  animation: glow-drift-a 19s ease-in-out infinite;
+}
+
+/* Couche d'appoint, nettement plus discrète et plus large. */
+.hero-glow::after {
+  background: radial-gradient(
+    ellipse 900px 700px at 26% 12%,
+    color-mix(in srgb, var(--glow) 9%, transparent) 0%,
+    transparent 70%
+  );
+  animation: glow-drift-b 27s ease-in-out infinite;
+}
+
+@keyframes glow-drift-a {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(38px, -26px, 0) scale(1.07);
+  }
+}
+
+@keyframes glow-drift-b {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1.04);
+  }
+  50% {
+    transform: translate3d(-46px, 30px, 0) scale(1);
+  }
+}
+
+/* ---- Transitions de page (API View Transitions) ----
+   Timings asymétriques : l'ancien contenu part vite (150ms), il n'a plus rien
+   à dire ; le nouveau arrive plus doucement (210ms) et attend que le premier
+   ait fini, pour ne pas se superposer. Total ressenti court, sans à-coup. */
+::view-transition-old(.page-exit) {
+  animation: 150ms ease-in both page-fade reverse;
+}
+
+::view-transition-new(.page-enter) {
+  animation:
+    210ms ease-out 150ms both page-fade,
+    320ms ease-out both page-rise;
+}
+
+@keyframes page-fade {
+  from {
+    opacity: 0;
+    filter: blur(4px);
+  }
+  to {
+    opacity: 1;
+    filter: blur(0);
+  }
+}
+
+@keyframes page-rise {
+  from {
+    transform: translateY(8px);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+
+/* La nav, le footer et le halo persistent d'une page à l'autre : on neutralise
+   le fondu global de la racine pour qu'ils ne clignotent pas, et que seul le
+   contenu de la page s'anime. */
+::view-transition-group(root) {
+  animation-duration: 0s;
+}
+
+/* Sans ceci, la couche de transition capte les clics pendant l'animation. */
+::view-transition {
+  pointer-events: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marquee-track,
+  .hero-glow::before,
+  .hero-glow::after {
+    animation: none !important;
+  }
+
+  ::view-transition-old(*),
+  ::view-transition-new(*),
+  ::view-transition-group(*) {
+    animation-duration: 0s !important;
+    animation-delay: 0s !important;
+  }
+}
