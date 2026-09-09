@@ -14,6 +14,9 @@
   --light: #d9d9d9; /* pastilles et boutons pleins */
   --outline-fill: #2d2d2d; /* fond du bouton à contour */
   --glow: #8fb4ff; /* halo bleu du fond */
+  /* Mêmes composantes que --glow, en canaux séparés : permet d'en moduler
+     l'opacité par calcul dans un dégradé. À garder synchronisé. */
+  --glow-rgb: 143 180 255;
 }
 
 /* Rythme vertical élastique.
@@ -298,6 +301,47 @@ body {
       )
       border-box;
   box-shadow: 0 0 22px rgba(255, 255, 255, 0.16);
+}
+
+/* Halo de proximité sur la bordure d'une `.cal-card` (cf. composant
+   ProximityGlow). Les variables sont écrites par le composant ; à zéro, la
+   carte est strictement identique à ce qu'elle était.
+
+   L'anneau ne peint que la bordure : le masque garde la boîte entière et en
+   retire la boîte de contenu, ce qui ne laisse que l'épaisseur du `padding`.
+   1px, comme la bordure mesurée — l'effet éclaire le tracé existant au lieu
+   d'en ajouter un second. */
+.cal-glow {
+  --glow-x: 50%;
+  --glow-y: 50%;
+  --glow-intensity: 0;
+}
+
+.cal-glow::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  padding: 1px;
+  border-radius: inherit;
+  background: radial-gradient(
+    180px circle at var(--glow-x) var(--glow-y),
+    rgb(var(--glow-rgb) / calc(var(--glow-intensity) * 0.9)) 0%,
+    rgb(var(--glow-rgb) / calc(var(--glow-intensity) * 0.35)) 35%,
+    transparent 70%
+  );
+  /* Les variantes préfixées d'abord : dans les navigateurs récents `-webkit-mask`
+     est un alias de `mask`, donc la placer après réinitialiserait
+     `mask-composite` à `add` — et l'anneau deviendrait un aplat sur toute la
+     carte. */
+  -webkit-mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask:
+    linear-gradient(#fff 0 0) content-box,
+    linear-gradient(#fff 0 0);
+  mask-composite: exclude;
+  pointer-events: none;
 }
 
 /* Halo qui suit le curseur (cf. composant SpotlightCard).

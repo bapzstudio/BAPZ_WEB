@@ -1,4 +1,6 @@
+import Link from "next/link";
 import type { Course } from "@/lib/types";
+import { ProximityGlow } from "./ProximityGlow";
 
 const WEEK_DAYS = [
   "Lundi",
@@ -46,7 +48,17 @@ function place(courses: Course[]): Placed[] {
 
 function CalendarCard({ course }: { course: Course }) {
   return (
-    <div className="cal-card flex h-full flex-col p-5">
+    // L'eyebrow de la page annonce « clique sur un cours pour réserver » : la
+    // carte entière est donc un lien. Faute de système de réservation, il mène
+    // au formulaire de contact, comme les cartes de l'accueil.
+    <Link
+      href="/contact"
+      className="group block h-full rounded-[15px] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white/60"
+    >
+      <div
+        data-glow-card
+        className="cal-card cal-glow relative flex h-full flex-col p-5 transition-shadow group-hover:shadow-[0_0_30px_rgba(255,255,255,0.22)]"
+      >
       <div className="flex items-baseline justify-between gap-2 font-mono text-[11px] text-rule">
         <span>
           {formatTime(course.startTime)} - {formatTime(course.endTime)}
@@ -63,12 +75,13 @@ function CalendarCard({ course }: { course: Course }) {
           {course.level}
         </div>
       )}
-      {course.teacher && (
-        <div className="text-[13px] leading-snug text-secondary">
-          {course.teacher.name}
-        </div>
-      )}
-    </div>
+        {course.teacher && (
+          <div className="text-[13px] leading-snug text-secondary">
+            {course.teacher.name}
+          </div>
+        )}
+      </div>
+    </Link>
   );
 }
 
@@ -132,7 +145,7 @@ export function WeekSchedule({ courses }: { courses: Course[] }) {
   })).filter((d) => d.courses.length > 0);
 
   return (
-    <>
+    <ProximityGlow>
       {/* Grille hebdomadaire complète, à partir de xl seulement */}
       <div className="hidden xl:block">
         <div className="grid grid-cols-7 gap-x-7.5">
@@ -186,6 +199,6 @@ export function WeekSchedule({ courses }: { courses: Course[] }) {
           </div>
         ))}
       </div>
-    </>
+    </ProximityGlow>
   );
 }
