@@ -53,6 +53,10 @@ export function Nav({ logo }: { logo?: SiteSettings["logo"] }) {
               <Link
                 key={link.href}
                 href={link.href}
+                // Un seul onglet est actif à la fois, donc le nom reste unique
+                // dans le document, comme l'exige l'API. Le navigateur le
+                // retrouve sur l'onglet d'arrivée et fait glisser la pastille.
+                style={active ? { viewTransitionName: "nav-pill" } : undefined}
                 className={`rounded-full px-5 py-2 text-[13px] font-bold uppercase tracking-[0.05em] transition-colors ${
                   active
                     ? "bg-light text-background"

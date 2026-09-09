@@ -113,6 +113,32 @@ body {
   border-radius: 12px;
 }
 
+/* Carte cliquable. Au repos elle reste exactement la `.card` de la maquette
+   (fond #1d1d1d, bordure #3c3c3c, rayon 12) : rien de mesuré ne bouge.
+   Au survol elle emprunte le halo de `.cal-card` — le même
+   `0 0 22px rgba(255,255,255,0.16)`, relevé sur les cartes des pages Profs,
+   Tarifs et Calendrier — pour relier visuellement l'accueil au reste du site
+   sans inventer de valeur. */
+.card-interactive {
+  transition: border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+.card-interactive:hover,
+.card-interactive:focus-visible {
+  border-color: rgb(255 255 255 / 0.35);
+  box-shadow: 0 0 22px rgba(255, 255, 255, 0.16);
+}
+
+/* Entrée au défilement (cf. composant Reveal).
+   Garde-fou entre le rendu serveur et l'hydratation, posé seulement quand le
+   JavaScript est actif : sans cette condition, un navigateur sans JS
+   afficherait une page vide au lieu d'un simple contenu non animé. */
+@media (scripting: enabled) {
+  [data-reveal-pending] > * {
+    opacity: 0;
+  }
+}
+
 /* Carte du calendrier et des profs.
    Valeurs Figma : rayon 15, tracé en dégradé linéaire (et non une couleur
    unie), plus un halo externe mesuré à ~#242424 au ras du bord.
@@ -432,6 +458,16 @@ body {
    contenu de la page s'anime. */
 ::view-transition-group(root) {
   animation-duration: 0s;
+}
+
+/* Pastille de l'onglet actif. Lui donner un nom de transition l'extrait du
+   groupe racine : le navigateur la reconnaît d'une page à l'autre et la fait
+   glisser tout seul jusqu'au nouvel onglet, sans une ligne de JavaScript.
+   Sans ce nom propre elle hériterait de la durée nulle de la racine et
+   sauterait d'un onglet à l'autre. */
+::view-transition-group(nav-pill) {
+  animation-duration: 260ms;
+  animation-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 /* Sans ceci, la couche de transition capte les clics pendant l'animation. */

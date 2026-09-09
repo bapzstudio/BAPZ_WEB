@@ -3,6 +3,7 @@ import type { Course, SiteSettings } from "@/lib/types";
 import { CourseCard } from "../_components/CourseCard";
 import { FoldText } from "../_components/FoldText";
 import { Marquee } from "../_components/Marquee";
+import { Reveal } from "../_components/Reveal";
 
 export function Hero({
   settings,
@@ -45,8 +46,10 @@ export function Hero({
         </div>
       </div>
 
+      {/* Le bas de page entre au défilement, pour prolonger le geste du titre
+          au lieu de le laisser retomber sur un bloc inerte. */}
       <div className="container-page pb-14">
-        <div className="mb-7 flex items-end justify-between gap-4">
+        <Reveal className="mb-7 flex items-end justify-between gap-4">
           <h2 className="text-[clamp(28px,2.05vw,39px)] font-black uppercase leading-none tracking-tight">
             Prochains cours
           </h2>
@@ -56,12 +59,12 @@ export function Hero({
           >
             TOUT VOIR →
           </Link>
-        </div>
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        </Reveal>
+        <Reveal className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
           {courses.map((course) => (
             <CourseCard key={course._id} course={course} />
           ))}
-        </div>
+        </Reveal>
       </div>
 
       <Marquee items={settings.marqueeItems ?? [city, handle]} />
