@@ -73,6 +73,15 @@ relevées au pixel sur les exports Figma, qui vivent hors du repo dans
 - Cartes calendrier / profs / tarifs : bordure en dégradé + halo, rayon 15 (`.cal-card`)
 - Polices : Archivo (texte), Space Mono (libellés, horaires)
 
+**Une seule interaction pour toutes les cartes cliquables.** Elles n'ont pas
+toutes la même apparence — l'accueil utilise `.card` (bordure plate, rayon 12)
+et les autres pages `.cal-card` (bordure en dégradé, rayon 15), parce que c'est
+ce que montrent les maquettes. Mais elles réagissent toutes pareil : `cal-glow`
+allume la bordure selon la proximité du curseur, et au survol toutes portent le
+même `0 0 22px rgba(255,255,255,0.16)`. Une carte cliquable = un lien parent (ou
+un lien étiré si elle contient déjà un bouton), `data-glow-card`, `cal-glow`,
+`relative`, et une grille enveloppée dans `ProximityGlow`.
+
 **Les libellés de l'admin sont en français**, y compris les `label`,
 `description` et `labels` des collections : c'est la cliente qui les lit.
 

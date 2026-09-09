@@ -1,6 +1,5 @@
 import Link from "next/link";
 import type { Course } from "@/lib/types";
-import { SpotlightCard } from "./SpotlightCard";
 
 export function CourseCard({ course }: { course: Course }) {
   return (
@@ -10,9 +9,16 @@ export function CourseCard({ course }: { course: Course }) {
     // contact, comme le bouton "cours d'essai" du hero.
     <Link
       href="/contact"
-      className="group block rounded-xl focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white/60"
+      className="group block h-full rounded-xl focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white/60"
     >
-      <SpotlightCard className="card card-interactive flex h-full flex-col p-[30px]">
+      {/* `.card` reste la carte mesurée de l'accueil (bordure plate, rayon 12),
+          différente de la `.cal-card` des autres pages : c'est la maquette qui
+          le veut. Seule l'interaction est commune — `cal-glow` allume la
+          bordure comme partout ailleurs. */}
+      <div
+        data-glow-card
+        className="card card-interactive cal-glow relative flex h-full flex-col p-[30px]"
+      >
         {/* La maquette affiche ce libellé très sombre (#3c3c3c) : remonté à 45%
             d'opacité pour rester lisible une fois rempli avec de vraies données. */}
         <div className="font-mono text-[11px] uppercase tracking-[0.12em] text-white/45">
@@ -42,7 +48,7 @@ export function CourseCard({ course }: { course: Course }) {
             →
           </span>
         </div>
-      </SpotlightCard>
+      </div>
     </Link>
   );
 }

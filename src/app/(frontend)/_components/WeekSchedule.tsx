@@ -57,7 +57,7 @@ function CalendarCard({ course }: { course: Course }) {
     >
       <div
         data-glow-card
-        className="cal-card cal-glow relative flex h-full flex-col p-5 transition-shadow group-hover:shadow-[0_0_30px_rgba(255,255,255,0.22)]"
+        className="cal-card cal-glow relative flex h-full flex-col p-5"
       >
       <div className="flex items-baseline justify-between gap-2 font-mono text-[11px] text-rule">
         <span>

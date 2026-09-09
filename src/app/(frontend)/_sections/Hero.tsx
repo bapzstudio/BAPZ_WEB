@@ -3,6 +3,7 @@ import type { Course, SiteSettings } from "@/lib/types";
 import { CourseCard } from "../_components/CourseCard";
 import { FoldText } from "../_components/FoldText";
 import { Marquee } from "../_components/Marquee";
+import { ProximityGlow } from "../_components/ProximityGlow";
 import { Reveal } from "../_components/Reveal";
 
 export function Hero({
@@ -60,11 +61,13 @@ export function Hero({
             TOUT VOIR →
           </Link>
         </Reveal>
-        <Reveal className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-          {courses.map((course) => (
-            <CourseCard key={course._id} course={course} />
-          ))}
-        </Reveal>
+        <ProximityGlow>
+          <Reveal className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            {courses.map((course) => (
+              <CourseCard key={course._id} course={course} />
+            ))}
+          </Reveal>
+        </ProximityGlow>
       </div>
 
       <Marquee items={settings.marqueeItems ?? [city, handle]} />

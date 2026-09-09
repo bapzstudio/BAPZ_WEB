@@ -118,17 +118,20 @@ body {
 
 /* Carte cliquable. Au repos elle reste exactement la `.card` de la maquette
    (fond #1d1d1d, bordure #3c3c3c, rayon 12) : rien de mesuré ne bouge.
-   Au survol elle emprunte le halo de `.cal-card` — le même
+
+   Au survol elle prend le halo de `.cal-card` — le même
    `0 0 22px rgba(255,255,255,0.16)`, relevé sur les cartes des pages Profs,
-   Tarifs et Calendrier — pour relier visuellement l'accueil au reste du site
-   sans inventer de valeur. */
+   Tarifs et Calendrier, où il est présent dès le repos. Toutes les cartes
+   cliquables du site se retrouvent donc dans le même état une fois engagées.
+
+   Aucun changement de couleur de bordure ici : c'est `.cal-glow` qui signale
+   la proximité du curseur, partout de la même façon. */
 .card-interactive {
-  transition: border-color 0.25s ease, box-shadow 0.25s ease;
+  transition: box-shadow 0.25s ease;
 }
 
 .card-interactive:hover,
 .card-interactive:focus-visible {
-  border-color: rgb(255 255 255 / 0.35);
   box-shadow: 0 0 22px rgba(255, 255, 255, 0.16);
 }
 
@@ -342,35 +345,6 @@ body {
     linear-gradient(#fff 0 0);
   mask-composite: exclude;
   pointer-events: none;
-}
-
-/* Halo qui suit le curseur (cf. composant SpotlightCard).
-   Aucun style d'apparence ici : il vient de la classe .card associée. */
-.spotlight {
-  position: relative;
-  overflow: hidden;
-  --mouse-x: 50%;
-  --mouse-y: 50%;
-  --spotlight-color: rgba(255, 255, 255, 0.18);
-}
-
-.spotlight::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(
-    circle at var(--mouse-x) var(--mouse-y),
-    var(--spotlight-color),
-    transparent 80%
-  );
-  opacity: 0;
-  transition: opacity 0.5s ease;
-  pointer-events: none;
-}
-
-.spotlight:hover::before,
-.spotlight:focus-within::before {
-  opacity: 0.6;
 }
 
 /* Dépliage 3D du titre (cf. composant FoldText).
