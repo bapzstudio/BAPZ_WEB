@@ -64,6 +64,9 @@ que `lib/queries.ts`.
 
 ## Base de données
 
+Les comptes Neon et UploadThing appartiennent à la cliente : elle reste
+propriétaire des outils du projet.
+
 **Neon Postgres**, région Francfort (`eu-central-1`). La chaîne de connexion
 doit être celle de l'endpoint mis en pool — l'hôte se termine par `-pooler`,
 sur le port 5432. La connexion directe de Neon n'est joignable qu'en IPv6.
@@ -122,11 +125,13 @@ Le style vient de Tailwind 4, chargé par `@import "tailwindcss"` en tête de
 
 ## Points à confirmer
 
-- **Cours d'essai à 10 €** : seul tarif encore issu de la maquette, tous les
-  autres ont été remplacés par les tarifs réels.
+Le contenu que la cliente n'a pas fourni est **repris de la maquette**
+(descriptifs, textes de bannière, infos de location). Le cours d'essai à 10 €
+entre dans ce cadre.
+
 - **Planning du calendrier** : la maquette et les horaires transmis ne
-  coïncident pas sur tous les cours (Street Enfants mardi ou jeudi ?).
-  Détail dans `content/cours.md`.
+  coïncident pas sur tous les cours (Street Enfants mardi ou jeudi ?). C'est un
+  conflit entre deux sources, pas un manque. Détail dans `content/cours.md`.
 - **Portraits des profs** : les originaux du shooting sont disponibles, il
   reste à les recadrer en 1086 x 944. Photo retenue pour Léna : `Lena.JPG`.
 - **Statut légal et SIRET**, pour les mentions légales.

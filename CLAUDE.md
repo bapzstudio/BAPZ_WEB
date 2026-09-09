@@ -80,6 +80,10 @@ relevées au pixel sur les exports Figma, qui vivent hors du repo dans
 
 ## Base de données et médias
 
+Les comptes Neon et UploadThing appartiennent à la cliente, conformément au
+principe posé dans `content/demande-cliente-2026-09-01.md` : elle reste
+propriétaire des outils, Matthias y est collaborateur.
+
 Neon Postgres (`eu-central-1`), via l'endpoint mis en pool — l'hôte se termine
 par `-pooler`, port 5432. La connexion directe de Neon n'est joignable qu'en
 IPv6.
@@ -115,9 +119,13 @@ restent hors du repo, dans `../BAPZ/maquette` et `../BAPZ/content`.
 
 ## Points ouverts
 
-- Cours d'essai à **10 €** : seul tarif encore issu de la maquette.
+**Le contenu que la cliente n'a pas fourni est repris de la maquette** —
+descriptifs, textes de bannière, infos de location. Le cours d'essai à 10 €
+entre dans ce cadre et n'est donc plus un point ouvert.
+
 - Planning du calendrier : la maquette et les horaires transmis ne coïncident
-  pas sur tous les cours. Détail dans `content/cours.md`.
+  pas sur tous les cours. Détail dans `content/cours.md`. Il s'agit d'un
+  conflit entre deux sources, pas d'un manque : à trancher avec elle.
 - Portraits des profs : ceux de `public/images/profs/` viennent de l'export
   Figma. Les originaux du shooting sont dans `../BAPZ/content`
   (`Alessia.jpeg`, `Lara.JPG`, `Lena.JPG` — les variantes `lena_s` / `lena_v`
