@@ -49,6 +49,7 @@
   --color-rule: var(--rule);
   --color-rule-faint: var(--rule-faint);
   --color-light: var(--light);
+  --color-glow: var(--glow);
   --font-sans: var(--font-archivo);
   --font-mono: var(--font-space-mono);
 }
@@ -307,6 +308,17 @@ body {
       )
       border-box;
   box-shadow: 0 0 22px rgba(255, 255, 255, 0.16);
+}
+
+/* Formule mise en avant. Le champ « Mettre en avant » n'épaississait que le
+   contour, ce qui ne se voyait pas dans une rangée de sept cartes. Elle porte
+   maintenant en permanence le bleu du halo du hero, en plus du halo blanc déjà
+   mesuré sur `.cal-card` : c'est le seul repère coloré du site, donc il
+   désigne sans ambiguïté. */
+.cal-card-avant {
+  box-shadow:
+    0 0 22px rgba(255, 255, 255, 0.16),
+    0 0 44px rgb(var(--glow-rgb) / 0.16);
 }
 
 /* Halo de proximité sur la bordure d'une `.cal-card` (cf. composant

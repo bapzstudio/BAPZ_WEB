@@ -239,6 +239,10 @@ export interface PricingPlan {
    * Accolé au prix, ex : "/ an". Vide si sans objet.
    */
   period?: string | null;
+  /**
+   * Sert à afficher « soit X € le cours » sous le prix, ce qui permet de comparer les formules. Mettre 10 pour une carte de 10 cours ; pour un abonnement à l'année, le nombre de cours sur la saison (par exemple 34 semaines = 34). Laisser vide pour ne rien afficher.
+   */
+  sessionsIncluded?: number | null;
   description?: string | null;
   highlighted?: boolean | null;
   order?: number | null;
@@ -444,6 +448,7 @@ export interface PricingPlansSelect<T extends boolean = true> {
   name?: T;
   price?: T;
   period?: T;
+  sessionsIncluded?: T;
   description?: T;
   highlighted?: T;
   order?: T;

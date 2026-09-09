@@ -40,6 +40,16 @@ export const PricingPlans: CollectionConfig = {
       label: "Période",
       admin: { description: 'Accolé au prix, ex : "/ an". Vide si sans objet.' },
     },
+    {
+      name: "sessionsIncluded",
+      type: "number",
+      label: "Nombre de cours inclus",
+      min: 1,
+      admin: {
+        description:
+          "Sert à afficher « soit X € le cours » sous le prix, ce qui permet de comparer les formules. Mettre 10 pour une carte de 10 cours ; pour un abonnement à l'année, le nombre de cours sur la saison (par exemple 34 semaines = 34). Laisser vide pour ne rien afficher.",
+      },
+    },
     { name: "description", type: "textarea", label: "Description" },
     { name: "highlighted", type: "checkbox", label: "Mettre en avant", defaultValue: false },
     {

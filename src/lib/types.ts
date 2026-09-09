@@ -39,6 +39,11 @@ export interface PricingPlan {
   /** Suffixe accolé au prix (ex : "/ an"). */
   period?: string;
   description?: string;
+  /**
+   * Nombre de cours que la formule comprend. Sert à afficher un prix ramené au
+   * cours, seul moyen de comparer une carte et un abonnement.
+   */
+  sessionsIncluded?: number;
   /** Regroupe les formules en sections sur la page Tarifs. */
   group: "carte" | "abonnement" | "essai";
   highlighted?: boolean;

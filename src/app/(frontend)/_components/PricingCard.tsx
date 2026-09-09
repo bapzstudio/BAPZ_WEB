@@ -2,11 +2,39 @@ import Link from "next/link";
 import type { CSSProperties } from "react";
 import type { PricingPlan } from "@/lib/types";
 
+/**
+ * Prix ramené au cours, à partir du prix affiché et du nombre de cours inclus.
+ *
+ * C'est ce qui rend une carte et un abonnement comparables : 160 € et 310 €
+ * ne se comparent pas, 16 € et 8,60 € le cours si. Le prix est saisi avec sa
+ * devise (« 160 € »), d'où l'extraction.
+ */
+function prixParCours(plan: PricingPlan) {
+  if (!plan.sessionsIncluded || plan.sessionsIncluded < 1) return null;
+  const montant = Number(
+    plan.price.replace(/[^\d,.]/g, "").replace(",", ".")
+  );
+  if (!Number.isFinite(montant) || montant <= 0) return null;
+
+  const unitaire = montant / plan.sessionsIncluded;
+  // Pas de décimales quand elles ne servent à rien : « 16 € » plutôt que
+  // « 16,00 € ».
+  const formate = unitaire.toLocaleString("fr-FR", {
+    minimumFractionDigits: Number.isInteger(unitaire) ? 0 : 2,
+    maximumFractionDigits: 2,
+  });
+  return `Soit ${formate} € le cours`;
+}
+
 export function PricingCard({ plan }: { plan: PricingPlan }) {
+  const unitaire = prixParCours(plan);
+
   return (
     <div
       data-glow-card
-      className="cal-card cal-glow relative flex h-full flex-col p-7.5"
+      className={`cal-card cal-glow relative flex h-full flex-col p-7.5 ${
+        plan.highlighted ? "cal-card-avant" : ""
+      }`}
       // Réutilise le réglage d'opacité du contour : la formule mise en avant
       // se distingue par une bordure plus franche, sans couleur supplémentaire.
       style={
@@ -16,7 +44,13 @@ export function PricingCard({ plan }: { plan: PricingPlan }) {
       }
     >
       {plan.label && (
-        <div className="font-mono text-[11px] uppercase tracking-widest text-rule">
+        // Le libellé d'une formule mise en avant passe en blanc : en gris, il
+        // se confondait avec ceux des autres cartes et ne mettait rien en avant.
+        <div
+          className={`font-mono text-[11px] uppercase tracking-widest ${
+            plan.highlighted ? "text-foreground" : "text-rule"
+          }`}
+        >
           {plan.label}
         </div>
       )}
@@ -31,6 +65,12 @@ export function PricingCard({ plan }: { plan: PricingPlan }) {
           </span>
         )}
       </div>
+
+      {unitaire && (
+        <div className="mt-2 font-mono text-[11px] uppercase tracking-widest text-glow">
+          {unitaire}
+        </div>
+      )}
 
       <div className="mt-5 text-lg font-bold uppercase">{plan.name}</div>
 

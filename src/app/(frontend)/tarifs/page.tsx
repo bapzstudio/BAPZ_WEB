@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { PageTransition } from "../_components/PageTransition";
 import { ProximityGlow } from "../_components/ProximityGlow";
 import { PricingCard } from "../_components/PricingCard";
+import { Reveal } from "../_components/Reveal";
 import { getPricingPlans } from "@/lib/queries";
 import { pageMetadata } from "@/lib/seo";
 
@@ -36,22 +37,22 @@ export default async function TarifsPage() {
 
         <section className="mt-[var(--vr-80)]">
           <h2 className="eyebrow">À LA CARTE</h2>
-          <div className="mt-7 grid gap-11.5 sm:grid-cols-2 xl:grid-cols-3">
+          <Reveal className="mt-7 grid gap-11.5 sm:grid-cols-2 xl:grid-cols-3">
             {aLaCarte.map((plan) => (
               <PricingCard key={plan._id} plan={plan} />
             ))}
-          </div>
+          </Reveal>
         </section>
 
         {/* La maquette prévoyait une seule carte d'abonnement mensuel ; l'offre
             réelle en compte quatre, à l'année, d'où une rangée dédiée. */}
         <section className="mt-[var(--vr-80)]">
           <h2 className="eyebrow">ABONNEMENTS À L&apos;ANNÉE</h2>
-          <div className="mt-7 grid gap-11.5 sm:grid-cols-2 xl:grid-cols-4">
+          <Reveal className="mt-7 grid gap-11.5 sm:grid-cols-2 xl:grid-cols-4">
             {abonnements.map((plan) => (
               <PricingCard key={plan._id} plan={plan} />
             ))}
-          </div>
+          </Reveal>
         </section>
       </ProximityGlow>
     </PageTransition>

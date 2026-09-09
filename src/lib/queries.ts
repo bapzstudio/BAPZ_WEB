@@ -168,6 +168,7 @@ export async function getPricingPlans(): Promise<PricingPlan[]> {
     price: String(doc.price ?? ""),
     period: (doc.period as string) || undefined,
     description: (doc.description as string) || undefined,
+    sessionsIncluded: (doc.sessionsIncluded as number) || undefined,
     group: doc.group as PricingPlan["group"],
     highlighted: Boolean(doc.highlighted),
   }));

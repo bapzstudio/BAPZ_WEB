@@ -115,6 +115,7 @@ const seed = async () => {
         name: plan.name,
         price: plan.price,
         period: plan.period,
+        sessionsIncluded: plan.sessionsIncluded,
         description: plan.description,
         highlighted: plan.highlighted ?? false,
         order: index,

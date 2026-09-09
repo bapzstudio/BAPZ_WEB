@@ -229,5 +229,9 @@ entre dans ce cadre et n'est donc plus un point ouvert.
   pas sur tous les cours. Détail dans `content/cours.md`. Il s'agit d'un
   conflit entre deux sources, pas d'un manque : à trancher avec elle.
 - Galerie : seule page encore en placeholder.
+- Nombre de cours par saison : le champ « Nombre de cours inclus » des tarifs
+  affiche « soit X € le cours », ce qui rend une carte et un abonnement
+  comparables. Il est rempli pour la carte 10 cours, vide pour les quatre
+  abonnements faute de connaître le nombre de semaines de la saison.
 - Statut légal et SIRET manquants pour les mentions légales.
 - « Cours privés » : poste du devis absent de toutes les maquettes reçues.
