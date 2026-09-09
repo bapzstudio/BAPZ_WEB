@@ -23,13 +23,16 @@ la résolution des dépendances.
 
 ## Variables d'environnement
 
-`.env` n'est jamais commité. `.env.example` liste les trois variables :
+`.env` n'est jamais commité. `.env.example` en donne la liste :
 
 | Variable | Rôle |
 |---|---|
 | `PAYLOAD_SECRET` | signe les sessions de l'admin |
 | `DATABASE_URL` | Neon Postgres, endpoint mis en pool |
 | `UPLOADTHING_TOKEN` | stockage des images uploadées depuis `/admin` |
+| `RESEND_API_KEY` | envoi du formulaire de contact |
+| `CONTACT_TO_EMAIL` | boîte qui reçoit les messages du formulaire |
+| `CONTACT_FROM_EMAIL` | facultatif, une fois un domaine vérifié chez Resend |
 
 ## Structure
 
@@ -42,7 +45,8 @@ src/
 ├── migrations/              migrations Payload, générées et versionnées
 ├── lib/
 │   ├── types.ts             les formes que consomment les composants
-│   └── queries.ts           SEUL fichier du site qui connaît le CMS
+│   ├── queries.ts           SEUL fichier du site qui connaît le CMS
+│   └── mail.ts              SEUL fichier du site qui connaît Resend
 ├── seed/
 │   ├── content.ts           le contenu d'amorçage
 │   └── index.ts             le script, lancé par `pnpm seed`
@@ -113,15 +117,17 @@ Le style vient de Tailwind 4, chargé par `@import "tailwindcss"` en tête de
 | Profs | Conforme à la maquette (portraits extraits de l'export, à remplacer par les originaux) |
 | Tarifs | Tarifs de la cliente, structure adaptée (4 abonnements au lieu d'un seul) |
 | Location | Salles A et B renseignées |
-| Galerie, Contact | Placeholders |
+| Contact | Formulaire branché, horaires à fournir |
+| Galerie | Placeholder |
 
 ## Prochaines étapes
 
-1. Terminer les pages Galerie et Contact.
-2. Formulaire de contact : envoi e-mail + anti-spam.
+1. Renseigner `CONTACT_TO_EMAIL` : sans elle, le formulaire affiche une erreur.
+2. Terminer la page Galerie.
 3. Déploiement (hébergement, nom de domaine, HTTPS).
-4. SEO local, mentions légales / RGPD.
-5. Formation sur `/admin` + guide PDF.
+4. Vérifier un domaine chez Resend pour un expéditeur propre.
+5. SEO local, mentions légales / RGPD.
+6. Formation sur `/admin` + guide PDF.
 
 ## Points à confirmer
 

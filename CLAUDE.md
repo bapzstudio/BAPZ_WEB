@@ -41,7 +41,8 @@ src/
 ├── migrations/              GÉNÉRÉ par `payload migrate:create`, à versionner
 ├── lib/
 │   ├── types.ts             les formes que consomment les composants
-│   └── queries.ts           SEUL fichier du site qui connaît Payload
+│   ├── queries.ts           SEUL fichier du site qui connaît Payload
+│   └── mail.ts              SEUL fichier du site qui connaît Resend
 ├── seed/
 │   ├── content.ts           le contenu d'amorçage
 │   └── index.ts             le script (`pnpm seed`), idempotent
@@ -98,6 +99,23 @@ UploadThing, ce qui est couvert par `images.localPatterns` dans
 `next.config.ts` déclare aussi `images.qualities = [75, 90]`, obligatoire
 depuis Next 16 pour les portraits rendus en qualité 90.
 
+## Formulaire de contact
+
+L'envoi passe par Resend, isolé dans `lib/mail.ts`. L'action serveur
+`app/(frontend)/contact/actions.ts` valide et appelle cette couche ; le
+composant client `ContactForm.tsx` ne connaît que l'action.
+
+Tant qu'aucun domaine n'est vérifié chez Resend, le compte ne peut envoyer que
+depuis `onboarding@resend.dev` et **uniquement vers l'adresse d'inscription du
+compte** : `CONTACT_TO_EMAIL` doit donc être cette adresse. Une fois un domaine
+vérifié, renseigner `CONTACT_FROM_EMAIL` et la contrainte tombe.
+
+Anti-spam : un champ leurre `website`, hors flux et hors tabulation. Rempli, le
+message est ignoré et le visiteur voit quand même une confirmation — annoncer
+l'échec à un robot le fait réessayer. Pas de limitation de débit : elle
+demanderait un stockage partagé entre instances. `delivered@resend.dev` est un
+destinataire simulé, pratique pour tester sans écrire à personne.
+
 **Le seed est destructeur.** `src/seed/index.ts` vide les collections avant de
 réinsérer. À réserver au développement : il effacerait les saisies de la
 cliente.
@@ -115,7 +133,8 @@ restent hors du repo, dans `../BAPZ/maquette` et `../BAPZ/content`.
 | Accueil, Calendrier (`/cours`), Profs | Conformes aux maquettes |
 | Tarifs | Tarifs de la cliente |
 | Location | Salles A et B renseignées |
-| Galerie, Contact | Placeholders |
+| Contact | Formulaire branché, horaires à fournir |
+| Galerie | Placeholder |
 
 ## Points ouverts
 

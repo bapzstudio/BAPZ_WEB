@@ -18,8 +18,12 @@ const links = [
 export function Nav({ logo }: { logo?: SiteSettings["logo"] }) {
   const pathname = usePathname();
 
+  // Fond opaque : sur la maquette, la bande de nav ne laisse rien passer du
+  // halo (bleuité B-R mesurée à 0.00 sur toute sa hauteur). Un fond translucide
+  // laissait transparaître le halo flouté au-dessus du filet et net en dessous,
+  // ce qui transformait le filet en couture au défilement.
   return (
-    <header className="sticky top-0 z-50 border-b border-rule bg-background/80 backdrop-blur-2xl">
+    <header className="sticky top-0 z-50 border-b border-rule bg-background">
       <div className="container-page relative flex h-[66px] items-center justify-between gap-4">
         <Link href="/" className="flex shrink-0 items-center gap-5">
           <span className="flex size-10 shrink-0 items-center justify-center overflow-hidden rounded-full border border-white/15 bg-white/5">

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { ContactForm } from "../_components/ContactForm";
 import { PageTransition } from "../_components/PageTransition";
 import { getSiteSettings } from "@/lib/queries";
 
@@ -38,37 +39,7 @@ export default async function ContactPage() {
             </div>
           </div>
 
-          <form className="card flex flex-col gap-3.5 p-6">
-            <div className="eyebrow">UN MESSAGE ?</div>
-            <input
-              name="name"
-              placeholder="Ton nom"
-              className="rounded-xl border border-card-border bg-white/[0.06] p-3.5 text-sm text-foreground placeholder:text-tertiary"
-            />
-            <input
-              name="email"
-              type="email"
-              placeholder="Ton email"
-              className="rounded-xl border border-card-border bg-white/[0.06] p-3.5 text-sm text-foreground placeholder:text-tertiary"
-            />
-            <textarea
-              name="message"
-              placeholder="Ton message"
-              rows={4}
-              className="resize-y rounded-xl border border-card-border bg-white/[0.06] p-3.5 text-sm text-foreground placeholder:text-tertiary"
-            />
-            <button
-              type="submit"
-              disabled
-              className="pill pill-light mt-2 opacity-50"
-              title="Envoi par e-mail pas encore branché"
-            >
-              Envoyer
-            </button>
-            <p className="text-center text-[11px] text-white/30">
-              Envoi par e-mail + anti-spam - pas encore implémenté.
-            </p>
-          </form>
+          <ContactForm />
         </div>
       </div>
     </PageTransition>
