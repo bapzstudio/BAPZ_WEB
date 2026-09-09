@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { PageTransition } from "../_components/PageTransition";
+import { ProximityGlow } from "../_components/ProximityGlow";
 import { PricingCard } from "../_components/PricingCard";
 import { getPricingPlans } from "@/lib/queries";
 
@@ -21,7 +22,9 @@ export default async function TarifsPage() {
 
   return (
     <PageTransition>
-      <div className="container-page pt-[var(--vr-104)] pb-24">
+      {/* Un seul écouteur pour les deux sections : le halo réagit donc aussi
+          d'une rangée à l'autre. */}
+      <ProximityGlow className="container-page pt-[var(--vr-104)] pb-24">
         <h1 className="text-[clamp(38px,3.1vw,59px)] font-black uppercase leading-none tracking-tight">
           Tarifs
         </h1>
@@ -48,7 +51,7 @@ export default async function TarifsPage() {
             ))}
           </div>
         </section>
-      </div>
+      </ProximityGlow>
     </PageTransition>
   );
 }

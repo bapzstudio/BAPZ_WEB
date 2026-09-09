@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import type { Teacher } from "@/lib/types";
 
 /**
@@ -25,7 +26,17 @@ function BioParagraph({ text }: { text: string }) {
 
 export function TeacherCard({ teacher }: { teacher: Teacher }) {
   return (
-    <article className="cal-card flex flex-col overflow-hidden">
+    // Destination la plus faible des trois : faute de page par prof ou de
+    // calendrier filtrable, la carte renvoie au planning, où le nom du prof
+    // apparaît sur ses créneaux. À revoir le jour où l'un des deux existe.
+    <Link
+      href="/cours"
+      className="block h-full rounded-[15px] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white/60"
+    >
+      <article
+        data-glow-card
+        className="cal-card cal-glow relative flex h-full flex-col overflow-hidden"
+      >
       {teacher.photo && (
         <Image
           src={teacher.photo.src}
@@ -63,5 +74,6 @@ export function TeacherCard({ teacher }: { teacher: Teacher }) {
         )}
       </div>
     </article>
+    </Link>
   );
 }

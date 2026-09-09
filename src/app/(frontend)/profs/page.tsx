@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { PageTransition } from "../_components/PageTransition";
+import { ProximityGlow } from "../_components/ProximityGlow";
 import { TeacherCard } from "../_components/TeacherCard";
 import { getTeachers } from "@/lib/queries";
 
@@ -26,11 +27,11 @@ export default async function ProfsPage() {
           Les profs
         </h1>
 
-        <div className="mt-[var(--vr-64)] grid gap-8.5 md:grid-cols-2 xl:grid-cols-3">
+        <ProximityGlow className="mt-[var(--vr-64)] grid gap-8.5 md:grid-cols-2 xl:grid-cols-3">
           {profiles.map((teacher) => (
             <TeacherCard key={teacher._id} teacher={teacher} />
           ))}
-        </div>
+        </ProximityGlow>
       </div>
     </PageTransition>
   );
