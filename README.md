@@ -33,6 +33,7 @@ la résolution des dépendances.
 | `RESEND_API_KEY` | envoi du formulaire de contact |
 | `CONTACT_TO_EMAIL` | boîte qui reçoit les messages du formulaire |
 | `CONTACT_FROM_EMAIL` | facultatif, une fois un domaine vérifié chez Resend |
+| `NEXT_PUBLIC_SITE_URL` | adresse publique, sans barre finale (URL canoniques, sitemap, partage) |
 
 ## Structure
 
@@ -128,7 +129,7 @@ Le style vient de Tailwind 4, chargé par `@import "tailwindcss"` en tête de
    de domaine n'est pas un prérequis et se branche après.
 3. Vérifier un domaine chez Resend pour un expéditeur propre : sans lui les
    messages partent depuis `onboarding@resend.dev`.
-4. SEO local, mentions légales / RGPD.
+4. Mentions légales / RGPD (bloqué sur le SIRET), et fiche Google Business.
 5. Formation sur `/admin` + guide PDF.
 
 ## Points à confirmer

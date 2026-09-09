@@ -7,6 +7,7 @@ import { CourseCard } from "../../_components/CourseCard";
 import { PageTransition } from "../../_components/PageTransition";
 import { ProximityGlow } from "../../_components/ProximityGlow";
 import { getTeacherBySlug, getTeacherSlugs } from "@/lib/queries";
+import { pageMetadata } from "@/lib/seo";
 
 type Props = { params: Promise<{ slug: string }> };
 
@@ -20,13 +21,16 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
   if (!fiche) return { title: "Prof introuvable - BAPZ Studio" };
 
   const { teacher } = fiche;
-  return {
-    title: `${teacher.name} - BAPZ Studio`,
+  return pageMetadata({
+    title: teacher.discipline
+      ? `${teacher.name}, ${teacher.discipline}`
+      : teacher.name,
     // La première phrase de la bio, débarrassée des marqueurs de gras.
     description:
       teacher.bio?.[0]?.replace(/\*\*/g, "").slice(0, 160) ??
       `${teacher.name}, professeur·e à BAPZ Studio.`,
-  };
+    path: `/profs/${teacher.slug}`,
+  });
 }
 
 export default async function ProfPage({ params }: Props) {

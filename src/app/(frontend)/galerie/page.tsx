@@ -1,10 +1,13 @@
 import type { Metadata } from "next";
 import { PageTransition } from "../_components/PageTransition";
+import { pageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Galerie - BAPZ Studio",
-  description: "Photos et vidéos du studio et des cours.",
-};
+export const metadata: Metadata = pageMetadata({
+  title: "Galerie",
+  description:
+    "Photos et vidéos du studio et des cours.",
+  path: "/galerie",
+});
 
 // Photos retirées volontairement pour l'instant (à réintégrer en fin de
 // projet) - voir <Gallery> dans src/components et getGalleryItems() dans

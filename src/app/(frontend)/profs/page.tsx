@@ -3,12 +3,14 @@ import { PageTransition } from "../_components/PageTransition";
 import { ProximityGlow } from "../_components/ProximityGlow";
 import { TeacherCard } from "../_components/TeacherCard";
 import { getTeachers } from "@/lib/queries";
+import { pageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Les profs - BAPZ Studio",
+export const metadata: Metadata = pageMetadata({
+  title: "Les profs",
   description:
     "L'équipe de BAPZ Studio à Metz : Léna Bapz (heels), Lara (street dance) et Alessia (contemporain lyrical).",
-};
+  path: "/profs",
+});
 
 export default async function ProfsPage() {
   const teachers = await getTeachers();

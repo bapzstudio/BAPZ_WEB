@@ -3,12 +3,14 @@ import { PageTransition } from "../_components/PageTransition";
 import { ProximityGlow } from "../_components/ProximityGlow";
 import { PricingCard } from "../_components/PricingCard";
 import { getPricingPlans } from "@/lib/queries";
+import { pageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Tarifs - BAPZ Studio",
+export const metadata: Metadata = pageMetadata({
+  title: "Tarifs",
   description:
     "Tarifs des cours de danse à BAPZ Studio, Metz : cours à l'unité 17 €, carte de 10 cours 160 €, abonnements à l'année à partir de 310 €.",
-};
+  path: "/tarifs",
+});
 
 export default async function TarifsPage() {
   const plans = await getPricingPlans();

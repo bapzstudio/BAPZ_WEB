@@ -207,7 +207,7 @@ export function MobileMenu({
                 href={`https://instagram.com/${instagram.replace(/^@/, "")}`}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-secondary transition-colors hover:text-foreground"
+                className="-my-2 py-2 text-secondary transition-colors hover:text-foreground"
               >
                 {instagram.toUpperCase()}
               </a>
@@ -215,7 +215,7 @@ export function MobileMenu({
             <Link
               data-social
               href="/contact"
-              className="text-secondary transition-colors hover:text-foreground"
+              className="-my-2 py-2 text-secondary transition-colors hover:text-foreground"
             >
               NOUS ÉCRIRE
             </Link>

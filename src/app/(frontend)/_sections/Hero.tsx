@@ -59,7 +59,7 @@ export function Hero({
           </h2>
           <Link
             href="/cours"
-            className="shrink-0 font-mono text-xs text-tertiary transition-colors hover:text-foreground"
+            className="-my-2 shrink-0 py-2 font-mono text-xs text-tertiary transition-colors hover:text-foreground"
           >
             TOUT VOIR →
           </Link>

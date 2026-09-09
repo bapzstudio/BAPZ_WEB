@@ -2,12 +2,14 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { PageTransition } from "../_components/PageTransition";
 import { getRooms } from "@/lib/queries";
+import { pageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Location de salle - BAPZ Studio",
+export const metadata: Metadata = pageMetadata({
+  title: "Location de salle",
   description:
     "Louer une salle de danse à Ars-Laquenexy, près de Metz : 120 m² pour 50 personnes, climatisation, vestiaires, sonorisation.",
-};
+  path: "/location",
+});
 
 export default async function LocationPage() {
   const rooms = await getRooms();

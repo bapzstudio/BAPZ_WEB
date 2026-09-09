@@ -180,6 +180,29 @@ portrait de Léna passait *sous* l'ancienne extraction, sa réduction étant de
 **Après tout changement de ces fichiers, relancer `pnpm seed`** : le site sert
 les portraits depuis Payload/UploadThing, pas depuis `public/`.
 
+## SEO
+
+`lib/seo.ts` est le seul fichier qui connaît l'adresse publique et la forme des
+balises de partage. Toute page passe par `pageMetadata({ title, description,
+path })` : sans quoi elle partirait sans URL canonique ni carte de partage, et
+un lien posté sur Instagram n'afficherait qu'une URL nue.
+
+L'image de partage est `public/partage.jpg`, référencée explicitement dans
+`pageMetadata`. Ne pas revenir à la convention de fichier `opengraph-image` de
+Next : elle s'attache au segment, et l'objet `openGraph` de chaque page écrase
+celui du layout, image comprise — vérifié, `og:image` ne sortait alors que sur
+l'accueil.
+
+`NEXT_PUBLIC_SITE_URL` porte l'adresse publique. Vide en local, le repli
+`http://localhost:3000` suffit. Au déploiement : d'abord l'URL `.vercel.app`,
+puis le vrai domaine.
+
+Les données structurées (`DanceSchool`) sont injectées par le layout et
+alimentent le référencement local. La fourchette de prix est déduite des tarifs
+saisis, donc elle suit ce que la cliente modifie. **Les champs absents ne sont
+pas inventés** : horaires d'ouverture et téléphone apparaîtront dès qu'ils
+seront fournis et ajoutés à `SiteSettings`.
+
 ## Contenu
 
 `content/` contient les notes reçues de la cliente et le logo vectoriel. Les

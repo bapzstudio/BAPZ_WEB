@@ -2,11 +2,14 @@ import type { Metadata } from "next";
 import { ContactForm } from "../_components/ContactForm";
 import { PageTransition } from "../_components/PageTransition";
 import { getSiteSettings } from "@/lib/queries";
+import { pageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Contact & accès - BAPZ Studio",
-  description: "Adresse, horaires et formulaire de contact de BAPZ Studio, Metz.",
-};
+export const metadata: Metadata = pageMetadata({
+  title: "Contact & accès",
+  description:
+    "Adresse, horaires et formulaire de contact de BAPZ Studio, Metz.",
+  path: "/contact",
+});
 
 export default async function ContactPage() {
   const settings = await getSiteSettings();
