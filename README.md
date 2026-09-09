@@ -114,7 +114,7 @@ Le style vient de Tailwind 4, chargé par `@import "tailwindcss"` en tête de
 |---|---|
 | Accueil | Conforme à la maquette |
 | Calendrier (`/cours`) | Conforme à la maquette, planning à confirmer |
-| Profs | Conforme à la maquette (portraits extraits de l'export, à remplacer par les originaux) |
+| Profs | Conforme à la maquette, portraits tirés des originaux du shooting |
 | Tarifs | Tarifs de la cliente, structure adaptée (4 abonnements au lieu d'un seul) |
 | Location | Salles A et B renseignées |
 | Contact | Formulaire branché, horaires à fournir |
@@ -138,7 +138,7 @@ entre dans ce cadre.
 - **Planning du calendrier** : la maquette et les horaires transmis ne
   coïncident pas sur tous les cours (Street Enfants mardi ou jeudi ?). C'est un
   conflit entre deux sources, pas un manque. Détail dans `content/cours.md`.
-- **Portraits des profs** : les originaux du shooting sont disponibles, il
-  reste à les recadrer en 1086 x 944. Photo retenue pour Léna : `Lena.JPG`.
+- **Page par prof** : elle n'existe pas, d'où le lien `Profs → /cours`, la
+  destination la plus faible du site.
 - **Statut légal et SIRET**, pour les mentions légales.
 - **Cours privés** : poste du devis qui n'apparaît sur aucune maquette reçue.

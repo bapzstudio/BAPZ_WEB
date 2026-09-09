@@ -129,6 +129,32 @@ destinataire simulé, pratique pour tester sans écrire à personne.
 réinsérer. À réserver au développement : il effacerait les saisies de la
 cliente.
 
+## Portraits des profs
+
+`public/images/profs/` contient les portraits tirés des originaux du shooting
+(`../BAPZ/content`), au format 1086 x 944 attendu par `TeacherCard`.
+
+Les originaux sont des prises de vue **verticales** de 4480 x 6720 une fois
+l'orientation EXIF appliquée ; le cadrage paysage n'a donc rien de mécanique.
+Il n'a pas été choisi à l'œil : les fichiers d'origine venaient de l'export
+Figma et portaient donc le cadrage de la graphiste, qu'on a retrouvé dans la
+photo source par corrélation croisée normalisée (score 0.996, écart moyen
+1/255 avec l'extraction). Rectangles retenus, en pixels de l'image redressée :
+
+| Prof | Source | Rectangle |
+|---|---|---|
+| Léna | `Lena.JPG` | 4480 x 3894 à (0, 919) |
+| Lara | `Lara.JPG` | 1800 x 1565 à (1225, 1356) |
+| Alessia | `Alessia.jpeg` | 2400 x 2086 à (1041, 1243) |
+
+Encodage : `lanczos3`, JPEG qualité 94, `chromaSubsampling: "4:4:4"`. Réglage
+choisi sur mesure de netteté (variance du laplacien) : en qualité 88 le
+portrait de Léna passait *sous* l'ancienne extraction, sa réduction étant de
+4,1x contre 1,7x et 2,2x pour les autres.
+
+**Après tout changement de ces fichiers, relancer `pnpm seed`** : le site sert
+les portraits depuis Payload/UploadThing, pas depuis `public/`.
+
 ## Contenu
 
 `content/` contient les notes reçues de la cliente et le logo vectoriel. Les
@@ -154,11 +180,7 @@ entre dans ce cadre et n'est donc plus un point ouvert.
 - Planning du calendrier : la maquette et les horaires transmis ne coïncident
   pas sur tous les cours. Détail dans `content/cours.md`. Il s'agit d'un
   conflit entre deux sources, pas d'un manque : à trancher avec elle.
-- Portraits des profs : ceux de `public/images/profs/` viennent de l'export
-  Figma. Les originaux du shooting sont dans `../BAPZ/content`
-  (`Alessia.jpeg`, `Lara.JPG`, `Lena.JPG` — les variantes `lena_s` / `lena_v`
-  sont écartées), à recadrer en 1086 x 944. Ce sont des prises de vue
-  verticales : le cadrage paysage n'est pas mécanique, il se décide sur la
-  maquette.
+- Page par prof : elle n'existe pas, d'où le lien `Profs → /cours`, la plus
+  faible destination du site.
 - Statut légal et SIRET manquants pour les mentions légales.
 - « Cours privés » : poste du devis absent de toutes les maquettes reçues.
