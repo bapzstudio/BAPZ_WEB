@@ -43,6 +43,7 @@ const toTeacher = (input: unknown): Teacher => {
   const doc = input as Record<string, unknown>;
   return {
     _id: String(doc.id),
+    slug: String(doc.slug ?? ""),
     name: String(doc.name ?? ""),
     discipline: (doc.discipline as string) || undefined,
     bio: toStrings(doc.bio, "text").length
@@ -69,12 +70,9 @@ export async function getSiteSettings(): Promise<SiteSettings> {
   };
 }
 
-export async function getCourses(): Promise<Course[]> {
-  const { docs } = await (
-    await payload()
-  ).find({ collection: "courses", limit: 100, sort: "order", depth: 1 });
-
-  return docs.map((doc) => ({
+const toCourse = (input: unknown): Course => {
+  const doc = input as Record<string, unknown>;
+  return {
     _id: String(doc.id),
     title: String(doc.title ?? ""),
     level: (doc.level as string) || undefined,
@@ -87,7 +85,67 @@ export async function getCourses(): Promise<Course[]> {
       doc.teacher && typeof doc.teacher === "object"
         ? toTeacher(doc.teacher)
         : undefined,
-  }));
+  };
+};
+
+export async function getCourses(): Promise<Course[]> {
+  const { docs } = await (
+    await payload()
+  ).find({ collection: "courses", limit: 100, sort: "order", depth: 1 });
+
+  return docs.map(toCourse);
+}
+
+/**
+ * Un prof a une page dédiée aux mêmes conditions qu'il apparaît sur `/profs` :
+ * il lui faut un portrait et une bio. Une règle unique, donc pas de page
+ * fantôme accessible par URL mais listée nulle part.
+ */
+const aUneFiche = (input: unknown) => {
+  const doc = input as Record<string, unknown>;
+  return (
+    Boolean(doc.slug) &&
+    Boolean(doc.photo) &&
+    Array.isArray(doc.bio) &&
+    doc.bio.length > 0
+  );
+};
+
+/** Alimente `generateStaticParams` de `/profs/[slug]`. */
+export async function getTeacherSlugs(): Promise<string[]> {
+  const { docs } = await (
+    await payload()
+  ).find({ collection: "teachers", limit: 100, depth: 0 });
+
+  return docs
+    .filter(aUneFiche)
+    .map((doc) => String(doc.slug));
+}
+
+export async function getTeacherBySlug(
+  slug: string
+): Promise<{ teacher: Teacher; courses: Course[] } | null> {
+  const client = await payload();
+
+  const { docs } = await client.find({
+    collection: "teachers",
+    where: { slug: { equals: slug } },
+    limit: 1,
+    depth: 1,
+  });
+
+  const doc = docs[0];
+  if (!doc || !aUneFiche(doc)) return null;
+
+  const { docs: courses } = await client.find({
+    collection: "courses",
+    where: { teacher: { equals: doc.id } },
+    limit: 100,
+    sort: "order",
+    depth: 1,
+  });
+
+  return { teacher: toTeacher(doc), courses: courses.map(toCourse) };
 }
 
 export async function getTeachers(): Promise<Teacher[]> {

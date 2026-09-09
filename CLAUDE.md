@@ -88,6 +88,19 @@ un lien étiré si elle contient déjà un bouton), `data-glow-card`, `cal-glow`
 **Après un changement de collection** : `pnpm generate:types`, puis
 `pnpm payload migrate:create <nom>` et `pnpm payload migrate`.
 
+En développement Payload **pousse le schéma directement en base**, sans passer
+par les migrations. Trois conséquences :
+
+- La colonne existe déjà quand la migration arrive. Ajouter `IF NOT EXISTS` /
+  `IF EXISTS` au SQL généré, sinon elle échoue sur « column already exists » et
+  la base de développement ne peut plus rattraper l'état des migrations.
+- `payload migrate` pose alors une question interactive avertissant d'une perte
+  de données. Sans terminal — en intégration continue par exemple — la commande
+  reste bloquée. Une base de production, jamais poussée en mode dev, ne devrait
+  pas déclencher ce garde-fou.
+- Un schéma qui « marche en local » ne prouve donc rien sur les migrations.
+  Seule une base reconstruite depuis les seuls fichiers de migration le prouve.
+
 ## Base de données et médias
 
 Les comptes Neon et UploadThing appartiennent à la cliente, conformément au
@@ -180,7 +193,6 @@ entre dans ce cadre et n'est donc plus un point ouvert.
 - Planning du calendrier : la maquette et les horaires transmis ne coïncident
   pas sur tous les cours. Détail dans `content/cours.md`. Il s'agit d'un
   conflit entre deux sources, pas d'un manque : à trancher avec elle.
-- Page par prof : elle n'existe pas, d'où le lien `Profs → /cours`, la plus
-  faible destination du site.
+- Galerie : seule page encore en placeholder.
 - Statut légal et SIRET manquants pour les mentions légales.
 - « Cours privés » : poste du devis absent de toutes les maquettes reçues.

@@ -31,6 +31,7 @@ import type {
 export const teachers: Teacher[] = [
   {
     _id: "lena-bapz",
+    slug: "lena-bapz",
     name: "Léna Bapz",
     discipline: "Heels",
     photo: { src: "/images/profs/lena.jpg", width: 1086, height: 944 },
@@ -42,6 +43,7 @@ export const teachers: Teacher[] = [
   },
   {
     _id: "lara",
+    slug: "lara",
     name: "Lara",
     discipline: "Street Dance",
     photo: { src: "/images/profs/lara.jpg", width: 1086, height: 944 },
@@ -54,6 +56,7 @@ export const teachers: Teacher[] = [
   },
   {
     _id: "alessia",
+    slug: "alessia",
     name: "Alessia",
     discipline: "Contemporain Lyrical",
     photo: { src: "/images/profs/alessia.jpg", width: 1086, height: 944 },
@@ -66,8 +69,8 @@ export const teachers: Teacher[] = [
   },
   // Intervenant et prof de Yogalates : présents au calendrier, mais absents de
   // la maquette Profs (pas de portrait ni de bio fournis).
-  { _id: "ilan", name: "Ilan" },
-  { _id: "hannane", name: "Hannane" },
+  { _id: "ilan", slug: "ilan", name: "Ilan" },
+  { _id: "hannane", slug: "hannane", name: "Hannane" },
 ];
 
 // Recherche par identifiant plutôt que par position : l'ordre du tableau suit

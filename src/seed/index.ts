@@ -71,6 +71,7 @@ const seed = async () => {
       collection: "teachers",
       data: {
         name: teacher.name,
+        slug: teacher.slug,
         discipline: teacher.discipline,
         photo: photoId,
         bio: teacher.bio?.map((text) => ({ text })),

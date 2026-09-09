@@ -1,36 +1,14 @@
 import Image from "next/image";
 import Link from "next/link";
+import { BioParagraph } from "./BioText";
 import type { Teacher } from "@/lib/types";
 
-/**
- * Rend un paragraphe de bio : les passages entre `**` passent en blanc et en
- * gras, le reste reste en gris (mesuré sur la maquette : #9a9a9a / #ffffff).
- */
-function BioParagraph({ text }: { text: string }) {
-  const parts = text.split(/\*\*(.+?)\*\*/);
-  return (
-    <p>
-      {parts.map((part, i) =>
-        // Les index impairs sont les captures, donc les passages en gras.
-        i % 2 === 1 ? (
-          <strong key={i} className="font-semibold text-foreground">
-            {part}
-          </strong>
-        ) : (
-          part
-        )
-      )}
-    </p>
-  );
-}
+/* Le rendu des paragraphes vit dans BioText, partagé avec la page d'un prof. */
 
 export function TeacherCard({ teacher }: { teacher: Teacher }) {
   return (
-    // Destination la plus faible des trois : faute de page par prof ou de
-    // calendrier filtrable, la carte renvoie au planning, où le nom du prof
-    // apparaît sur ses créneaux. À revoir le jour où l'un des deux existe.
     <Link
-      href="/cours"
+      href={`/profs/${teacher.slug}`}
       className="block h-full rounded-[15px] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white/60"
     >
       <article

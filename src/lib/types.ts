@@ -3,6 +3,8 @@
 
 export interface Teacher {
   _id: string;
+  /** Fin de l'adresse de sa page : /profs/<slug>. */
+  slug: string;
   name: string;
   /** Discipline affichée à droite du nom sur la page Profs (ex : "Heels"). */
   discipline?: string;

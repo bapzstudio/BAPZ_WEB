@@ -115,6 +115,7 @@ Le style vient de Tailwind 4, chargé par `@import "tailwindcss"` en tête de
 | Accueil | Conforme à la maquette |
 | Calendrier (`/cours`) | Conforme à la maquette, planning à confirmer |
 | Profs | Conforme à la maquette, portraits tirés des originaux du shooting |
+| Fiche d'un prof (`/profs/[slug]`) | Bio + ses cours ; pas de maquette, conçue avec le vocabulaire existant |
 | Tarifs | Tarifs de la cliente, structure adaptée (4 abonnements au lieu d'un seul) |
 | Location | Salles A et B renseignées |
 | Contact | Formulaire branché, horaires à fournir |
@@ -122,12 +123,13 @@ Le style vient de Tailwind 4, chargé par `@import "tailwindcss"` en tête de
 
 ## Prochaines étapes
 
-1. Renseigner `CONTACT_TO_EMAIL` : sans elle, le formulaire affiche une erreur.
-2. Terminer la page Galerie.
-3. Déploiement (hébergement, nom de domaine, HTTPS).
-4. Vérifier un domaine chez Resend pour un expéditeur propre.
-5. SEO local, mentions légales / RGPD.
-6. Formation sur `/admin` + guide PDF.
+1. Terminer la page Galerie.
+2. Déploiement (hébergement, HTTPS). Une URL en `.vercel.app` suffit : le nom
+   de domaine n'est pas un prérequis et se branche après.
+3. Vérifier un domaine chez Resend pour un expéditeur propre : sans lui les
+   messages partent depuis `onboarding@resend.dev`.
+4. SEO local, mentions légales / RGPD.
+5. Formation sur `/admin` + guide PDF.
 
 ## Points à confirmer
 
@@ -138,7 +140,5 @@ entre dans ce cadre.
 - **Planning du calendrier** : la maquette et les horaires transmis ne
   coïncident pas sur tous les cours (Street Enfants mardi ou jeudi ?). C'est un
   conflit entre deux sources, pas un manque. Détail dans `content/cours.md`.
-- **Page par prof** : elle n'existe pas, d'où le lien `Profs → /cours`, la
-  destination la plus faible du site.
 - **Statut légal et SIRET**, pour les mentions légales.
 - **Cours privés** : poste du devis qui n'apparaît sur aucune maquette reçue.

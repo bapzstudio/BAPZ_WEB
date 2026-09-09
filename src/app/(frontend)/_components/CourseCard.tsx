@@ -1,7 +1,15 @@
 import Link from "next/link";
 import type { Course } from "@/lib/types";
 
-export function CourseCard({ course }: { course: Course }) {
+export function CourseCard({
+  course,
+  hideTeacher = false,
+}: {
+  course: Course;
+  /** Sur la page d'un prof, répéter son nom sur chacune de ses cartes n'apprend rien. */
+  hideTeacher?: boolean;
+}) {
+  const teacher = hideTeacher ? undefined : course.teacher;
   return (
     // La carte entière est cliquable, pas seulement la pastille : c'est la
     // promesse faite par la page Calendrier ("clique sur un cours pour
@@ -29,11 +37,11 @@ export function CourseCard({ course }: { course: Course }) {
           {course.title}
         </div>
 
-        {(course.level || course.teacher) && (
+        {(course.level || teacher) && (
           <div className="mt-2.5 text-sm text-secondary">
             {course.level}
-            {course.level && course.teacher && " - "}
-            {course.teacher && `avec ${course.teacher.name}`}
+            {course.level && teacher && " - "}
+            {teacher && `avec ${teacher.name}`}
           </div>
         )}
 

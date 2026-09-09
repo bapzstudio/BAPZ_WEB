@@ -168,6 +168,10 @@ export interface Teacher {
   id: number;
   name: string;
   /**
+   * Fin de l'adresse de sa page, par exemple lena-bapz pour /profs/lena-bapz. Rempli tout seul à partir du nom ; à ne changer que si la page n'est pas encore en ligne, sinon les liens existants se cassent.
+   */
+  slug?: string | null;
+  /**
    * Affichée à droite du nom sur la page Profs (ex : Heels).
    */
   discipline?: string | null;
@@ -417,6 +421,7 @@ export interface CoursesSelect<T extends boolean = true> {
  */
 export interface TeachersSelect<T extends boolean = true> {
   name?: T;
+  slug?: T;
   discipline?: T;
   photo?: T;
   bio?:
