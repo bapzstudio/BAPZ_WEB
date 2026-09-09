@@ -313,9 +313,17 @@ body {
 /* Halo bleu diffus derrière le titre.
    Mesuré sur la maquette : pic ~22% d'opacité vers x=330 y=190, éteint
    horizontalement vers x=800 et verticalement vers y=620.
-   Rendu en dégradé de fond (et non en pseudo-élément clippé) : le dégradé
-   atteint la transparence avant le bord de la boîte, donc aucune coupure
-   visible à la jonction avec la section suivante. */
+
+   Le dégradé s'éteint bien avant les bords BAS et DROIT de la boîte, mais pas
+   avant les bords HAUT et GAUCHE : son centre est à 19% de la hauteur et 17%
+   de la largeur, pour des rayons de 615 et 670px. Aux bords haut et gauche il
+   vaut donc encore une fraction notable de son pic, et s'y arrête net.
+   Tant que la boîte ne bouge pas, ces coupures tombent hors champ (derrière la
+   nav opaque, hors de la fenêtre). Mais les couches sont animées en
+   `transform`, ce qui déplace aussi leur boîte de peinture : dès qu'une couche
+   descend ou rétrécit, son bord haut entre dans le champ et la coupure devient
+   un arc net sous la nav.
+   D'où le débord ci-dessous. */
 .hero-glow {
   position: relative;
 }
@@ -324,19 +332,31 @@ body {
    différentes (19s et 27s) : leur battement donne un mouvement organique qui
    ne se répète pas de façon perceptible, tout en restant lu comme un seul
    halo, fidèle à la maquette.
-   Animées en `transform` uniquement : composé par le GPU, aucun repaint. */
+   Animées en `transform` uniquement : composé par le GPU, aucun repaint.
+
+   `inset: -160px` donne à chaque couche 160px de rab sur les quatre côtés,
+   soit bien plus que le déplacement maximal (46px de translation + ~40px de
+   retrait au changement d'échelle) : le bord de peinture ne peut plus entrer
+   dans le champ. Le rab du haut passe derrière la nav, opaque ; celui des
+   côtés est rogné par le `overflow-x-clip` de <main>.
+
+   Agrandir la boîte déplacerait le centre du dégradé, puisqu'il est exprimé en
+   pourcentage. On le recale avec un décalage constant : pour un centre à p%
+   et un débord B, il faut ajouter B(1 - 2p). Ici B = 160px, d'où 105.6 et
+   99.2px pour la première couche, 76.8 et 121.6px pour la seconde. Le halo
+   reste donc exactement au même endroit à l'écran. */
 .hero-glow::before,
 .hero-glow::after {
   content: "";
   position: absolute;
-  inset: 0;
+  inset: -160px;
   pointer-events: none;
   will-change: transform;
 }
 
 .hero-glow::before {
   background: radial-gradient(
-    ellipse 670px 615px at 17% 19%,
+    ellipse 670px 615px at calc(17% + 105.6px) calc(19% + 99.2px),
     color-mix(in srgb, var(--glow) 22%, transparent) 0%,
     transparent 70%
   );
@@ -346,7 +366,7 @@ body {
 /* Couche d'appoint, nettement plus discrète et plus large. */
 .hero-glow::after {
   background: radial-gradient(
-    ellipse 900px 700px at 26% 12%,
+    ellipse 900px 700px at calc(26% + 76.8px) calc(12% + 121.6px),
     color-mix(in srgb, var(--glow) 9%, transparent) 0%,
     transparent 70%
   );
