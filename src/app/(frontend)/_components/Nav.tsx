@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { MobileMenu } from "./MobileMenu";
 import type { SiteSettings } from "@/lib/types";
 
 // Libellés et ordre repris de la maquette.
@@ -15,7 +16,13 @@ const links = [
   { href: "/contact", label: "Contact" },
 ];
 
-export function Nav({ logo }: { logo?: SiteSettings["logo"] }) {
+export function Nav({
+  logo,
+  instagram,
+}: {
+  logo?: SiteSettings["logo"];
+  instagram?: string;
+}) {
   const pathname = usePathname();
 
   // Fond opaque : sur la maquette, la bande de nav ne laisse rien passer du
@@ -53,10 +60,6 @@ export function Nav({ logo }: { logo?: SiteSettings["logo"] }) {
               <Link
                 key={link.href}
                 href={link.href}
-                // Un seul onglet est actif à la fois, donc le nom reste unique
-                // dans le document, comme l'exige l'API. Le navigateur le
-                // retrouve sur l'onglet d'arrivée et fait glisser la pastille.
-                style={active ? { viewTransitionName: "nav-pill" } : undefined}
                 className={`rounded-full px-5 py-2 text-[13px] font-bold uppercase tracking-[0.05em] transition-colors ${
                   active
                     ? "bg-light text-background"
@@ -69,9 +72,14 @@ export function Nav({ logo }: { logo?: SiteSettings["logo"] }) {
           })}
         </nav>
 
-        <Link href="/contact" className="pill pill-light shrink-0 text-[13px]">
-          S&apos;inscrire
-        </Link>
+        <div className="flex shrink-0 items-center gap-3">
+          <Link href="/contact" className="pill pill-light shrink-0 text-[13px]">
+            S&apos;inscrire
+          </Link>
+          {/* En dessous de `lg` les onglets ci-dessus sont masqués : sans ce
+              menu, cinq pages sur six seraient inatteignables. */}
+          <MobileMenu items={links} instagram={instagram} />
+        </div>
       </div>
     </header>
   );

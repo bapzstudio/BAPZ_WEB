@@ -31,7 +31,7 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
       className={`${archivo.variable} ${spaceMono.variable} h-full antialiased`}
     >
       <body className="min-h-full flex flex-col bg-background text-foreground font-sans">
-        <Nav logo={settings.logo} />
+        <Nav logo={settings.logo} instagram={settings.instagramHandle} />
         {/* overflow-x-clip : borne la dérive des halos du hero sans créer de
             conteneur de défilement (ce que ferait `hidden`, ce qui casserait
             la nav sticky) et sans clipper juste au-dessus du titre 3D. */}
