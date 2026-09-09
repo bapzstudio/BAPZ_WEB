@@ -21,7 +21,10 @@ export function Hero({
       <div className="hero-glow">
         {/* relative z-10 : les halos sont des pseudo-éléments positionnés, le
             contenu doit passer au-dessus. */}
-        <div className="container-page relative z-10 pt-16 pb-24">
+        {/* pb-6 : la maquette laisse 25px entre le bas des boutons (y=539) et le
+            haut de « PROCHAINS COURS » (y=564). Le pb-24 d'origine en mettait
+            96, à lui seul la cause du défilement de la page d'accueil. */}
+        <div className="container-page relative z-10 pt-16 pb-6">
           <p className="eyebrow">
             [ {city} - {handle} ]
           </p>

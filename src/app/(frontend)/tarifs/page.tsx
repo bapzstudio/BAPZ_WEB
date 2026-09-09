@@ -24,7 +24,7 @@ export default async function TarifsPage() {
     <PageTransition>
       {/* Un seul écouteur pour les deux sections : le halo réagit donc aussi
           d'une rangée à l'autre. */}
-      <ProximityGlow className="container-page pt-[var(--vr-104)] pb-24">
+      <ProximityGlow className="container-page pt-[var(--vr-104)] pb-8.5">
         <h1 className="text-[clamp(38px,3.1vw,59px)] font-black uppercase leading-none tracking-tight">
           Tarifs
         </h1>

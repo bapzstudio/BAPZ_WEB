@@ -13,7 +13,7 @@ export default async function ContactPage() {
 
   return (
     <PageTransition>
-      <div className="container-page py-24">
+      <div className="container-page pt-[var(--vr-104)] pb-8.5">
         <h1 className="mb-9 text-5xl font-black uppercase tracking-tight sm:text-6xl">
           Contact
         </h1>

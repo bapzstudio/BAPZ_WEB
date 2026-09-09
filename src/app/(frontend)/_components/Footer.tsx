@@ -10,7 +10,9 @@ export function Footer({ settings }: { settings: SiteSettings }) {
   // même #707070 que la bordure de la nav.
   return (
     <footer className="relative z-10 border-t border-rule">
-      <div className="container-page flex flex-col items-center justify-between gap-2 py-5 text-center font-mono text-xs text-tertiary sm:flex-row sm:text-left">
+      {/* py-[18px] : la bande du footer mesure 53px sur les maquettes (du filet
+          à y=1027 jusqu'au bas), soit 1px de filet + 16px de ligne + 2 x 18. */}
+      <div className="container-page flex flex-col items-center justify-between gap-2 py-[18px] text-center font-mono text-xs text-tertiary sm:flex-row sm:text-left">
         <span>BAPZ STUDIO</span>
         {disciplines && <span>{disciplines}</span>}
         <span>

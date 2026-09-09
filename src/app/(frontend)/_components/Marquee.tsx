@@ -4,8 +4,11 @@ export function Marquee({ items }: { items: string[] }) {
     items.map((item) => item.toUpperCase()).join(" ✦ ")
   ).join(" ✦ ");
 
+  // `border-t` seul : le marquee est toujours suivi du footer, dont le filet
+  // supérieur ferme la bande. La maquette ne montre qu'un trait à cet endroit
+  // (y=1027), pas deux.
   return (
-    <div className="overflow-hidden border-y border-rule py-4">
+    <div className="overflow-hidden border-t border-rule py-4">
       <div className="marquee-track flex w-max whitespace-nowrap font-mono text-xs tracking-[0.2em] text-tertiary">
         <span className="pr-6">{sequence}</span>
         <span className="pr-6" aria-hidden>

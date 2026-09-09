@@ -73,6 +73,18 @@ relevées au pixel sur les exports Figma, qui vivent hors du repo dans
 - Cartes calendrier / profs / tarifs : bordure en dégradé + halo, rayon 15 (`.cal-card`)
 - Polices : Archivo (texte), Space Mono (libellés, horaires)
 
+**Rythme vertical.** Les maquettes tiennent dans 1080px de haut, et les pages
+doivent en faire autant. Valeurs relevées : nav 66, bas de page 34 (seul écart
+bas mesurable du design, sur Profs), filet du footer à y=1027 donc bande de
+footer de 53, écart hero → « prochains cours » de 25 sur l'accueil. Les écarts
+hauts passent par les variables `--vr-*` de `globals.css`, exactes à 1080 et
+comprimées deux fois plus vite en dessous.
+
+Deux pages débordent encore à 1080, et c'est du contenu, pas de l'espacement :
+`/tarifs` (l'offre réelle compte quatre abonnements là où la maquette en
+montrait un, d'où une seconde rangée) et `/profs` d'une trentaine de pixels,
+les bios se répartissant sur plus de lignes qu'au rendu Figma.
+
 **Une seule interaction pour toutes les cartes cliquables.** Elles n'ont pas
 toutes la même apparence — l'accueil utilise `.card` (bordure plate, rayon 12)
 et les autres pages `.cal-card` (bordure en dégradé, rayon 15), parce que c'est

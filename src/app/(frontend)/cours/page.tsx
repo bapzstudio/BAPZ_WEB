@@ -14,7 +14,7 @@ export default async function CoursPage() {
 
   return (
     <PageTransition>
-      <div className="container-page pt-[var(--vr-104)] pb-24">
+      <div className="container-page pt-[var(--vr-104)] pb-8.5">
         <h1 className="text-[clamp(38px,3.1vw,59px)] font-black uppercase leading-none tracking-tight">
           Calendrier
         </h1>
