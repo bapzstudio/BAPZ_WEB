@@ -1,12 +1,9 @@
-// Contenu d'amorçage : ce que `pnpm seed` écrit dans Payload.
+// Contenu d'amorçage : ce que `pnpm seed` écrit dans Payload. Le seed vide les
+// collections avant de réinsérer : réservé au développement.
 //
-// C'est aussi la vraie migration du projet : la base SQLite de développement
-// n'est pas transférable vers Postgres, seul ce fichier l'est. Il doit donc
-// rester à jour tant que la cliente n'a pas commencé à saisir son contenu.
-//
-// Contenu réel reçu de la cliente : voir /content/cours.md dans le repo BAPZ.
-// Le reste est encore placeholder (marqué TODO) en attendant les infos
-// manquantes.
+// Contenu reçu de la cliente : /content/cours.md et
+// /content/demande-cliente-2026-09-01.md. Ce qu'elle n'a pas fourni est repris
+// de la maquette ; les valeurs encore à confirmer sont marquées « À confirmer ».
 
 import type {
   Course,
@@ -23,11 +20,9 @@ import type {
 //   - elle place "Street Enfant" le MARDI 18h-19h, la maquette le met JEUDI ;
 //   - elle n'a jamais mentionné Intervenant, Contemporain Lyrical, Yogalates
 //     ni Training libre, ni les profs Ilan, Alessia et Hannane.
-// À arbitrer avec elle avant la mise en ligne / la saisie dans Sanity.
-// Photos extraites de maquette/PROFS.png : les fichiers d'origine de ce
-// shooting portrait ne sont pas dans /content (qui ne contient que 4 photos de
-// danse en pied, différentes). À remplacer par les originaux haute définition
-// dès que la cliente les envoie.
+// À arbitrer avec elle avant la mise en ligne.
+// Portraits tirés des originaux du shooting : voir « Portraits des profs » dans
+// CLAUDE.md.
 export const teachers: Teacher[] = [
   {
     _id: "lena-bapz",
@@ -224,7 +219,7 @@ export const pricingPlans: PricingPlan[] = [
     highlighted: true,
   },
   {
-    // TODO: seul tarif non confirmé par la cliente. Il vient de la maquette,
+    // À confirmer : seul tarif non transmis par la cliente. Il vient de la maquette,
     // dont tous les autres prix se sont révélés faux. Il est aussi utilisé par
     // le bouton d'accueil (`siteSettings.trialLabel`) : les deux sont à
     // corriger ensemble.
@@ -262,7 +257,7 @@ export const rooms: Room[] = [
 ];
 
 export const siteSettings: SiteSettings = {
-  // TODO: accroche définitive à valider avec la cliente.
+  // À confirmer : accroche reprise de la maquette.
   heroTitle: "Heels, Hip-Hop\nCommercial",
   heroSubtitle:
     "Des cours qui font transpirer, des profs qui font progresser.\nTous niveaux, toutes énergies, pas besoin d'expérience, juste l'envie",
@@ -270,16 +265,16 @@ export const siteSettings: SiteSettings = {
   city: "Metz",
   // Compte confirmé le 2026-09-10 : instagram.com/bapz.studio (avec un point).
   instagramHandle: "@bapz.studio",
-  // TODO: tarif du cours d'essai à confirmer avec la cliente.
+  // À confirmer : suit le tarif du cours d'essai ci-dessus.
   trialLabel: "Cours d'essai - 10 €",
   marqueeItems: ["Heels", "Commercial", "Metz", "@bapz.studio"],
   // Logo réel reçu de la cliente (dossier /content, fond transparent).
   logo: { src: "/images/logo/bapz-logo.png", width: 600, height: 600 },
 };
 
-// Photos reçues du 2e/3e shoot (voir /content). Recadrées/réorientées dans
-// web/public/images/gallery - pas d'attribution à un prof précis, on ne sait
-// pas qui est qui sur ces photos, à confirmer avec la cliente si besoin.
+// Photos reçues des 2e et 3e shoots, recadrées dans public/images/gallery.
+// Personne n'y est identifié. Non injectées par le seed : la cliente choisit
+// elle-même ses photos de galerie depuis l'admin.
 export const galleryItems: GalleryItem[] = [
   {
     _id: "shoot-1",

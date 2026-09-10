@@ -400,13 +400,16 @@ export interface Room {
   createdAt: string;
 }
 /**
- * Photos de la page Galerie. La page est encore en préparation : les photos ajoutées ici n'y apparaissent pas pour l'instant.
+ * Photos de la page Galerie. Tant que cette rubrique est vide, la page invite à suivre le studio sur Instagram.
  *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "gallery".
  */
 export interface Gallery {
   id: number;
+  /**
+   * Recadrée en portrait (2 de large pour 3 de haut) sur le site : garder le sujet vers le centre.
+   */
   image: number | Media;
   /**
    * Ce qu'on voit sur la photo, en une phrase courte.

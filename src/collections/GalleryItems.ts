@@ -11,10 +11,20 @@ export const GalleryItems: CollectionConfig = {
     group: "Contenu du site",
     defaultColumns: ["alt", "image", "order"],
     description:
-      "Photos de la page Galerie. La page est encore en préparation : les photos ajoutées ici n'y apparaissent pas pour l'instant.",
+      "Photos de la page Galerie. Tant que cette rubrique est vide, la page invite à suivre le studio sur Instagram.",
   },
   fields: [
-    { name: "image", type: "upload", relationTo: "media", label: "Image", required: true },
+    {
+      name: "image",
+      type: "upload",
+      relationTo: "media",
+      label: "Image",
+      required: true,
+      admin: {
+        description:
+          "Recadrée en portrait (2 de large pour 3 de haut) sur le site : garder le sujet vers le centre.",
+      },
+    },
     {
       name: "alt",
       type: "text",

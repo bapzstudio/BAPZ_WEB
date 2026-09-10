@@ -18,10 +18,11 @@ export default async function ContactPage() {
   return (
     <PageTransition>
       <div className="container-page pt-[var(--vr-104)] pb-8.5">
-        <h1 className="mb-9 text-5xl font-black uppercase tracking-tight sm:text-6xl">
+        {/* Même titre et même écart titre -> cartes que les autres pages. */}
+        <h1 className="text-[clamp(38px,3.1vw,59px)] font-black uppercase leading-none tracking-tight">
           Contact
         </h1>
-        <div className="grid gap-5 lg:grid-cols-2">
+        <div className="mt-[var(--vr-64)] grid gap-5 lg:grid-cols-2">
           <div className="flex flex-col gap-4">
             <div className="card p-6">
               <div className="eyebrow mb-2.5">STUDIO</div>

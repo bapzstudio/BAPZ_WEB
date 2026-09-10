@@ -146,8 +146,8 @@ const seed = async () => {
   payload.logger.info(`${rooms.length} salles créées.`);
 
   // --- galerie ---------------------------------------------------------
-  // Volontairement laissée vide : les photos de galerie ont été retirées du
-  // site en attendant la fin du projet (cf. page /galerie).
+  // Volontairement laissée vide : la cliente choisit ses photos de galerie
+  // depuis l'admin. Vide, la page /galerie renvoie vers Instagram.
   payload.logger.info(
     `Galerie ignorée (${galleryItems.length} entrées en attente).`
   );

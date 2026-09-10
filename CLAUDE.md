@@ -324,7 +324,7 @@ restent hors du repo, dans `../BAPZ/maquette` et `../BAPZ/content`.
 | Tarifs | Tarifs de la cliente ; section « Locations de salle » d'après la maquette TARIFS du 2026-09-10 |
 | Location (`/location`) | Redirigée vers `/tarifs#locations`, où sont les salles |
 | Contact | Formulaire branché ; téléphone et horaires éditables, encore vides |
-| Galerie | Placeholder |
+| Galerie | Branchée sur la rubrique Galerie ; vide, elle renvoie vers Instagram |
 
 ## Points ouverts
 
@@ -335,7 +335,8 @@ entre dans ce cadre et n'est donc plus un point ouvert.
 - Planning du calendrier : la maquette et les horaires transmis ne coïncident
   pas sur tous les cours. Détail dans `content/cours.md`. Il s'agit d'un
   conflit entre deux sources, pas d'un manque : à trancher avec elle.
-- Galerie : seule page encore en placeholder.
+- Galerie : aucune photo saisie. En attendant, la page invite à suivre le
+  studio sur Instagram.
 - Nombre de cours par saison : le champ « Nombre de cours inclus » des tarifs
   affiche « soit X € le cours », ce qui rend une carte et un abonnement
   comparables. Il est rempli pour la carte 10 cours, vide pour les quatre

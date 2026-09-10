@@ -1,5 +1,5 @@
-// Formes calquées sur les schémas Sanity (studio/schemaTypes) pour que le
-// branchement au CMS réel ne demande pas de retoucher les composants.
+// Les formes que consomment les composants. Elles ignorent tout de Payload :
+// changer de CMS ne toucherait que `queries.ts`.
 
 export interface Teacher {
   _id: string;
@@ -10,8 +10,7 @@ export interface Teacher {
   discipline?: string;
   /**
    * Un élément par paragraphe. Les passages entre `**` sont mis en avant
-   * (blanc + gras), comme sur la maquette. Deviendra du Portable Text une fois
-   * Sanity branché.
+   * (blanc + gras), comme sur la maquette.
    */
   bio?: string[];
   photo?: { src: string; width: number; height: number };

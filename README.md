@@ -121,11 +121,11 @@ Le style vient de Tailwind 4, chargé par `@import "tailwindcss"` en tête de
 | Location (`/location`) | Redirigée vers la section salles de Tarifs ; photos et tarifs à fournir |
 | Contact | Formulaire branché ; téléphone et horaires éditables dans les réglages, à fournir |
 | Réserver (`/reserver`) | Parcours en étapes depuis tous les boutons d'action ; demandes enregistrées dans l'admin |
-| Galerie | Placeholder |
+| Galerie | Branchée sur l'admin ; vide pour l'instant, elle renvoie vers Instagram |
 
 ## Prochaines étapes
 
-1. Terminer la page Galerie.
+1. Ajouter les photos de la galerie depuis `/admin` (la page est branchée).
 2. Déploiement (hébergement, HTTPS). Une URL en `.vercel.app` suffit : le nom
    de domaine n'est pas un prérequis et se branche après.
 3. Vérifier un domaine chez Resend pour un expéditeur propre : sans lui les

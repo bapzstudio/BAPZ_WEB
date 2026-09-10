@@ -41,7 +41,7 @@ export function ContactForm() {
       <input
         name="email"
         type="email"
-        placeholder="Ton email"
+        placeholder="Ton e-mail"
         required
         maxLength={200}
         className={field}
