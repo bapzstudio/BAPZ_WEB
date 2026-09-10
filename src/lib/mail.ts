@@ -96,12 +96,6 @@ function configuration() {
 export async function sendReservationRequest(demande: ResumeDemande): Promise<void> {
   const { resend, to, from } = configuration();
 
-  const lignesHtml = demande.lignes
-    .map(
-      (ligne) =>
-        `<tr><td style="padding:10px 18px 10px 0;color:#707070;white-space:nowrap;vertical-align:top">${echapper(ligne.label)}</td><td style="padding:10px 0;font-weight:600">${echapper(ligne.valeur)}</td></tr>`
-    )
-    .join("");
   const messageHtml = demande.message
     ? `<p style="margin:24px 0 8px;color:#707070">Message</p><p style="margin:0;white-space:pre-wrap">${echapper(demande.message)}</p>`
     : "";
@@ -116,7 +110,7 @@ export async function sendReservationRequest(demande: ResumeDemande): Promise<vo
       ...demande.lignes.map((ligne) => `${ligne.label} : ${ligne.valeur}`),
       demande.message ? `\nMessage :\n${demande.message}` : "",
     ].join("\n"),
-    html: `<div style="font-family:Arial,Helvetica,sans-serif;max-width:600px;margin:0 auto;color:#080808"><div style="background:#080808;color:#ffffff;padding:22px 28px;font-size:16px;font-weight:700;letter-spacing:.08em">NOUVELLE DEMANDE</div><div style="padding:24px 28px"><table style="border-collapse:collapse;font-size:15px">${lignesHtml}</table>${messageHtml}<p style="margin:28px 0 0;font-size:13px;color:#707070">Répondre à ce mail écrit directement à ${echapper(demande.prenom)}. La demande est aussi enregistrée dans l'administration du site, rubrique Demandes.</p></div></div>`,
+    html: `<div style="font-family:Arial,Helvetica,sans-serif;max-width:600px;margin:0 auto;color:#080808"><div style="background:#080808;color:#ffffff;padding:22px 28px;font-size:16px;font-weight:700;letter-spacing:.08em">NOUVELLE DEMANDE</div><div style="padding:24px 28px">${tableauHtml(demande.lignes)}${messageHtml}<p style="margin:28px 0 0;font-size:13px;color:#707070">Répondre à ce mail écrit directement à ${echapper(demande.prenom)}. La demande est aussi enregistrée dans l'administration du site, rubrique Demandes.</p></div></div>`,
   });
 
   if (error) {
@@ -124,22 +118,58 @@ export async function sendReservationRequest(demande: ResumeDemande): Promise<vo
   }
 }
 
+/** Lignes du récapitulatif, dans la même mise en forme pour les deux mails. */
+const tableauHtml = (lignes: ResumeDemande["lignes"]) =>
+  `<table style="border-collapse:collapse;font-size:15px">${lignes
+    .map(
+      (ligne) =>
+        `<tr><td style="padding:10px 18px 10px 0;color:#707070;white-space:nowrap;vertical-align:top">${echapper(ligne.label)}</td><td style="padding:10px 0;font-weight:600">${echapper(ligne.valeur)}</td></tr>`
+    )
+    .join("")}</table>`;
+
 /**
- * Accusé de réception au visiteur.
+ * Accusé de réception au visiteur, avec le récapitulatif de sa demande.
  *
  * Seulement une fois un domaine vérifié chez Resend (`CONTACT_FROM_EMAIL`) :
  * avant cela, le compte ne peut écrire qu'à sa propre adresse, et l'envoi au
  * visiteur échouerait à coup sûr.
+ *
+ * Prénom et e-mail sont retirés du récapitulatif : la personne les connaît.
+ * La réponse est dirigée vers la boîte du studio, pour qu'un « je me suis
+ * trompée de jour » arrive à quelqu'un.
  */
 export async function sendReservationConfirmation(demande: ResumeDemande): Promise<void> {
   if (!process.env.CONTACT_FROM_EMAIL) return;
-  const { resend, from } = configuration();
+  const { resend, to, from } = configuration();
+
+  const lignes = demande.lignes.filter(
+    (ligne) => ligne.label !== "Prénom" && ligne.label !== "E-mail"
+  );
+  const intro =
+    "On a bien reçu ta demande. Ce n'est pas encore une réservation : on revient vers toi très vite pour la confirmer.";
+  const messageHtml = demande.message
+    ? `<p style="margin:24px 0 8px;color:#707070">Ton message</p><p style="margin:0;white-space:pre-wrap">${echapper(demande.message)}</p>`
+    : "";
 
   const { error } = await resend.emails.send({
     from,
     to: demande.email,
+    replyTo: to,
     subject: "Ta demande a bien été reçue - BAPZ Studio",
-    text: `Bonjour ${demande.prenom},\n\nNous avons bien reçu ta demande. Ce n'est pas encore une réservation confirmée : on revient vers toi très vite.\n\nBAPZ Studio`,
+    text: [
+      `Bonjour ${demande.prenom},`,
+      "",
+      intro,
+      "",
+      "Récapitulatif :",
+      ...lignes.map((ligne) => `${ligne.label} : ${ligne.valeur}`),
+      demande.message ? `\nTon message :\n${demande.message}` : "",
+      "",
+      "Une erreur dans ta demande ? Réponds simplement à ce mail.",
+      "",
+      "BAPZ Studio",
+    ].join("\n"),
+    html: `<div style="font-family:Arial,Helvetica,sans-serif;max-width:600px;margin:0 auto;color:#080808"><div style="background:#080808;color:#ffffff;padding:22px 28px;font-size:16px;font-weight:700;letter-spacing:.08em">DEMANDE REÇUE</div><div style="padding:24px 28px"><p style="margin:0 0 8px;font-size:15px">Bonjour ${echapper(demande.prenom)},</p><p style="margin:0 0 20px;font-size:15px;line-height:1.5">${intro}</p>${tableauHtml(lignes)}${messageHtml}<p style="margin:28px 0 0;font-size:13px;color:#707070">Une erreur dans ta demande ? Réponds simplement à ce mail.</p><p style="margin:16px 0 0;font-size:13px;font-weight:700;letter-spacing:.08em">BAPZ STUDIO</p></div></div>`,
   });
 
   if (error) {

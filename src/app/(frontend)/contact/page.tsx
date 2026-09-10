@@ -13,6 +13,7 @@ export const metadata: Metadata = pageMetadata({
 
 export default async function ContactPage() {
   const settings = await getSiteSettings();
+  const horaires = settings.openingHours ?? [];
 
   return (
     <PageTransition>
@@ -26,6 +27,17 @@ export default async function ContactPage() {
               <div className="eyebrow mb-2.5">STUDIO</div>
               <div className="text-xl font-bold">{settings.address}</div>
             </div>
+            {settings.phone && (
+              <div className="card p-6">
+                <div className="eyebrow mb-2.5">TÉLÉPHONE</div>
+                <a
+                  href={`tel:${settings.phone.replace(/[^\d+]/g, "")}`}
+                  className="text-xl font-bold transition-colors hover:text-secondary"
+                >
+                  {settings.phone}
+                </a>
+              </div>
+            )}
             {settings.instagramHandle && (
               <div className="card p-6">
                 <div className="eyebrow mb-2.5">INSTAGRAM</div>
@@ -34,12 +46,24 @@ export default async function ContactPage() {
                 </div>
               </div>
             )}
-            <div className="card p-6">
-              <div className="eyebrow mb-2.5">HORAIRES</div>
-              <div className="text-sm text-tertiary">
-                À implémenter - horaires à confirmer avec la cliente.
+            {/* Rien n'est affiché tant que les horaires ne sont pas saisis,
+                plutôt qu'une rubrique vide. */}
+            {horaires.length > 0 && (
+              <div className="card p-6">
+                <div className="eyebrow mb-2.5">HORAIRES</div>
+                <dl className="flex flex-col gap-1.5">
+                  {horaires.map((creneau) => (
+                    <div
+                      key={`${creneau.days}-${creneau.hours}`}
+                      className="flex justify-between gap-4"
+                    >
+                      <dt className="text-secondary">{creneau.days}</dt>
+                      <dd className="font-bold">{creneau.hours}</dd>
+                    </div>
+                  ))}
+                </dl>
               </div>
-            </div>
+            )}
           </div>
 
           <ContactForm />

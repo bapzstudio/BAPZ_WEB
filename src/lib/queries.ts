@@ -71,6 +71,12 @@ export async function getSiteSettings(): Promise<SiteSettings> {
     heroSubtitle: String(doc.heroSubtitle ?? ""),
     address: String(doc.address ?? ""),
     city: (doc.city as string) || undefined,
+    phone: (doc.phone as string) || undefined,
+    openingHours: Array.isArray(doc.openingHours)
+      ? doc.openingHours
+          .map((row) => ({ days: String(row?.days ?? ""), hours: String(row?.hours ?? "") }))
+          .filter((row) => row.days && row.hours)
+      : [],
     instagramHandle: (doc.instagramHandle as string) || undefined,
     trialLabel: (doc.trialLabel as string) || undefined,
     marqueeItems: toStrings(doc.marqueeItems, "text"),
@@ -257,7 +263,7 @@ export async function getReservationCatalog(): Promise<CatalogueReservation> {
         groupe: f.group,
       })),
     // Une salle pas encore ouverte n'est pas réservable, comme sur la page
-    // Location.
+    // Tarifs.
     salles: salles
       .filter((s) => s.slug && !s.availableFrom)
       .map((s) => ({

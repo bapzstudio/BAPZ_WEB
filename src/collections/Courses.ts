@@ -1,16 +1,27 @@
 import type { CollectionConfig } from "payload";
 import { slugField } from "./fields/slug";
+import { hooksRevalidation } from "./hooks/revalider";
 
 export const Courses: CollectionConfig = {
   slug: "courses",
   labels: { singular: "Cours", plural: "Cours" },
   access: { read: () => true },
+  hooks: hooksRevalidation,
   admin: {
     useAsTitle: "title",
-    defaultColumns: ["title", "dayOfWeek", "startTime", "teacher"],
+    group: "Contenu du site",
+    defaultColumns: ["title", "dayOfWeek", "startTime", "teacher", "level"],
+    description:
+      "Le planning de la semaine. Chaque cours apparaît dans le Calendrier, sur la page de son ou sa prof, et dans la liste des cours d'essai proposés aux visiteurs. Supprimer un cours le retire partout.",
   },
   fields: [
-    { name: "title", type: "text", label: "Titre du cours", required: true },
+    {
+      name: "title",
+      type: "text",
+      label: "Titre du cours",
+      required: true,
+      admin: { description: "Ex : Heels. Le niveau se met dans le champ suivant." },
+    },
     slugField(
       ["title", "dayOfWeek", "startTime"],
       "Identifiant du cours dans les liens de réservation, par exemple heels-mardi-19-00. Rempli tout seul ; à ne changer que si le cours n'est pas encore en ligne, sinon les liens existants se cassent."
@@ -58,13 +69,24 @@ export const Courses: CollectionConfig = {
       type: "relationship",
       relationTo: "teachers",
       label: "Professeur·e",
+      admin: {
+        description: "Laisser vide si le cours n'a pas de prof attitré·e (ex : Training libre).",
+      },
     },
-    { name: "room", type: "text", label: "Salle", admin: { description: "Ex : Studio A." } },
+    {
+      name: "room",
+      type: "text",
+      label: "Salle",
+      admin: { description: "Affichée en haut à droite de la carte du calendrier, ex : Studio A." },
+    },
     {
       name: "order",
       type: "number",
       label: "Ordre d'affichage",
-      admin: { position: "sidebar" },
+      admin: {
+        position: "sidebar",
+        description: "Les plus petits nombres passent en premier (1, 2, 3…).",
+      },
     },
   ],
 };

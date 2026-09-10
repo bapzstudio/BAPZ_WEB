@@ -1,11 +1,19 @@
 import type { CollectionConfig } from "payload";
 import { slugField } from "./fields/slug";
+import { hooksRevalidation } from "./hooks/revalider";
 
 export const Rooms: CollectionConfig = {
   slug: "rooms",
   labels: { singular: "Salle", plural: "Salles" },
   access: { read: () => true },
-  admin: { useAsTitle: "name", defaultColumns: ["name", "area", "capacity"] },
+  hooks: hooksRevalidation,
+  admin: {
+    useAsTitle: "name",
+    group: "Contenu du site",
+    defaultColumns: ["name", "price", "capacity", "availableFrom"],
+    description:
+      "Salles à louer, affichées en bas de la page Tarifs. Le bouton « Choisir » ouvre une demande de location avec la salle déjà sélectionnée.",
+  },
   fields: [
     { name: "name", type: "text", label: "Nom", required: true },
     slugField(
@@ -27,7 +35,7 @@ export const Rooms: CollectionConfig = {
       type: "text",
       label: "Tarif",
       admin: {
-        description: 'Avec la devise, ex : "30 €". Laisser vide pour afficher « Sur demande ».',
+        description: 'Avec la devise, ex : "30 €". Laisser vide pour afficher « Tarif sur demande ».',
       },
     },
     {
@@ -36,13 +44,27 @@ export const Rooms: CollectionConfig = {
       label: "Période",
       admin: { description: 'Accolé au tarif, ex : "/ heure". Vide si sans objet.' },
     },
-    { name: "capacity", type: "number", label: "Capacité (personnes)" },
-    { name: "area", type: "number", label: "Surface (m²)" },
+    {
+      name: "capacity",
+      type: "number",
+      label: "Capacité (personnes)",
+      admin: { description: "Nombre de personnes maximum, en chiffres." },
+    },
+    {
+      name: "area",
+      type: "number",
+      label: "Surface (m²)",
+      admin: { description: "En chiffres, sans « m² »." },
+    },
     {
       name: "equipment",
       type: "array",
       label: "Équipements",
       labels: { singular: "Équipement", plural: "Équipements" },
+      admin: {
+        description:
+          "Un équipement par ligne, ex : Climatisation. Ils s'affichent à la suite, séparés par des virgules.",
+      },
       fields: [{ name: "item", type: "text", label: "Équipement", required: true }],
     },
     {
@@ -51,14 +73,17 @@ export const Rooms: CollectionConfig = {
       label: "Année d'ouverture",
       admin: {
         description:
-          "À remplir seulement si la salle n'est pas encore ouverte (ex : 2027). Le bouton de réservation est alors masqué.",
+          "À remplir seulement si la salle n'est pas encore ouverte (ex : 2027). Le bouton de réservation est alors masqué. Vider le champ le jour de l'ouverture.",
       },
     },
     {
       name: "order",
       type: "number",
       label: "Ordre d'affichage",
-      admin: { position: "sidebar" },
+      admin: {
+        position: "sidebar",
+        description: "Les plus petits nombres passent en premier (1, 2, 3…).",
+      },
     },
   ],
 };

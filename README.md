@@ -118,8 +118,8 @@ Le style vient de Tailwind 4, chargé par `@import "tailwindcss"` en tête de
 | Profs | Conforme à la maquette, portraits tirés des originaux du shooting |
 | Fiche d'un prof (`/profs/[slug]`) | Bio + ses cours ; pas de maquette, conçue avec le vocabulaire existant |
 | Tarifs | Tarifs de la cliente, structure adaptée (4 abonnements au lieu d'un seul) ; section « Locations de salle » ajoutée d'après la maquette du 2026-09-10 |
-| Location | Salles A et B renseignées, mêmes cartes que sur Tarifs ; photos et tarifs à fournir |
-| Contact | Formulaire branché, horaires à fournir |
+| Location (`/location`) | Redirigée vers la section salles de Tarifs ; photos et tarifs à fournir |
+| Contact | Formulaire branché ; téléphone et horaires éditables dans les réglages, à fournir |
 | Réserver (`/reserver`) | Parcours en étapes depuis tous les boutons d'action ; demandes enregistrées dans l'admin |
 | Galerie | Placeholder |
 
@@ -131,7 +131,7 @@ Le style vient de Tailwind 4, chargé par `@import "tailwindcss"` en tête de
 3. Vérifier un domaine chez Resend pour un expéditeur propre : sans lui les
    messages partent depuis `onboarding@resend.dev`.
 4. Mentions légales / RGPD (bloqué sur le SIRET), et fiche Google Business.
-5. Formation sur `/admin` + guide PDF.
+5. Formation sur `/admin` + guide PDF (ébauche : `docs/guide-administration.md`).
 
 ## Points à confirmer
 

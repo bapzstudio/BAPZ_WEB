@@ -1,12 +1,26 @@
 import type { CollectionConfig } from "payload";
+import { hooksRevalidation } from "./hooks/revalider";
 
 export const Teachers: CollectionConfig = {
   slug: "teachers",
   labels: { singular: "Professeur·e", plural: "Professeur·e·s" },
   access: { read: () => true },
-  admin: { useAsTitle: "name", defaultColumns: ["name", "discipline"] },
+  hooks: hooksRevalidation,
+  admin: {
+    useAsTitle: "name",
+    group: "Contenu du site",
+    defaultColumns: ["name", "discipline", "photo"],
+    description:
+      "L'équipe. Une personne n'apparaît sur la page Profs, avec sa page personnelle, que si elle a un portrait ET une présentation. Sans les deux, elle reste choisissable comme prof d'un cours.",
+  },
   fields: [
-    { name: "name", type: "text", label: "Nom", required: true },
+    {
+      name: "name",
+      type: "text",
+      label: "Nom",
+      required: true,
+      admin: { description: "Tel qu'affiché sur le site, ex : Léna Bapz." },
+    },
     {
       name: "slug",
       type: "text",
@@ -52,7 +66,10 @@ export const Teachers: CollectionConfig = {
       type: "upload",
       relationTo: "media",
       label: "Portrait",
-      admin: { description: "Format paysage, environ 1086 x 944." },
+      admin: {
+        description:
+          "Format paysage, environ 1086 x 944 (un peu plus large que haut). Le visage vers le haut de l'image.",
+      },
     },
     {
       name: "bio",
@@ -61,7 +78,7 @@ export const Teachers: CollectionConfig = {
       labels: { singular: "Paragraphe", plural: "Paragraphes" },
       admin: {
         description:
-          "Un paragraphe par entrée. Le texte entre ** ** apparaît en blanc et en gras sur le site.",
+          "Un paragraphe par entrée. Le texte entre ** ** apparaît en blanc et en gras sur le site, ex : **Heels**.",
       },
       fields: [{ name: "text", type: "textarea", label: "Texte", required: true }],
     },
@@ -69,7 +86,10 @@ export const Teachers: CollectionConfig = {
       name: "order",
       type: "number",
       label: "Ordre d'affichage",
-      admin: { position: "sidebar" },
+      admin: {
+        position: "sidebar",
+        description: "Ordre sur la page Profs : les plus petits nombres passent en premier (1, 2, 3…).",
+      },
     },
   ],
 };

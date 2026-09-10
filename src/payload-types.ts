@@ -134,25 +134,49 @@ export interface UserAuthOperations {
   };
 }
 /**
- * Demandes envoyées depuis le parcours de réservation du site. Rien n'est réservé automatiquement : chaque demande attend ta réponse.
+ * Demandes envoyées depuis le site (essai, inscription, location, cours privé). Rien n'est réservé automatiquement : chaque demande attend ta réponse. Tu reçois aussi chaque demande par mail.
  *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "demandes".
  */
 export interface Demande {
   id: number;
+  /**
+   * Rempli automatiquement à l'envoi. Sert de titre dans la liste.
+   */
   resume?: string | null;
   type: 'essai' | 'inscription' | 'location' | 'prive';
+  /**
+   * Le cours que la personne veut essayer.
+   */
   cours?: (number | null) | Course;
+  /**
+   * La formule choisie sur la page Tarifs.
+   */
   formule?: (number | null) | PricingPlan;
   salle?: (number | null) | Room;
+  /**
+   * Déclaré par la personne elle-même.
+   */
   niveau?: ('debutant' | 'intermediaire' | 'avance' | 'ne-sais-pas') | null;
+  /**
+   * En texte libre, tel que saisi sur le site.
+   */
   dateSouhaitee?: string | null;
   personnes?: number | null;
   message?: string | null;
   prenom: string;
+  /**
+   * Pour répondre : répondre au mail de notification reçu écrit directement à cette adresse.
+   */
   email: string;
+  /**
+   * Facultatif sur le site : peut être vide.
+   */
   telephone?: string | null;
+  /**
+   * À faire avancer au fil du traitement. Changer le statut ne prévient pas la personne : la réponse se fait par mail ou par téléphone.
+   */
   statut: 'nouvelle' | 'en-cours' | 'confirmee' | 'sans-suite';
   /**
    * Visibles seulement ici, jamais envoyées au visiteur.
@@ -162,11 +186,16 @@ export interface Demande {
   createdAt: string;
 }
 /**
+ * Le planning de la semaine. Chaque cours apparaît dans le Calendrier, sur la page de son ou sa prof, et dans la liste des cours d'essai proposés aux visiteurs. Supprimer un cours le retire partout.
+ *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "courses".
  */
 export interface Course {
   id: number;
+  /**
+   * Ex : Heels. Le niveau se met dans le champ suivant.
+   */
   title: string;
   /**
    * Identifiant du cours dans les liens de réservation, par exemple heels-mardi-19-00. Rempli tout seul ; à ne changer que si le cours n'est pas encore en ligne, sinon les liens existants se cassent.
@@ -185,21 +214,32 @@ export interface Course {
    * Format 24h, ex : 20:30.
    */
   endTime: string;
+  /**
+   * Laisser vide si le cours n'a pas de prof attitré·e (ex : Training libre).
+   */
   teacher?: (number | null) | Teacher;
   /**
-   * Ex : Studio A.
+   * Affichée en haut à droite de la carte du calendrier, ex : Studio A.
    */
   room?: string | null;
+  /**
+   * Les plus petits nombres passent en premier (1, 2, 3…).
+   */
   order?: number | null;
   updatedAt: string;
   createdAt: string;
 }
 /**
+ * L'équipe. Une personne n'apparaît sur la page Profs, avec sa page personnelle, que si elle a un portrait ET une présentation. Sans les deux, elle reste choisissable comme prof d'un cours.
+ *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "teachers".
  */
 export interface Teacher {
   id: number;
+  /**
+   * Tel qu'affiché sur le site, ex : Léna Bapz.
+   */
   name: string;
   /**
    * Fin de l'adresse de sa page, par exemple lena-bapz pour /profs/lena-bapz. Rempli tout seul à partir du nom ; à ne changer que si la page n'est pas encore en ligne, sinon les liens existants se cassent.
@@ -210,11 +250,11 @@ export interface Teacher {
    */
   discipline?: string | null;
   /**
-   * Format paysage, environ 1086 x 944.
+   * Format paysage, environ 1086 x 944 (un peu plus large que haut). Le visage vers le haut de l'image.
    */
   photo?: (number | null) | Media;
   /**
-   * Un paragraphe par entrée. Le texte entre ** ** apparaît en blanc et en gras sur le site.
+   * Un paragraphe par entrée. Le texte entre ** ** apparaît en blanc et en gras sur le site, ex : **Heels**.
    */
   bio?:
     | {
@@ -222,18 +262,23 @@ export interface Teacher {
         id?: string | null;
       }[]
     | null;
+  /**
+   * Ordre sur la page Profs : les plus petits nombres passent en premier (1, 2, 3…).
+   */
   order?: number | null;
   updatedAt: string;
   createdAt: string;
 }
 /**
+ * Toutes les images du site. Une image ajoutée depuis une fiche (portrait, photo de salle…) arrive ici automatiquement. Supprimer une image la retire aussi des pages qui l'utilisent.
+ *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "media".
  */
 export interface Media {
   id: number;
   /**
-   * Décrit l'image pour les personnes qui ne la voient pas, et pour Google.
+   * Une phrase courte qui dit ce qu'on voit, ex : « Léna en cours de heels ». Lue par les personnes malvoyantes et par Google.
    */
   alt: string;
   _key?: string | null;
@@ -251,19 +296,24 @@ export interface Media {
   focalY?: number | null;
 }
 /**
+ * Formules de la page Tarifs. Le bouton « Choisir » de chaque carte ouvre une demande d'inscription avec la formule déjà sélectionnée.
+ *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "pricing-plans".
  */
 export interface PricingPlan {
   id: number;
   /**
-   * Détermine dans quelle section de la page Tarifs la formule apparaît.
+   * Détermine dans quelle section de la page Tarifs la formule apparaît. « Offre d'essai » s'affiche en bandeau pleine largeur, en haut de la page.
    */
   group: 'carte' | 'abonnement' | 'essai';
   /**
-   * Au-dessus du prix, ex : "Le + populaire".
+   * Au-dessus du prix, en petites capitales, ex : "Le + populaire". Facultatif.
    */
   label?: string | null;
+  /**
+   * Sous le prix, en capitales, ex : Carte 10 cours.
+   */
   name: string;
   /**
    * Identifiant de la formule dans les liens de réservation, par exemple carte-10-cours. Rempli tout seul à partir du nom ; à ne changer que si la formule n'est pas encore en ligne.
@@ -281,13 +331,24 @@ export interface PricingPlan {
    * Sert à afficher « soit X € le cours » sous le prix, ce qui permet de comparer les formules. Mettre 10 pour une carte de 10 cours ; pour un abonnement à l'année, le nombre de cours sur la saison (par exemple 34 semaines = 34). Laisser vide pour ne rien afficher.
    */
   sessionsIncluded?: number | null;
+  /**
+   * Une ou deux phrases courtes sous le nom, ex : Valable 4 mois, pour tous les cours.
+   */
   description?: string | null;
+  /**
+   * Bordure plus marquée et petit libellé en blanc. À réserver à une formule par section, sinon plus rien ne ressort.
+   */
   highlighted?: boolean | null;
+  /**
+   * Les plus petits nombres passent en premier (1, 2, 3…), dans chaque section.
+   */
   order?: number | null;
   updatedAt: string;
   createdAt: string;
 }
 /**
+ * Salles à louer, affichées en bas de la page Tarifs. Le bouton « Choisir » ouvre une demande de location avec la salle déjà sélectionnée.
+ *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "rooms".
  */
@@ -303,15 +364,24 @@ export interface Room {
    */
   photo?: (number | null) | Media;
   /**
-   * Avec la devise, ex : "30 €". Laisser vide pour afficher « Sur demande ».
+   * Avec la devise, ex : "30 €". Laisser vide pour afficher « Tarif sur demande ».
    */
   price?: string | null;
   /**
    * Accolé au tarif, ex : "/ heure". Vide si sans objet.
    */
   period?: string | null;
+  /**
+   * Nombre de personnes maximum, en chiffres.
+   */
   capacity?: number | null;
+  /**
+   * En chiffres, sans « m² ».
+   */
   area?: number | null;
+  /**
+   * Un équipement par ligne, ex : Climatisation. Ils s'affichent à la suite, séparés par des virgules.
+   */
   equipment?:
     | {
         item: string;
@@ -319,26 +389,39 @@ export interface Room {
       }[]
     | null;
   /**
-   * À remplir seulement si la salle n'est pas encore ouverte (ex : 2027). Le bouton de réservation est alors masqué.
+   * À remplir seulement si la salle n'est pas encore ouverte (ex : 2027). Le bouton de réservation est alors masqué. Vider le champ le jour de l'ouverture.
    */
   availableFrom?: string | null;
+  /**
+   * Les plus petits nombres passent en premier (1, 2, 3…).
+   */
   order?: number | null;
   updatedAt: string;
   createdAt: string;
 }
 /**
+ * Photos de la page Galerie. La page est encore en préparation : les photos ajoutées ici n'y apparaissent pas pour l'instant.
+ *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "gallery".
  */
 export interface Gallery {
   id: number;
   image: number | Media;
+  /**
+   * Ce qu'on voit sur la photo, en une phrase courte.
+   */
   alt: string;
+  /**
+   * Les plus petits nombres passent en premier (1, 2, 3…).
+   */
   order?: number | null;
   updatedAt: string;
   createdAt: string;
 }
 /**
+ * Les personnes qui peuvent se connecter à cette administration. Tous les comptes ont les mêmes droits.
+ *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "users".
  */
@@ -654,29 +737,69 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
   createdAt?: T;
 }
 /**
+ * Textes et coordonnées communs à tout le site : bannière d'accueil, adresse, horaires, Instagram, logo.
+ *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "site-settings".
  */
 export interface SiteSetting {
   id: number;
   /**
-   * Un retour à la ligne dans ce champ coupe le titre au même endroit sur le site.
+   * Le grand titre de l'accueil. Un retour à la ligne dans ce champ coupe le titre au même endroit sur le site.
    */
   heroTitle: string;
-  heroSubtitle?: string | null;
-  address?: string | null;
-  city?: string | null;
-  instagramHandle?: string | null;
   /**
-   * Ex : "Cours d'essai - 10 €".
+   * Le texte sous le titre. Les retours à la ligne sont conservés. Il sert aussi de description du studio pour Google.
+   */
+  heroSubtitle?: string | null;
+  /**
+   * Texte du bouton blanc de la bannière, qui ouvre une demande de cours d'essai. Ex : "Cours d'essai - 10 €". Penser à le mettre à jour si le prix de l'essai change dans Tarifs.
    */
   trialLabel?: string | null;
+  /**
+   * Numéro, rue et commune. Affichée sur la page Contact et transmise à Google.
+   */
+  address?: string | null;
+  /**
+   * Affichée dans la bannière et en pied de page, ex : Metz.
+   */
+  city?: string | null;
+  /**
+   * Ex : 06 12 34 56 78. Affiché sur la page Contact et transmis à Google. Laisser vide pour ne pas l'afficher.
+   */
+  phone?: string | null;
+  /**
+   * Une ligne par créneau, affichées sur la page Contact. Laisser vide : la rubrique Horaires n'apparaît pas.
+   */
+  openingHours?:
+    | {
+        /**
+         * Ex : Lundi - Vendredi
+         */
+        days: string;
+        /**
+         * Ex : 17h - 22h, ou Fermé
+         */
+        hours: string;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Avec le @, ex : @bapzstudio. Affiché dans la bannière, en pied de page et sur la page Contact.
+   */
+  instagramHandle?: string | null;
+  /**
+   * Les mots qui défilent en bas de l'accueil. Les deux premiers apparaissent aussi au centre du pied de page : y mettre les disciplines phares.
+   */
   marqueeItems?:
     | {
         text: string;
         id?: string | null;
       }[]
     | null;
+  /**
+   * Affiché dans un rond, en haut à gauche de chaque page. Fond transparent de préférence.
+   */
   logo?: (number | null) | Media;
   updatedAt?: string | null;
   createdAt?: string | null;
@@ -688,10 +811,18 @@ export interface SiteSetting {
 export interface SiteSettingsSelect<T extends boolean = true> {
   heroTitle?: T;
   heroSubtitle?: T;
+  trialLabel?: T;
   address?: T;
   city?: T;
+  phone?: T;
+  openingHours?:
+    | T
+    | {
+        days?: T;
+        hours?: T;
+        id?: T;
+      };
   instagramHandle?: T;
-  trialLabel?: T;
   marqueeItems?:
     | T
     | {

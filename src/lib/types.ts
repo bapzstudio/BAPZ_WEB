@@ -121,6 +121,9 @@ export interface SiteSettings {
   heroSubtitle: string;
   address: string;
   city?: string;
+  phone?: string;
+  /** Créneaux de la page Contact, en texte libre (« Lundi - Vendredi », « 17h - 22h »). */
+  openingHours?: { days: string; hours: string }[];
   instagramHandle?: string;
   /** Libellé du CTA "cours d'essai" (ex : "Cours d'essai - 10 €"). */
   trialLabel?: string;

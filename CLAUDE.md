@@ -97,6 +97,19 @@ un lien étiré si elle contient déjà un bouton), `data-glow-card`, `cal-glow`
 **Les libellés de l'admin sont en français**, y compris les `label`,
 `description` et `labels` des collections : c'est la cliente qui les lit.
 
+**L'admin est rangé pour la cliente.** Trois groupes de menu : « Suivi »
+(Demandes), « Contenu du site », « Réglages ». Chaque champ dont l'effet sur le
+site n'est pas évident porte une `description` qui dit où il s'affiche et avec
+quel format. Le guide d'utilisation, ébauche du PDF, est
+`docs/guide-administration.md` : à tenir à jour avec l'admin.
+
+**Toute collection affichée sur le site porte `hooksRevalidation`**
+(`collections/hooks/revalider.ts`), les réglages `revaliderApresReglages`.
+Les pages lisent Payload sans `fetch`, donc Next les fige au build : sans ce
+hook, une modification faite dans l'admin n'apparaîtrait qu'au déploiement
+suivant. `pnpm dev` rend tout à la demande et ne permet pas de le constater —
+seul `pnpm build && pnpm start` le montre.
+
 **Après un changement de collection** : `pnpm generate:types`, puis
 `pnpm payload migrate:create <nom>` et `pnpm payload migrate`.
 
@@ -183,7 +196,8 @@ Règles :
 - **Enregistrer d'abord, écrire ensuite.** Si le mail échoue, la demande existe
   dans `/admin` et le visiteur voit la confirmation, ce qui évite les doublons.
 - Les valeurs saisies sont échappées avant d'entrer dans le HTML du mail.
-- L'accusé de réception au visiteur ne part qu'une fois `CONTACT_FROM_EMAIL`
+- L'accusé de réception au visiteur (récapitulatif de sa demande, réponse
+  dirigée vers la boîte du studio) ne part qu'une fois `CONTACT_FROM_EMAIL`
   renseigné ; avant, Resend le refuserait.
 - `useReservationStore.persist` n'existe pas côté serveur : zustand n'attache
   son API que si le stockage est disponible. Y accéder sans garde fait
@@ -257,8 +271,8 @@ restent hors du repo, dans `../BAPZ/maquette` et `../BAPZ/content`.
 |---|---|
 | Accueil, Calendrier (`/cours`), Profs | Conformes aux maquettes |
 | Tarifs | Tarifs de la cliente ; section « Locations de salle » d'après la maquette TARIFS du 2026-09-10 |
-| Location | Salles A et B renseignées, même `RoomCard` que sur Tarifs |
-| Contact | Formulaire branché, horaires à fournir |
+| Location (`/location`) | Redirigée vers `/tarifs#locations`, où sont les salles |
+| Contact | Formulaire branché ; téléphone et horaires éditables, encore vides |
 | Galerie | Placeholder |
 
 ## Points ouverts
@@ -277,7 +291,7 @@ entre dans ce cadre et n'est donc plus un point ouvert.
   abonnements faute de connaître le nombre de semaines de la saison.
 - Location de salle : la maquette TARIFS du 2026-09-10 prévoit une photo et un
   prix (« XX € ») par salle. Les champs existent dans l'admin mais sont vides ;
-  sans prix la carte affiche « Sur demande », sans photo elle s'affiche sans
+  sans prix la carte affiche « Tarif sur demande », sans photo elle s'affiche sans
   image. La maquette rend aussi la salle B réservable, alors qu'elle n'ouvre
   qu'en 2027 : elle reste non cliquable tant que « Année d'ouverture » est
   rempli.

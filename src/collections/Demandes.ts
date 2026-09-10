@@ -4,12 +4,16 @@ import { NIVEAUX, NIVEAU_LABELS, TYPES_DEMANDE, TYPE_LABELS } from "../lib/reser
 export const Demandes: CollectionConfig = {
   slug: "demandes",
   labels: { singular: "Demande", plural: "Demandes" },
+  // Les plus récentes en haut : c'est la liste qu'on ouvre pour voir ce qui
+  // vient d'arriver.
+  defaultSort: "-createdAt",
   admin: {
     useAsTitle: "resume",
-    defaultColumns: ["resume", "statut", "createdAt"],
+    group: "Suivi",
+    defaultColumns: ["resume", "type", "statut", "createdAt"],
     listSearchableFields: ["resume", "prenom", "email"],
     description:
-      "Demandes envoyées depuis le parcours de réservation du site. Rien n'est réservé automatiquement : chaque demande attend ta réponse.",
+      "Demandes envoyées depuis le site (essai, inscription, location, cours privé). Rien n'est réservé automatiquement : chaque demande attend ta réponse. Tu reçois aussi chaque demande par mail.",
   },
   // Création réservée au serveur. Le parcours enregistre les demandes par
   // l'API locale de Payload, qui ne passe pas par ces règles ; ouvrir `create`
@@ -21,12 +25,17 @@ export const Demandes: CollectionConfig = {
     update: ({ req }) => Boolean(req.user),
     delete: ({ req }) => Boolean(req.user),
   },
+  // Les champs propres à un type ne s'affichent que pour lui : une demande de
+  // location n'a ni cours ni niveau, un essai n'a pas de date souhaitée.
   fields: [
     {
       name: "resume",
       type: "text",
       label: "Résumé",
-      admin: { readOnly: true },
+      admin: {
+        readOnly: true,
+        description: "Rempli automatiquement à l'envoi. Sert de titre dans la liste.",
+      },
     },
     {
       name: "type",
@@ -35,21 +44,76 @@ export const Demandes: CollectionConfig = {
       required: true,
       options: TYPES_DEMANDE.map((value) => ({ value, label: TYPE_LABELS[value].label })),
     },
-    { name: "cours", type: "relationship", relationTo: "courses", label: "Cours" },
-    { name: "formule", type: "relationship", relationTo: "pricing-plans", label: "Formule" },
-    { name: "salle", type: "relationship", relationTo: "rooms", label: "Salle" },
+    {
+      name: "cours",
+      type: "relationship",
+      relationTo: "courses",
+      label: "Cours",
+      admin: {
+        condition: (data) => data?.type === "essai",
+        description: "Le cours que la personne veut essayer.",
+      },
+    },
+    {
+      name: "formule",
+      type: "relationship",
+      relationTo: "pricing-plans",
+      label: "Formule",
+      admin: {
+        condition: (data) => data?.type === "inscription",
+        description: "La formule choisie sur la page Tarifs.",
+      },
+    },
+    {
+      name: "salle",
+      type: "relationship",
+      relationTo: "rooms",
+      label: "Salle",
+      admin: { condition: (data) => data?.type === "location" },
+    },
     {
       name: "niveau",
       type: "select",
       label: "Niveau",
       options: NIVEAUX.map((value) => ({ value, label: NIVEAU_LABELS[value] })),
+      admin: {
+        condition: (data) => data?.type !== "location",
+        description: "Déclaré par la personne elle-même.",
+      },
     },
-    { name: "dateSouhaitee", type: "text", label: "Date souhaitée" },
-    { name: "personnes", type: "number", label: "Nombre de personnes" },
+    {
+      name: "dateSouhaitee",
+      type: "text",
+      label: "Date souhaitée",
+      admin: {
+        condition: (data) => data?.type === "location",
+        description: "En texte libre, tel que saisi sur le site.",
+      },
+    },
+    {
+      name: "personnes",
+      type: "number",
+      label: "Nombre de personnes",
+      admin: { condition: (data) => data?.type === "location" },
+    },
     { name: "message", type: "textarea", label: "Message" },
     { name: "prenom", type: "text", label: "Prénom", required: true },
-    { name: "email", type: "email", label: "E-mail", required: true },
-    { name: "telephone", type: "text", label: "Téléphone" },
+    {
+      name: "email",
+      type: "email",
+      label: "E-mail",
+      required: true,
+      admin: {
+        description:
+          "Pour répondre : répondre au mail de notification reçu écrit directement à cette adresse.",
+      },
+    },
+    {
+      name: "telephone",
+      type: "text",
+      label: "Téléphone",
+      admin: { description: "Facultatif sur le site : peut être vide." },
+    },
     {
       name: "statut",
       type: "select",
@@ -62,7 +126,11 @@ export const Demandes: CollectionConfig = {
         { label: "Confirmée", value: "confirmee" },
         { label: "Sans suite", value: "sans-suite" },
       ],
-      admin: { position: "sidebar" },
+      admin: {
+        position: "sidebar",
+        description:
+          "À faire avancer au fil du traitement. Changer le statut ne prévient pas la personne : la réponse se fait par mail ou par téléphone.",
+      },
     },
     {
       name: "notes",

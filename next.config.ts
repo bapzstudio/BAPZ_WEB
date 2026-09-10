@@ -26,6 +26,13 @@ const nextConfig: NextConfig = {
       { protocol: 'https', hostname: '**.ufs.sh', pathname: '/f/**' },
     ],
   },
+  // Les salles ont rejoint la page Tarifs (maquette du 2026-09-10) : l'ancienne
+  // adresse, déjà présente dans le sitemap, mène à leur section.
+  async redirects() {
+    return [
+      { source: '/location', destination: '/tarifs#locations', permanent: true },
+    ]
+  },
   webpack: (webpackConfig) => {
     webpackConfig.resolve.extensionAlias = {
       '.cjs': ['.cts', '.cjs'],

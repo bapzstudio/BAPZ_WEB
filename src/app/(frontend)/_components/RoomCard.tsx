@@ -62,15 +62,23 @@ export function RoomCard({ room }: { room: Room }) {
       )}
 
       {/* Aucun tarif communiqué : on l'annonce sur demande plutôt que
-          d'afficher un montant inventé. */}
+          d'afficher un montant inventé. En plus petit qu'un prix — au corps
+          des noms de salle de l'ancienne page Location — pour ne pas
+          donner à une absence le poids d'un chiffre. */}
       <div className={`${room.photo ? "mt-7" : "mt-6"} flex items-baseline gap-1.5`}>
-        <span className="text-[clamp(40px,3.4vw,64px)] font-black leading-none tracking-tight">
-          {room.price ? <PriceCounter value={room.price} /> : "Sur demande"}
-        </span>
-        {room.price && room.period && (
-          <span className="text-xl font-bold leading-none text-tertiary">
-            {room.period}
-          </span>
+        {room.price ? (
+          <>
+            <span className="text-[clamp(40px,3.4vw,64px)] font-black leading-none tracking-tight">
+              <PriceCounter value={room.price} />
+            </span>
+            {room.period && (
+              <span className="text-xl font-bold leading-none text-tertiary">
+                {room.period}
+              </span>
+            )}
+          </>
+        ) : (
+          <span className="text-[28px] font-black leading-none">Tarif sur demande</span>
         )}
       </div>
 

@@ -1,11 +1,19 @@
 import type { CollectionConfig } from "payload";
 import { slugField } from "./fields/slug";
+import { hooksRevalidation } from "./hooks/revalider";
 
 export const PricingPlans: CollectionConfig = {
   slug: "pricing-plans",
   labels: { singular: "Tarif", plural: "Tarifs" },
   access: { read: () => true },
-  admin: { useAsTitle: "name", defaultColumns: ["name", "price", "group"] },
+  hooks: hooksRevalidation,
+  admin: {
+    useAsTitle: "name",
+    group: "Contenu du site",
+    defaultColumns: ["name", "price", "period", "group"],
+    description:
+      "Formules de la page Tarifs. Le bouton « Choisir » de chaque carte ouvre une demande d'inscription avec la formule déjà sélectionnée.",
+  },
   fields: [
     {
       name: "group",
@@ -18,16 +26,23 @@ export const PricingPlans: CollectionConfig = {
         { label: "Offre d'essai", value: "essai" },
       ],
       admin: {
-        description: "Détermine dans quelle section de la page Tarifs la formule apparaît.",
+        description:
+          "Détermine dans quelle section de la page Tarifs la formule apparaît. « Offre d'essai » s'affiche en bandeau pleine largeur, en haut de la page.",
       },
     },
     {
       name: "label",
       type: "text",
       label: "Petit libellé",
-      admin: { description: 'Au-dessus du prix, ex : "Le + populaire".' },
+      admin: { description: 'Au-dessus du prix, en petites capitales, ex : "Le + populaire". Facultatif.' },
     },
-    { name: "name", type: "text", label: "Nom de la formule", required: true },
+    {
+      name: "name",
+      type: "text",
+      label: "Nom de la formule",
+      required: true,
+      admin: { description: "Sous le prix, en capitales, ex : Carte 10 cours." },
+    },
     slugField(
       ["name"],
       "Identifiant de la formule dans les liens de réservation, par exemple carte-10-cours. Rempli tout seul à partir du nom ; à ne changer que si la formule n'est pas encore en ligne."
@@ -55,13 +70,30 @@ export const PricingPlans: CollectionConfig = {
           "Sert à afficher « soit X € le cours » sous le prix, ce qui permet de comparer les formules. Mettre 10 pour une carte de 10 cours ; pour un abonnement à l'année, le nombre de cours sur la saison (par exemple 34 semaines = 34). Laisser vide pour ne rien afficher.",
       },
     },
-    { name: "description", type: "textarea", label: "Description" },
-    { name: "highlighted", type: "checkbox", label: "Mettre en avant", defaultValue: false },
+    {
+      name: "description",
+      type: "textarea",
+      label: "Description",
+      admin: { description: "Une ou deux phrases courtes sous le nom, ex : Valable 4 mois, pour tous les cours." },
+    },
+    {
+      name: "highlighted",
+      type: "checkbox",
+      label: "Mettre en avant",
+      defaultValue: false,
+      admin: {
+        description:
+          "Bordure plus marquée et petit libellé en blanc. À réserver à une formule par section, sinon plus rien ne ressort.",
+      },
+    },
     {
       name: "order",
       type: "number",
       label: "Ordre d'affichage",
-      admin: { position: "sidebar" },
+      admin: {
+        position: "sidebar",
+        description: "Les plus petits nombres passent en premier (1, 2, 3…), dans chaque section.",
+      },
     },
   ],
 };
