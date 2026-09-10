@@ -6,10 +6,12 @@ import { getPricingPlans, getSiteSettings } from "@/lib/queries";
 import { SITE_NAME, SITE_URL, structuredData } from "@/lib/seo";
 import "./globals.css";
 
+// Seules les graisses réellement employées : chaque graisse déclarée est un
+// fichier préchargé sur toutes les pages, utilisé ou non.
 const archivo = Archivo({
   variable: "--font-archivo",
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700", "800", "900"],
+  weight: ["400", "600", "700", "900"],
 });
 
 const spaceMono = Space_Mono({
@@ -57,11 +59,20 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
             __html: JSON.stringify(structuredData(settings, priceRange)),
           }}
         />
+        {/* Lien d'évitement : invisible tant qu'il n'a pas le focus. Au
+            clavier, la nav compte huit arrêts avant le contenu. */}
+        <a href="#contenu" className="lien-evitement pill pill-light">
+          Aller au contenu
+        </a>
         <Nav logo={settings.logo} instagram={settings.instagramHandle} />
         {/* overflow-x-clip : borne la dérive des halos du hero sans créer de
             conteneur de défilement (ce que ferait `hidden`, ce qui casserait
-            la nav sticky) et sans clipper juste au-dessus du titre 3D. */}
-        <main className="flex-1 overflow-x-clip">{children}</main>
+            la nav sticky) et sans clipper juste au-dessus du titre 3D.
+            tabIndex={-1} : cible du lien d'évitement, focusable sans entrer
+            dans l'ordre de tabulation. */}
+        <main id="contenu" tabIndex={-1} className="flex-1 overflow-x-clip outline-none">
+          {children}
+        </main>
         <Footer settings={settings} />
       </body>
     </html>

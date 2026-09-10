@@ -259,6 +259,57 @@ saisis, donc elle suit ce que la cliente modifie. **Les champs absents ne sont
 pas inventés** : horaires d'ouverture et téléphone apparaîtront dès qu'ils
 seront fournis et ajoutés à `SiteSettings`.
 
+## Accessibilité, erreurs et performance
+
+**Pages d'erreur.** Le projet a deux layouts racines (site et admin) et aucun
+layout au sommet de `app/`. Une adresse inconnue tombait donc sur la 404 par
+défaut de Next, en anglais et sans nav. `app/(frontend)/[...introuvable]`
+lève `notFound()` à l'intérieur du site pour que `not-found.tsx` s'affiche
+dans son layout : ne pas la supprimer. `global-not-found` a été écarté : encore
+expérimental, et rendu sans le layout. `error.tsx` couvre une page qui échoue,
+`app/global-error.tsx` le layout lui-même (couleurs en ligne, sans
+`globals.css`).
+
+**Clavier.**
+
+- Contour de focus commun dans `globals.css` (`:focus-visible`, blanc à 60 %,
+  décalé de 4 px), en `@layer base` pour qu'un `outline-none` explicite reste
+  prioritaire. Celui du navigateur prenait la couleur du texte, invisible sur
+  un bouton clair.
+- Lien d'évitement « Aller au contenu » (`.lien-evitement`) vers
+  `main#contenu`.
+- Parcours de réservation : à chaque changement d'étape voulu par la personne,
+  le focus va sur le titre de l'étape (`Titre` porte `tabIndex={-1}`), sinon
+  il retombait en haut du document. Champs en erreur marqués `aria-invalid`.
+
+**Menu mobile.** Le panneau et ses voiles sont fermés dès le CSS
+(`translateX(100%)`), et GSAP repart de `x: 0, xPercent: 100`. Sans l'état CSS,
+le menu restait affiché le temps que le JavaScript s'exécute : flash visible, et
+décalage de mise en page de 0,46 sur `/reserver`.
+
+**Icônes.** `app/icon.png` et `app/apple-icon.png`, tirées du logo rogné et
+posé sur `#080808` (le logo est blanc sur transparent, invisible sur un onglet
+clair).
+
+**Mesures.** Lighthouse 12, mobile, build de production local, le 2026-09-10 :
+
+| Page | Perf | Accessibilité | Bonnes pratiques | SEO |
+|---|---|---|---|---|
+| Accueil | 85 | 100 | 100 | 100 |
+| Tarifs | 89 | 100 | 100 | 100 |
+| Réserver | 80 | 100 | 96 | 100 |
+| Calendrier | 89 | 96 | 100 | 100 |
+| Contact | 93 | 100 | 100 | 100 |
+
+Restent signalés, et ce sont des choix de design, pas des oublis :
+
+- Contraste : `--rule` (`#707070`) en texte sur `#080808` donne 4,04:1, sous le
+  seuil de 4,5:1 (jours du calendrier, discipline sur la carte prof). `#7a7a7a`
+  passerait sur le fond de page (4,67:1), pas sur les cartes (3,93:1).
+- Textes de 11 px en Space Mono : 45 % du texte de `/reserver`.
+- LCP autour de 3 s en 4G simulée, sur un texte : la page est prête plus tôt
+  (FCP 0,9 s).
+
 ## Contenu
 
 `content/` contient les notes reçues de la cliente et le logo vectoriel. Les

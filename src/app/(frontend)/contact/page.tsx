@@ -41,9 +41,14 @@ export default async function ContactPage() {
             {settings.instagramHandle && (
               <div className="card p-6">
                 <div className="eyebrow mb-2.5">INSTAGRAM</div>
-                <div className="text-xl font-bold">
+                <a
+                  href={`https://www.instagram.com/${settings.instagramHandle.replace(/^@/, "")}/`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-xl font-bold transition-colors hover:text-secondary"
+                >
                   {settings.instagramHandle}
-                </div>
+                </a>
               </div>
             )}
             {/* Rien n'est affiché tant que les horaires ne sont pas saisis,

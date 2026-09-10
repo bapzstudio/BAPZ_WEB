@@ -67,6 +67,7 @@ export function StepDetails({
           <Champ label="Date souhaitée (facultatif)" erreur={errors.dateSouhaitee?.message}>
             <input
               {...register("dateSouhaitee")}
+              aria-invalid={errors.dateSouhaitee ? true : undefined}
               placeholder="Ex : un samedi après-midi en juin"
               className={CHAMP}
             />
@@ -74,6 +75,7 @@ export function StepDetails({
           <Champ label="Nombre de personnes (facultatif)" erreur={errors.personnes?.message}>
             <input
               {...register("personnes")}
+              aria-invalid={errors.personnes ? true : undefined}
               inputMode="numeric"
               placeholder="Ex : 12"
               className={CHAMP}
@@ -85,6 +87,7 @@ export function StepDetails({
       <Champ label="Message (facultatif)" erreur={errors.message?.message}>
         <textarea
           {...register("message")}
+          aria-invalid={errors.message ? true : undefined}
           rows={4}
           placeholder={type ? INVITES[type] : undefined}
           className={`resize-y ${CHAMP}`}

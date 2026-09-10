@@ -268,10 +268,11 @@ export const siteSettings: SiteSettings = {
     "Des cours qui font transpirer, des profs qui font progresser.\nTous niveaux, toutes énergies, pas besoin d'expérience, juste l'envie",
   address: "2A rue du Jardin d'Écosse, Ars-Laquenexy",
   city: "Metz",
-  instagramHandle: "@bapzstudio",
+  // Compte confirmé le 2026-09-10 : instagram.com/bapz.studio (avec un point).
+  instagramHandle: "@bapz.studio",
   // TODO: tarif du cours d'essai à confirmer avec la cliente.
   trialLabel: "Cours d'essai - 10 €",
-  marqueeItems: ["Heels", "Commercial", "Metz", "@bapzstudio"],
+  marqueeItems: ["Heels", "Commercial", "Metz", "@bapz.studio"],
   // Logo réel reçu de la cliente (dossier /content, fond transparent).
   logo: { src: "/images/logo/bapz-logo.png", width: 600, height: 600 },
 };

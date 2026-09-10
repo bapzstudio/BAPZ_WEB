@@ -76,6 +76,17 @@ export function ReservationFunnel({
   const [erreur, setErreur] = useState<string | null>(null);
   const [prenomEnvoye, setPrenomEnvoye] = useState<string | null>(null);
 
+  // Focus clavier et lecteurs d'écran : après chaque changement d'étape voulu
+  // par la personne, on se place sur le titre de la nouvelle étape. Jamais au
+  // chargement ni au pré-remplissage, où déplacer le focus surprendrait.
+  const contenuRef = useRef<HTMLDivElement>(null);
+  const focusApresRendu = useRef(false);
+  useEffect(() => {
+    if (!focusApresRendu.current) return;
+    focusApresRendu.current = false;
+    contenuRef.current?.querySelector<HTMLElement>("h1")?.focus();
+  }, [etape, prenomEnvoye]);
+
   // Le contexte d'un bouton du site s'applique une seule fois, avant le premier
   // affichage, puis disparaît de l'adresse : recharger la page ne doit pas
   // ramener en arrière quelqu'un qui a déjà avancé.
@@ -93,6 +104,7 @@ export function ReservationFunnel({
     (cible: number) => {
       setSens(cible > etape ? 1 : -1);
       setErreur(null);
+      focusApresRendu.current = true;
       allerA(cible);
     },
     [etape, allerA]
@@ -120,6 +132,7 @@ export function ReservationFunnel({
       if (cible === 1 && nouveauType === "prive") cible = 2;
       setSens(1);
       setErreur(null);
+      focusApresRendu.current = true;
       allerA(cible);
     },
     [etape, type, completer, allerA]
@@ -130,6 +143,7 @@ export function ReservationFunnel({
     if (cible === 1 && type === "prive") cible = 0;
     setSens(-1);
     setErreur(null);
+    focusApresRendu.current = true;
     allerA(Math.max(0, cible));
   }, [etape, type, allerA]);
 
@@ -174,6 +188,7 @@ export function ReservationFunnel({
     const resultat = await envoyerDemande(donnees);
     setEnvoiEnCours(false);
     if (resultat.succes) {
+      focusApresRendu.current = true;
       setPrenomEnvoye(donnees.prenom ?? "");
       recommencer();
       return;
@@ -185,7 +200,11 @@ export function ReservationFunnel({
     return (
       <div className="funnel">
         <div className="container-page flex flex-1 items-center justify-center py-[var(--vr-64)]">
-          <div className="funnel-etape w-full max-w-[640px]" style={{ "--sens": 1 } as CSSProperties}>
+          <div
+            ref={contenuRef}
+            className="funnel-etape w-full max-w-[640px]"
+            style={{ "--sens": 1 } as CSSProperties}
+          >
             <StepConfirmation prenom={prenomEnvoye} />
           </div>
         </div>
@@ -231,6 +250,7 @@ export function ReservationFunnel({
                 recommencer();
                 setSens(-1);
                 setErreur(null);
+                focusApresRendu.current = true;
               }}
               className="mt-4 w-fit font-mono text-[11px] uppercase tracking-widest text-tertiary transition-colors hover:text-foreground"
             >
@@ -239,7 +259,12 @@ export function ReservationFunnel({
           </aside>
 
           <div className="w-full">
-            <div key={etape} className="funnel-etape" style={{ "--sens": sens } as CSSProperties}>
+            <div
+              key={etape}
+              ref={contenuRef}
+              className="funnel-etape"
+              style={{ "--sens": sens } as CSSProperties}
+            >
               <p className={`${LIBELLE} mb-5 text-center`}>
                 Étape {Math.min(etape + 1, TOTAL)} / {TOTAL}
               </p>

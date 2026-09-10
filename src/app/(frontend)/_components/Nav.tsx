@@ -41,6 +41,9 @@ export function Nav({
                 alt="BAPZ Studio"
                 width={logo.width}
                 height={logo.height}
+                // Affiché dans un rond de 40 px : sans `sizes`, Next servait
+                // l'image en 1200 px (relevé par Lighthouse).
+                sizes="40px"
                 className="size-full object-contain p-1"
                 priority
               />

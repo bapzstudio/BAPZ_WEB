@@ -785,7 +785,7 @@ export interface SiteSetting {
       }[]
     | null;
   /**
-   * Avec le @, ex : @bapzstudio. Affiché dans la bannière, en pied de page et sur la page Contact.
+   * Avec le @, ex : @bapz.studio. Affiché dans la bannière, en pied de page et sur la page Contact, où il renvoie vers le compte.
    */
   instagramHandle?: string | null;
   /**

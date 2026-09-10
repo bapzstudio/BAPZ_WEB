@@ -14,7 +14,7 @@ export function Hero({
   settings: SiteSettings;
   courses: Course[];
 }) {
-  const handle = settings.instagramHandle?.toUpperCase() ?? "@BAPZSTUDIO";
+  const handle = settings.instagramHandle?.toUpperCase() ?? "@BAPZ.STUDIO";
   const city = settings.city?.toUpperCase() ?? "METZ";
 
   return (

@@ -55,11 +55,13 @@ export function MobileMenu({
     };
   };
 
-  // État fermé posé avant le premier rendu visuel.
+  // État fermé, repris à GSAP. Le CSS le pose déjà en `translateX(100%)` pour
+  // le HTML initial ; GSAP relirait cette valeur comme un décalage en pixels et
+  // l'ajouterait à `xPercent`, d'où le `x: 0` explicite.
   useIsomorphicLayoutEffect(() => {
     const p = parts();
     if (!p) return;
-    gsap.set([...p.layers, p.panel], { xPercent: 100 });
+    gsap.set([...p.layers, p.panel], { x: 0, xPercent: 100 });
   }, []);
 
   useIsomorphicLayoutEffect(() => {

@@ -8,9 +8,17 @@ export const CHAMP =
 /** Petit libellé en Space Mono, comme partout sur le site. */
 export const LIBELLE = "font-mono text-[11px] uppercase tracking-widest text-secondary";
 
+/**
+ * Titre d'étape. `tabIndex={-1}` : le parcours y place le focus à chaque
+ * changement d'étape, sans quoi le focus clavier retombait en haut du document
+ * — le bouton qui venait d'être activé disparaît avec son étape.
+ */
 export function Titre({ children }: { children: ReactNode }) {
   return (
-    <h1 className="text-center text-[clamp(28px,2.6vw,44px)] font-black uppercase leading-none tracking-tight">
+    <h1
+      tabIndex={-1}
+      className="text-center text-[clamp(28px,2.6vw,44px)] font-black uppercase leading-none tracking-tight outline-none"
+    >
       {children}
     </h1>
   );

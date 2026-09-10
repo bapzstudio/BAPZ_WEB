@@ -32,6 +32,30 @@
    un écran de portable.
    `svh` plutôt que `vh` : la barre d'URL mobile ne doit pas faire sauter la
    mise en page au défilement. Le suffixe est la valeur de la maquette. */
+/* Focus clavier. Le contour par défaut du navigateur prend la couleur du texte :
+   sombre sur un bouton clair, et quasi invisible sur le fond #080808. On étend
+   à tout le site celui déjà posé sur les cartes cliquables (blanc à 60 %,
+   décalé de 4 px). En couche `base`, pour qu'un `outline-none` explicite —
+   titres d'étape du parcours, `main` — garde la main. */
+@layer base {
+  :focus-visible {
+    outline: 2px solid rgb(255 255 255 / 0.6);
+    outline-offset: 4px;
+  }
+}
+
+/* Lien d'évitement, hors écran tant qu'il n'a pas le focus clavier. */
+.lien-evitement {
+  position: fixed;
+  top: 12px;
+  left: 16px;
+  z-index: 100;
+  transform: translateY(-200%);
+}
+.lien-evitement:focus-visible {
+  transform: none;
+}
+
 :root {
   --vr-152: clamp(68px, calc(28.15svh - 152px), 152px); /* tarifs -> locations de salle */
   --vr-104: clamp(47px, calc(19.26svh - 104px), 104px); /* haut de page sous la nav */
@@ -156,6 +180,11 @@ body {
   bottom: 0;
   width: 100%;
   max-width: 420px;
+  /* Fermé dès le HTML : sans cette valeur, le panneau restait à l'écran le
+     temps que le JavaScript s'exécute, puis GSAP le chassait hors champ — un
+     flash du menu, et un décalage de mise en page de 0,46 relevé par
+     Lighthouse sur /reserver. */
+  transform: translateX(100%);
   will-change: transform;
 }
 

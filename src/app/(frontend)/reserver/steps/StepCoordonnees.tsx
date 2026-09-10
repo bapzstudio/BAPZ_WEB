@@ -39,13 +39,30 @@ export function StepCoordonnees({
       </div>
 
       <Champ label="Prénom" erreur={errors.prenom?.message}>
-        <input {...register("prenom")} autoComplete="given-name" className={CHAMP} />
+        <input
+          {...register("prenom")}
+          autoComplete="given-name"
+          aria-invalid={errors.prenom ? true : undefined}
+          className={CHAMP}
+        />
       </Champ>
       <Champ label="E-mail" erreur={errors.email?.message}>
-        <input {...register("email")} type="email" autoComplete="email" className={CHAMP} />
+        <input
+          {...register("email")}
+          type="email"
+          autoComplete="email"
+          aria-invalid={errors.email ? true : undefined}
+          className={CHAMP}
+        />
       </Champ>
       <Champ label="Téléphone (facultatif)" erreur={errors.telephone?.message}>
-        <input {...register("telephone")} type="tel" autoComplete="tel" className={CHAMP} />
+        <input
+          {...register("telephone")}
+          type="tel"
+          autoComplete="tel"
+          aria-invalid={errors.telephone ? true : undefined}
+          className={CHAMP}
+        />
       </Champ>
 
       <p className="text-[13px] leading-snug text-tertiary">
