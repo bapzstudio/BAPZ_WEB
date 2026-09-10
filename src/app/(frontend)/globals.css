@@ -581,6 +581,56 @@ body {
   }
 }
 
+/* ---- Parcours de réservation (/reserver) ----
+   Structure reprise du tunnel de devis de chuttt.ch : le parcours occupe la
+   hauteur de l'écran sous la nav, sans footer, pour garder l'attention sur la
+   demande. */
+.funnel {
+  display: flex;
+  flex-direction: column;
+  min-height: calc(100svh - 67px);
+}
+
+body:has(.funnel) footer {
+  display: none;
+}
+
+/* Barre de progression sous la nav : le filet des pages, qui se remplit du
+   blanc des pastilles avec l'éclat bleu du halo. */
+.funnel-progression {
+  height: 3px;
+  background: var(--rule-faint);
+}
+
+.funnel-progression > div {
+  height: 100%;
+  background: var(--light);
+  box-shadow: 0 0 12px rgb(var(--glow-rgb) / 0.55);
+  transition: width 0.4s cubic-bezier(0.32, 0.72, 0, 1);
+}
+
+/* Entrée d'étape : glisse depuis le côté où l'on va, `--sens` valant 1 en
+   avançant et -1 en reculant. Même courbe que le tunnel de chuttt. */
+.funnel-etape {
+  animation: funnel-entree 0.35s cubic-bezier(0.32, 0.72, 0, 1) both;
+}
+
+@keyframes funnel-entree {
+  from {
+    opacity: 0;
+    transform: translateX(calc(var(--sens, 1) * 48px));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .funnel-etape {
+    animation: none;
+  }
+  .funnel-progression > div {
+    transition: none;
+  }
+}
+
 /* ---- Transitions de page (API View Transitions) ----
    Timings asymétriques : l'ancien contenu part vite (150ms), il n'a plus rien
    à dire ; le nouveau arrive plus doucement (210ms) et attend que le premier

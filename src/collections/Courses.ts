@@ -1,4 +1,5 @@
 import type { CollectionConfig } from "payload";
+import { slugField } from "./fields/slug";
 
 export const Courses: CollectionConfig = {
   slug: "courses",
@@ -10,6 +11,10 @@ export const Courses: CollectionConfig = {
   },
   fields: [
     { name: "title", type: "text", label: "Titre du cours", required: true },
+    slugField(
+      ["title", "dayOfWeek", "startTime"],
+      "Identifiant du cours dans les liens de réservation, par exemple heels-mardi-19-00. Rempli tout seul ; à ne changer que si le cours n'est pas encore en ligne, sinon les liens existants se cassent."
+    ),
     {
       name: "level",
       type: "text",

@@ -154,6 +154,48 @@ destinataire simulé, pratique pour tester sans écrire à personne.
 réinsérer. À réserver au développement : il effacerait les saisies de la
 cliente.
 
+## Parcours de réservation
+
+`/reserver` reçoit tous les boutons d'action du site (hero, cartes de cours,
+calendrier, tarifs, location, « S'inscrire »). Structure reprise du tunnel de
+devis de chuttt.ch : état conservé par onglet (zustand, `sessionStorage`),
+barre de progression, colonne qui récapitule les choix, étapes validées par
+zod, récapitulatif modifiable, confirmation. `/contact` reste pour les simples
+questions.
+
+- `lib/reservation/` : schémas zod partagés navigateur et serveur, store,
+  lecture du pré-remplissage, construction des liens, action serveur.
+- `app/(frontend)/reserver/` : la page, l'orchestrateur et une étape par
+  fichier.
+- Collection `Demandes` : chaque envoi y est enregistré, avec un statut
+  (nouvelle, en cours, confirmée, sans suite) et des notes internes.
+
+Règles :
+
+- **Tout bouton d'action passe par `lienReservation()`.** Le contexte voyage
+  dans l'adresse (`?demande=essai&cours=<slug>`) et fait sauter les étapes déjà
+  connues. Il est revérifié contre le catalogue : un type inconnu annule le
+  pré-remplissage, un identifiant inconnu est ignoré.
+- **Cours, formules et salles ont un `slug`**, déduit du titre puis figé : les
+  identifiants numériques changent à chaque seed.
+- **La création publique est fermée sur `Demandes`.** L'action écrit par l'API
+  locale de Payload ; `POST /api/demandes` sans compte est refusé.
+- **Enregistrer d'abord, écrire ensuite.** Si le mail échoue, la demande existe
+  dans `/admin` et le visiteur voit la confirmation, ce qui évite les doublons.
+- Les valeurs saisies sont échappées avant d'entrer dans le HTML du mail.
+- L'accusé de réception au visiteur ne part qu'une fois `CONTACT_FROM_EMAIL`
+  renseigné ; avant, Resend le refuserait.
+- `useReservationStore.persist` n'existe pas côté serveur : zustand n'attache
+  son API que si le stockage est disponible. Y accéder sans garde fait
+  répondre la page en 500.
+
+Écart avec chuttt : les transitions d'étape passent par une animation CSS
+plutôt que framer-motion, pour garder une seule bibliothèque d'animation.
+
+À confirmer avec la cliente : le délai de réponse annoncé après l'envoi
+(« très vite » en attendant), le téléphone obligatoire ou non (facultatif en
+attendant), et si les cours ont un nombre de places limité.
+
 ## Portraits des profs
 
 `public/images/profs/` contient les portraits tirés des originaux du shooting

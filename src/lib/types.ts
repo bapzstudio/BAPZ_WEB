@@ -28,10 +28,14 @@ export interface Course {
   /** Salle affichée en haut à droite de la carte du calendrier (ex : "Studio A"). */
   room?: string;
   isPrivateCourse?: boolean;
+  /** Identifiant stable dans les liens de réservation (ex : heels-mardi-19-00). */
+  slug?: string;
 }
 
 export interface PricingPlan {
   _id: string;
+  /** Identifiant stable dans les liens de réservation (ex : carte-10-cours). */
+  slug?: string;
   /** Petit libellé en mono au-dessus du prix (ex : "LE + POPULAIRE"). */
   label?: string;
   name: string;
@@ -59,6 +63,51 @@ export interface Room {
   equipment?: string[];
   /** Renseigné tant que la salle n'est pas ouverte (ex : "2027"). */
   availableFrom?: string;
+  /** Identifiant stable dans les liens de réservation (ex : salle-a). */
+  slug?: string;
+}
+
+/* ---- Parcours de réservation ---- */
+
+export interface OptionCours {
+  slug: string;
+  titre: string;
+  /** Jour, horaire et salle : « Mardi · 19h00 - 20h30 · Studio A ». */
+  detail: string;
+  /** Niveau et prof, s'ils sont renseignés. */
+  precision?: string;
+}
+
+export interface OptionFormule {
+  slug: string;
+  titre: string;
+  /** Prix et période : « 310 € / an ». */
+  prix: string;
+  groupe: PricingPlan["group"];
+}
+
+export interface OptionSalle {
+  slug: string;
+  titre: string;
+  /** Surface et capacité, si elles sont renseignées. */
+  detail?: string;
+}
+
+/** Ce que le parcours de réservation propose, identifié par `slug`. */
+export interface CatalogueReservation {
+  cours: OptionCours[];
+  formules: OptionFormule[];
+  salles: OptionSalle[];
+}
+
+/** Demande enregistrée, mise en forme pour les mails. */
+export interface ResumeDemande {
+  /** Objet du mail : « [Essai] Heels - Mardi 19h00 - Julie ». */
+  objet: string;
+  lignes: { label: string; valeur: string }[];
+  message?: string;
+  prenom: string;
+  email: string;
 }
 
 export interface SiteSettings {

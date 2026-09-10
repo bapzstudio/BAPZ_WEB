@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { PageTransition } from "../_components/PageTransition";
 import { getRooms } from "@/lib/queries";
+import { lienReservation } from "@/lib/reservation/liens";
 import { pageMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = pageMetadata({
@@ -62,7 +63,7 @@ export default async function LocationPage() {
 
               {!room.availableFrom && (
                 <Link
-                  href="/contact"
+                  href={lienReservation({ type: "location", salle: room.slug })}
                   className="mt-8 rounded-full border border-rule py-2.5 text-center text-[13px] font-bold uppercase tracking-widest transition-colors hover:bg-white/10"
                 >
                   Demander un créneau

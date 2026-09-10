@@ -1,5 +1,6 @@
 import Link from "next/link";
 import type { CSSProperties } from "react";
+import { lienReservation } from "@/lib/reservation/liens";
 import type { PricingPlan } from "@/lib/types";
 import { PriceCounter } from "./PriceCounter";
 
@@ -86,9 +87,14 @@ export function PricingCard({ plan }: { plan: PricingPlan }) {
       <div className="mt-auto pt-8">
         {/* Lien étiré : le pseudo-élément couvre toute la carte, qui devient
             donc cliquable en entier — sans imbriquer un second lien, ce qui
-            serait invalide et ajouterait un arrêt de tabulation en double. */}
+            serait invalide et ajouterait un arrêt de tabulation en double. Il
+            ouvre le parcours de réservation, la formule déjà choisie. */}
         <Link
-          href="/contact"
+          href={lienReservation(
+            plan.group === "essai"
+              ? { type: "essai" }
+              : { type: "inscription", formule: plan.slug }
+          )}
           className="block rounded-full border border-rule py-2.5 text-center text-[13px] font-bold uppercase tracking-widest transition-colors hover:bg-white/10 after:absolute after:inset-0 after:content-['']"
         >
           Choisir

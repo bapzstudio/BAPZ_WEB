@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { lienReservation } from "@/lib/reservation/liens";
 import type { Course } from "@/lib/types";
 import { ProximityGlow } from "./ProximityGlow";
 
@@ -49,10 +50,10 @@ function place(courses: Course[]): Placed[] {
 function CalendarCard({ course }: { course: Course }) {
   return (
     // L'eyebrow de la page annonce « clique sur un cours pour réserver » : la
-    // carte entière est donc un lien. Faute de système de réservation, il mène
-    // au formulaire de contact, comme les cartes de l'accueil.
+    // carte entière est donc un lien, qui ouvre le parcours de réservation avec
+    // ce cours déjà choisi, comme les cartes de l'accueil.
     <Link
-      href="/contact"
+      href={lienReservation({ type: "essai", cours: course.slug })}
       className="group block h-full rounded-[15px] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white/60"
     >
       <div

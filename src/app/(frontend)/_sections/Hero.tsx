@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { lienReservation } from "@/lib/reservation/liens";
 import type { Course, SiteSettings } from "@/lib/types";
 import { CourseCard } from "../_components/CourseCard";
 import { FoldText } from "../_components/FoldText";
@@ -43,7 +44,7 @@ export function Hero({
             <Link href="/cours" className="pill pill-outline">
               Calendrier
             </Link>
-            <Link href="/contact" className="pill pill-light">
+            <Link href={lienReservation({ type: "essai" })} className="pill pill-light">
               {settings.trialLabel ?? "Cours d'essai"}
             </Link>
           </div>

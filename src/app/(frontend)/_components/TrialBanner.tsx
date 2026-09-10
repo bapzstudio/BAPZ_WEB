@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { lienReservation } from "@/lib/reservation/liens";
 import type { PricingPlan } from "@/lib/types";
 import { PriceCounter } from "./PriceCounter";
 
@@ -13,7 +14,7 @@ import { PriceCounter } from "./PriceCounter";
 export function TrialBanner({ plan }: { plan: PricingPlan }) {
   return (
     <Link
-      href="/contact"
+      href={lienReservation({ type: "essai" })}
       className="group block rounded-[15px] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white/60"
     >
       <div

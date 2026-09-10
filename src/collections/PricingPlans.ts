@@ -1,4 +1,5 @@
 import type { CollectionConfig } from "payload";
+import { slugField } from "./fields/slug";
 
 export const PricingPlans: CollectionConfig = {
   slug: "pricing-plans",
@@ -27,6 +28,10 @@ export const PricingPlans: CollectionConfig = {
       admin: { description: 'Au-dessus du prix, ex : "Le + populaire".' },
     },
     { name: "name", type: "text", label: "Nom de la formule", required: true },
+    slugField(
+      ["name"],
+      "Identifiant de la formule dans les liens de réservation, par exemple carte-10-cours. Rempli tout seul à partir du nom ; à ne changer que si la formule n'est pas encore en ligne."
+    ),
     {
       name: "price",
       type: "text",

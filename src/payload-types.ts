@@ -67,6 +67,7 @@ export interface Config {
   };
   blocks: {};
   collections: {
+    demandes: Demande;
     courses: Course;
     teachers: Teacher;
     'pricing-plans': PricingPlan;
@@ -81,6 +82,7 @@ export interface Config {
   };
   collectionsJoins: {};
   collectionsSelect: {
+    demandes: DemandesSelect<false> | DemandesSelect<true>;
     courses: CoursesSelect<false> | CoursesSelect<true>;
     teachers: TeachersSelect<false> | TeachersSelect<true>;
     'pricing-plans': PricingPlansSelect<false> | PricingPlansSelect<true>;
@@ -132,12 +134,44 @@ export interface UserAuthOperations {
   };
 }
 /**
+ * Demandes envoyées depuis le parcours de réservation du site. Rien n'est réservé automatiquement : chaque demande attend ta réponse.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "demandes".
+ */
+export interface Demande {
+  id: number;
+  resume?: string | null;
+  type: 'essai' | 'inscription' | 'location' | 'prive';
+  cours?: (number | null) | Course;
+  formule?: (number | null) | PricingPlan;
+  salle?: (number | null) | Room;
+  niveau?: ('debutant' | 'intermediaire' | 'avance' | 'ne-sais-pas') | null;
+  dateSouhaitee?: string | null;
+  personnes?: number | null;
+  message?: string | null;
+  prenom: string;
+  email: string;
+  telephone?: string | null;
+  statut: 'nouvelle' | 'en-cours' | 'confirmee' | 'sans-suite';
+  /**
+   * Visibles seulement ici, jamais envoyées au visiteur.
+   */
+  notes?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "courses".
  */
 export interface Course {
   id: number;
   title: string;
+  /**
+   * Identifiant du cours dans les liens de réservation, par exemple heels-mardi-19-00. Rempli tout seul ; à ne changer que si le cours n'est pas encore en ligne, sinon les liens existants se cassent.
+   */
+  slug?: string | null;
   /**
    * Ligne sous le titre. Pas seulement un niveau : aussi une tranche d'âge (10-14 ans) ou une modalité (Sous demande de réservation).
    */
@@ -232,6 +266,10 @@ export interface PricingPlan {
   label?: string | null;
   name: string;
   /**
+   * Identifiant de la formule dans les liens de réservation, par exemple carte-10-cours. Rempli tout seul à partir du nom ; à ne changer que si la formule n'est pas encore en ligne.
+   */
+  slug?: string | null;
+  /**
    * Avec la devise, ex : "160 €".
    */
   price: string;
@@ -256,6 +294,10 @@ export interface PricingPlan {
 export interface Room {
   id: number;
   name: string;
+  /**
+   * Identifiant de la salle dans les liens de réservation, par exemple salle-a. Rempli tout seul à partir du nom ; à ne changer que si la salle n'est pas encore en ligne.
+   */
+  slug?: string | null;
   capacity?: number | null;
   area?: number | null;
   equipment?:
@@ -334,6 +376,10 @@ export interface PayloadLockedDocument {
   id: number;
   document?:
     | ({
+        relationTo: 'demandes';
+        value: number | Demande;
+      } | null)
+    | ({
         relationTo: 'courses';
         value: number | Course;
       } | null)
@@ -405,10 +451,33 @@ export interface PayloadMigration {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "demandes_select".
+ */
+export interface DemandesSelect<T extends boolean = true> {
+  resume?: T;
+  type?: T;
+  cours?: T;
+  formule?: T;
+  salle?: T;
+  niveau?: T;
+  dateSouhaitee?: T;
+  personnes?: T;
+  message?: T;
+  prenom?: T;
+  email?: T;
+  telephone?: T;
+  statut?: T;
+  notes?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "courses_select".
  */
 export interface CoursesSelect<T extends boolean = true> {
   title?: T;
+  slug?: T;
   level?: T;
   dayOfWeek?: T;
   startTime?: T;
@@ -446,6 +515,7 @@ export interface PricingPlansSelect<T extends boolean = true> {
   group?: T;
   label?: T;
   name?: T;
+  slug?: T;
   price?: T;
   period?: T;
   sessionsIncluded?: T;
@@ -461,6 +531,7 @@ export interface PricingPlansSelect<T extends boolean = true> {
  */
 export interface RoomsSelect<T extends boolean = true> {
   name?: T;
+  slug?: T;
   capacity?: T;
   area?: T;
   equipment?:

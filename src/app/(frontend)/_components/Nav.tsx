@@ -3,6 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { lienReservation } from "@/lib/reservation/liens";
 import { MobileMenu } from "./MobileMenu";
 import type { SiteSettings } from "@/lib/types";
 
@@ -73,7 +74,7 @@ export function Nav({
         </nav>
 
         <div className="flex shrink-0 items-center gap-3">
-          <Link href="/contact" className="pill pill-light shrink-0 text-[13px]">
+          <Link href={lienReservation()} className="pill pill-light shrink-0 text-[13px]">
             S&apos;inscrire
           </Link>
           {/* En dessous de `lg` les onglets ci-dessus sont masqués : sans ce

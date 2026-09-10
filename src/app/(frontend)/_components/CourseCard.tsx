@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { lienReservation } from "@/lib/reservation/liens";
 import type { Course } from "@/lib/types";
 
 export function CourseCard({
@@ -13,10 +14,9 @@ export function CourseCard({
   return (
     // La carte entière est cliquable, pas seulement la pastille : c'est la
     // promesse faite par la page Calendrier ("clique sur un cours pour
-    // réserver"). Faute de système de réservation, elle mène au formulaire de
-    // contact, comme le bouton "cours d'essai" du hero.
+    // réserver"). Elle ouvre le parcours de réservation, ce cours déjà choisi.
     <Link
-      href="/contact"
+      href={lienReservation({ type: "essai", cours: course.slug })}
       className="group block h-full rounded-xl focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white/60"
     >
       {/* `.card` reste la carte mesurée de l'accueil (bordure plate, rayon 12),

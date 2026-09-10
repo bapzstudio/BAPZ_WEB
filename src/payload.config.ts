@@ -13,6 +13,7 @@ import sharp from "sharp";
  * édite.
  */
 import { Courses } from "./collections/Courses";
+import { Demandes } from "./collections/Demandes";
 import { GalleryItems } from "./collections/GalleryItems";
 import { Media } from "./collections/Media";
 import { PricingPlans } from "./collections/PricingPlans";
@@ -32,6 +33,8 @@ export default buildConfig({
     },
   },
   collections: [
+    // En tête : ce que la cliente consultera le plus souvent.
+    Demandes,
     Courses,
     Teachers,
     PricingPlans,

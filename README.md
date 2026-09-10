@@ -120,6 +120,7 @@ Le style vient de Tailwind 4, chargé par `@import "tailwindcss"` en tête de
 | Tarifs | Tarifs de la cliente, structure adaptée (4 abonnements au lieu d'un seul) |
 | Location | Salles A et B renseignées |
 | Contact | Formulaire branché, horaires à fournir |
+| Réserver (`/reserver`) | Parcours en étapes depuis tous les boutons d'action ; demandes enregistrées dans l'admin |
 | Galerie | Placeholder |
 
 ## Prochaines étapes
