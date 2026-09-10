@@ -3,6 +3,7 @@ import { PageTransition } from "../_components/PageTransition";
 import { ProximityGlow } from "../_components/ProximityGlow";
 import { PricingCard } from "../_components/PricingCard";
 import { Reveal } from "../_components/Reveal";
+import { TrialBanner } from "../_components/TrialBanner";
 import { getPricingPlans } from "@/lib/queries";
 import { pageMetadata } from "@/lib/seo";
 
@@ -16,17 +17,16 @@ export const metadata: Metadata = pageMetadata({
 export default async function TarifsPage() {
   const plans = await getPricingPlans();
 
-  // Le cours d'essai rejoint « à la carte » : c'est un achat ponctuel comme les
-  // autres, et cela remplit la rangée de trois cartes de la maquette au lieu de
-  // laisser deux cartes s'étirer sur toute la largeur.
-  const essai = plans.filter((p) => p.group === "essai");
-  const aLaCarte = [...essai, ...plans.filter((p) => p.group === "carte")];
+  // Le cours d'essai sort de « à la carte » pour passer en bandeau : c'est la
+  // porte d'entrée, pas une option parmi d'autres.
+  const essais = plans.filter((p) => p.group === "essai");
+  const aLaCarte = plans.filter((p) => p.group === "carte");
   const abonnements = plans.filter((p) => p.group === "abonnement");
 
   return (
     <PageTransition>
-      {/* Un seul écouteur pour les deux sections : le halo réagit donc aussi
-          d'une rangée à l'autre. */}
+      {/* Un seul écouteur pour toute la page : le halo réagit donc aussi d'une
+          rangée à l'autre. */}
       <ProximityGlow className="container-page pt-[var(--vr-104)] pb-8.5">
         <h1 className="text-[clamp(38px,3.1vw,59px)] font-black uppercase leading-none tracking-tight">
           Tarifs
@@ -35,9 +35,19 @@ export default async function TarifsPage() {
           SANS ENGAGEMENT OU À L&apos;ANNÉE - À TOI DE VOIR
         </p>
 
+        {essais.length > 0 && (
+          <Reveal className="mt-[var(--vr-80)] flex flex-col gap-6">
+            {essais.map((plan) => (
+              <TrialBanner key={plan._id} plan={plan} />
+            ))}
+          </Reveal>
+        )}
+
         <section className="mt-[var(--vr-80)]">
           <h2 className="eyebrow">À LA CARTE</h2>
-          <Reveal className="mt-7 grid gap-11.5 sm:grid-cols-2 xl:grid-cols-3">
+          {/* Deux formules depuis que l'essai est en bandeau : deux colonnes,
+              plutôt qu'une grille de trois dont la dernière resterait vide. */}
+          <Reveal className="mt-7 grid gap-11.5 sm:grid-cols-2">
             {aLaCarte.map((plan) => (
               <PricingCard key={plan._id} plan={plan} />
             ))}

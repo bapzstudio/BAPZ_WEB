@@ -1,6 +1,7 @@
 import Link from "next/link";
 import type { CSSProperties } from "react";
 import type { PricingPlan } from "@/lib/types";
+import { PriceCounter } from "./PriceCounter";
 
 /**
  * Prix ramené au cours, à partir du prix affiché et du nombre de cours inclus.
@@ -57,7 +58,7 @@ export function PricingCard({ plan }: { plan: PricingPlan }) {
 
       <div className="mt-6 flex items-baseline gap-1.5">
         <span className="text-[clamp(40px,3.4vw,64px)] font-black leading-none tracking-tight">
-          {plan.price}
+          <PriceCounter value={plan.price} />
         </span>
         {plan.period && (
           <span className="text-xl font-bold leading-none text-tertiary">

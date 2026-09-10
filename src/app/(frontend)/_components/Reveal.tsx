@@ -93,7 +93,10 @@ export function Reveal({
   }, [y, stagger]);
 
   return (
-    <Tag ref={ref} data-reveal-pending="" className={className}>
+    // `data-reveal` reste en place après l'animation (contrairement à
+    // `data-reveal-pending`) : un composant enfant peut ainsi caler son propre
+    // déclencheur sur celui de la grille, comme le fait PriceCounter.
+    <Tag ref={ref} data-reveal="" data-reveal-pending="" className={className}>
       {children}
     </Tag>
   );
