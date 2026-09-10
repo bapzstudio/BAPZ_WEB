@@ -187,12 +187,15 @@ export async function getPricingPlans(): Promise<PricingPlan[]> {
 export async function getRooms(): Promise<Room[]> {
   const { docs } = await (
     await payload()
-  ).find({ collection: "rooms", limit: 100, sort: "order" });
+  ).find({ collection: "rooms", limit: 100, sort: "order", depth: 1 });
 
   return docs.map((doc) => ({
     _id: String(doc.id),
     slug: (doc.slug as string) || undefined,
     name: String(doc.name ?? ""),
+    photo: toImage(doc.photo),
+    price: (doc.price as string) || undefined,
+    period: (doc.period as string) || undefined,
     capacity: (doc.capacity as number) ?? undefined,
     area: (doc.area as number) ?? undefined,
     equipment: toStrings(doc.equipment, "item"),

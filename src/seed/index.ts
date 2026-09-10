@@ -130,6 +130,11 @@ const seed = async () => {
       collection: "rooms",
       data: {
         name: room.name,
+        photo: room.photo
+          ? await upload(room.photo.src.replace(/^\//, ""), room.name)
+          : undefined,
+        price: room.price,
+        period: room.period,
         capacity: room.capacity,
         area: room.area,
         equipment: room.equipment?.map((item) => ({ item })),

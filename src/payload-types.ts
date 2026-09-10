@@ -298,6 +298,18 @@ export interface Room {
    * Identifiant de la salle dans les liens de réservation, par exemple salle-a. Rempli tout seul à partir du nom ; à ne changer que si la salle n'est pas encore en ligne.
    */
   slug?: string | null;
+  /**
+   * Format paysage, environ 2,7 fois plus large que haut (ex : 1500 x 562). Sans photo, la carte s'affiche sans image.
+   */
+  photo?: (number | null) | Media;
+  /**
+   * Avec la devise, ex : "30 €". Laisser vide pour afficher « Sur demande ».
+   */
+  price?: string | null;
+  /**
+   * Accolé au tarif, ex : "/ heure". Vide si sans objet.
+   */
+  period?: string | null;
   capacity?: number | null;
   area?: number | null;
   equipment?:
@@ -532,6 +544,9 @@ export interface PricingPlansSelect<T extends boolean = true> {
 export interface RoomsSelect<T extends boolean = true> {
   name?: T;
   slug?: T;
+  photo?: T;
+  price?: T;
+  period?: T;
   capacity?: T;
   area?: T;
   equipment?:

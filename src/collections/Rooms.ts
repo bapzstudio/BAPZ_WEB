@@ -12,6 +12,30 @@ export const Rooms: CollectionConfig = {
       ["name"],
       "Identifiant de la salle dans les liens de réservation, par exemple salle-a. Rempli tout seul à partir du nom ; à ne changer que si la salle n'est pas encore en ligne."
     ),
+    {
+      name: "photo",
+      type: "upload",
+      relationTo: "media",
+      label: "Photo",
+      admin: {
+        description:
+          "Format paysage, environ 2,7 fois plus large que haut (ex : 1500 x 562). Sans photo, la carte s'affiche sans image.",
+      },
+    },
+    {
+      name: "price",
+      type: "text",
+      label: "Tarif",
+      admin: {
+        description: 'Avec la devise, ex : "30 €". Laisser vide pour afficher « Sur demande ».',
+      },
+    },
+    {
+      name: "period",
+      type: "text",
+      label: "Période",
+      admin: { description: 'Accolé au tarif, ex : "/ heure". Vide si sans objet.' },
+    },
     { name: "capacity", type: "number", label: "Capacité (personnes)" },
     { name: "area", type: "number", label: "Surface (m²)" },
     {

@@ -33,6 +33,7 @@
    `svh` plutôt que `vh` : la barre d'URL mobile ne doit pas faire sauter la
    mise en page au défilement. Le suffixe est la valeur de la maquette. */
 :root {
+  --vr-152: clamp(68px, calc(28.15svh - 152px), 152px); /* tarifs -> locations de salle */
   --vr-104: clamp(47px, calc(19.26svh - 104px), 104px); /* haut de page sous la nav */
   --vr-92: clamp(41px, calc(17.04svh - 92px), 92px); /* titre -> calendrier */
   --vr-80: clamp(36px, calc(14.81svh - 80px), 80px); /* titre -> sections de tarifs */

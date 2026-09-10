@@ -186,6 +186,8 @@ export const pricingPlans: PricingPlan[] = [
     label: "Le + populaire",
     name: "Carte 10 cours",
     price: "160 €",
+    // Validité reprise de la maquette TARIFS du 2026-09-10.
+    description: "Valable 4 mois, pour tous les cours.",
     // La ligne « soit 16 € le cours » est desormais calculee, plus ecrite.
     sessionsIncluded: 10,
     highlighted: true,
@@ -217,7 +219,8 @@ export const pricingPlans: PricingPlan[] = [
     name: "Accès illimité",
     price: "670 €",
     period: "/ an",
-    description: "Hors stages, workshops et événements spéciaux.",
+    description:
+      "Tous les cours, en illimité. Hors stages, workshops et événements spéciaux.",
     highlighted: true,
   },
   {

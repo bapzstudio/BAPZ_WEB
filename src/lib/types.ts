@@ -56,6 +56,11 @@ export interface PricingPlan {
 export interface Room {
   _id: string;
   name: string;
+  photo?: { src: string; width: number; height: number };
+  /** Tarif avec sa devise (ex : "30 €"). Absent : « Sur demande ». */
+  price?: string;
+  /** Suffixe accolé au tarif (ex : "/ heure"). */
+  period?: string;
   /** Capacité en nombre de personnes. */
   capacity?: number;
   /** Surface en m². */

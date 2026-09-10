@@ -256,8 +256,8 @@ restent hors du repo, dans `../BAPZ/maquette` et `../BAPZ/content`.
 | Page | État |
 |---|---|
 | Accueil, Calendrier (`/cours`), Profs | Conformes aux maquettes |
-| Tarifs | Tarifs de la cliente |
-| Location | Salles A et B renseignées |
+| Tarifs | Tarifs de la cliente ; section « Locations de salle » d'après la maquette TARIFS du 2026-09-10 |
+| Location | Salles A et B renseignées, même `RoomCard` que sur Tarifs |
 | Contact | Formulaire branché, horaires à fournir |
 | Galerie | Placeholder |
 
@@ -275,5 +275,11 @@ entre dans ce cadre et n'est donc plus un point ouvert.
   affiche « soit X € le cours », ce qui rend une carte et un abonnement
   comparables. Il est rempli pour la carte 10 cours, vide pour les quatre
   abonnements faute de connaître le nombre de semaines de la saison.
+- Location de salle : la maquette TARIFS du 2026-09-10 prévoit une photo et un
+  prix (« XX € ») par salle. Les champs existent dans l'admin mais sont vides ;
+  sans prix la carte affiche « Sur demande », sans photo elle s'affiche sans
+  image. La maquette rend aussi la salle B réservable, alors qu'elle n'ouvre
+  qu'en 2027 : elle reste non cliquable tant que « Année d'ouverture » est
+  rempli.
 - Statut légal et SIRET manquants pour les mentions légales.
 - « Cours privés » : poste du devis absent de toutes les maquettes reçues.

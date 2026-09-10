@@ -3,19 +3,20 @@ import { PageTransition } from "../_components/PageTransition";
 import { ProximityGlow } from "../_components/ProximityGlow";
 import { PricingCard } from "../_components/PricingCard";
 import { Reveal } from "../_components/Reveal";
+import { RoomCard } from "../_components/RoomCard";
 import { TrialBanner } from "../_components/TrialBanner";
-import { getPricingPlans } from "@/lib/queries";
+import { getPricingPlans, getRooms } from "@/lib/queries";
 import { pageMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = pageMetadata({
   title: "Tarifs",
   description:
-    "Tarifs des cours de danse à BAPZ Studio, Metz : cours à l'unité 17 €, carte de 10 cours 160 €, abonnements à l'année à partir de 310 €.",
+    "Tarifs des cours de danse à BAPZ Studio, Metz : cours à l'unité 17 €, carte de 10 cours 160 €, abonnements à l'année à partir de 310 €. Location de salle.",
   path: "/tarifs",
 });
 
 export default async function TarifsPage() {
-  const plans = await getPricingPlans();
+  const [plans, rooms] = await Promise.all([getPricingPlans(), getRooms()]);
 
   // Le cours d'essai sort de « à la carte » pour passer en bandeau : c'est la
   // porte d'entrée, pas une option parmi d'autres.
@@ -64,6 +65,22 @@ export default async function TarifsPage() {
             ))}
           </Reveal>
         </section>
+
+        {/* Section ajoutée par la maquette TARIFS du 2026-09-10, titrée comme
+            la page. Écarts relevés : 153 des cartes au titre, 64 du titre aux
+            salles — le même que « titre -> grille de cartes » ailleurs. */}
+        {rooms.length > 0 && (
+          <section id="locations" className="mt-[var(--vr-152)] scroll-mt-24">
+            <h2 className="text-[clamp(38px,3.1vw,59px)] font-black uppercase leading-none tracking-tight">
+              Locations de salle
+            </h2>
+            <Reveal className="mt-[var(--vr-64)] grid gap-11.5 lg:grid-cols-2">
+              {rooms.map((room) => (
+                <RoomCard key={room._id} room={room} />
+              ))}
+            </Reveal>
+          </section>
+        )}
       </ProximityGlow>
     </PageTransition>
   );
