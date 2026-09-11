@@ -23,6 +23,11 @@ const nextConfig: NextConfig = {
       {
         pathname: '/api/media/file/**',
       },
+      // Éléments d'identité du studio (planète, mot du logo), fixes et hors
+      // de l'admin.
+      {
+        pathname: '/images/marque/**',
+      },
     ],
   },
   // En-têtes de sécurité, sur toutes les réponses. HTTPS strict (HSTS) est

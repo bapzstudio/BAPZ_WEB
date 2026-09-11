@@ -2,6 +2,7 @@ import Link from "next/link";
 import { formaterHeure, JOURS, minutes } from "@/lib/reservation/format";
 import { lienReservation } from "@/lib/reservation/liens";
 import type { Course } from "@/lib/types";
+import { CalendrierAnimations } from "./CalendrierAnimations";
 import { ProximityGlow } from "./ProximityGlow";
 
 // Modèle déduit de la maquette : les cartes ne sont pas proportionnelles à la
@@ -72,15 +73,20 @@ function CalendarCard({ course }: { course: Course }) {
 }
 
 function DayHeader({ day }: { day: string }) {
+  // Les attributs `data-jour-…` servent aux animations de la liste
+  // (CalendrierAnimations) ; ils sont sans effet dans la grille.
   return (
     <>
-      <div className="font-mono text-base uppercase tracking-widest text-discret">
+      <div data-jour-titre="" className="font-mono text-base uppercase tracking-widest text-discret">
         {day}
       </div>
-      <div className="mt-4 h-px bg-rule-faint" />
+      <div data-jour-filet="" className="mt-4 h-px bg-rule-faint" />
     </>
   );
 }
+
+/** « Lundi » -> « lundi » : identifiant d'ancre de la liste par jour. */
+const ancreJour = (day: string) => day.toLowerCase();
 
 export function WeekSchedule({ courses }: { courses: Course[] }) {
   const placed = place(courses);
@@ -172,18 +178,56 @@ export function WeekSchedule({ courses }: { courses: Course[] }) {
       </div>
 
       {/* En dessous de xl : une liste par jour, la grille 7 colonnes étant
-          illisible sur écran étroit. */}
-      <div className="flex flex-col gap-10 xl:hidden">
-        {daysWithCourses.map(({ day, courses: dayCourses }) => (
-          <div key={day}>
-            <DayHeader day={day} />
-            <div className="mt-4.5 grid gap-4.5 sm:grid-cols-2 lg:grid-cols-3">
-              {dayCourses.map((course) => (
-                <CalendarCard key={course._id} course={course} />
-              ))}
-            </div>
+          illisible sur écran étroit. Sur 2,5 écrans de téléphone, une barre
+          des jours reste collée sous la nav (67 px) pour s'y retrouver et
+          sauter à un jour ; CalendrierAnimations y fait glisser la pastille
+          et anime l'entrée de chaque jour. */}
+      <div className="xl:hidden">
+        <nav
+          aria-label="Jours de la semaine"
+          data-jours-barre=""
+          className="sticky top-[67px] z-30 -mx-6 mb-8 overflow-x-auto border-b border-rule-faint bg-background px-6 py-3 [scrollbar-width:none] lg:-mx-10 lg:px-10 [&::-webkit-scrollbar]:hidden"
+        >
+          <div className="relative flex w-max gap-1">
+            <span
+              aria-hidden
+              data-jours-pastille=""
+              className="absolute top-0 left-0 rounded-full bg-light opacity-0"
+            />
+            {daysWithCourses.map(({ day }) => (
+              <a
+                key={day}
+                href={`#${ancreJour(day)}`}
+                data-jour-lien={ancreJour(day)}
+                className="relative rounded-full px-3 py-1.5 font-mono text-label tracking-widest text-secondary uppercase transition-colors duration-300 aria-current:text-background"
+              >
+                {day.slice(0, 3)}
+              </a>
+            ))}
           </div>
-        ))}
+        </nav>
+
+        <div className="flex flex-col gap-10">
+          {daysWithCourses.map(({ day, courses: dayCourses }) => (
+            <section
+              key={day}
+              id={ancreJour(day)}
+              data-jour={ancreJour(day)}
+              data-jour-pending=""
+              aria-label={day}
+              className="scroll-mt-36"
+            >
+              <DayHeader day={day} />
+              <div data-jour-cartes="" className="mt-4.5 grid gap-4.5 sm:grid-cols-2 lg:grid-cols-3">
+                {dayCourses.map((course) => (
+                  <CalendarCard key={course._id} course={course} />
+                ))}
+              </div>
+            </section>
+          ))}
+        </div>
+
+        <CalendrierAnimations />
       </div>
     </ProximityGlow>
   );

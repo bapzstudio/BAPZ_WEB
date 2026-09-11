@@ -1,0 +1,5 @@
+// Logo du studio dans l'admin (src/admin/Logo.tsx et Icone.tsx) : le fichier
+// est blanc sur transparent, invisible sur le fond clair du thème clair.
+html[data-theme="light"] .bapz-admin-logo {
+  filter: invert(1);
+}

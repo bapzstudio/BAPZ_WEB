@@ -1,8 +1,10 @@
 "use client";
 
+import { useLayoutEffect, useRef } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { gsap } from "gsap";
 import { lienReservation } from "@/lib/reservation/liens";
 import { MobileMenu } from "./MobileMenu";
 import type { SiteSettings } from "@/lib/types";
@@ -25,6 +27,63 @@ export function Nav({
   instagram?: string;
 }) {
   const pathname = usePathname();
+  const navRef = useRef<HTMLElement>(null);
+  const pastilleRef = useRef<HTMLSpanElement>(null);
+  const dejaPlacee = useRef(false);
+
+  // Pastille de la page courante : se déplace vers l'onglet actif à chaque
+  // navigation, disparaît hors des six pages (réservation, fiche prof…).
+  useLayoutEffect(() => {
+    const nav = navRef.current;
+    const pastille = pastilleRef.current;
+    if (!nav || !pastille) return undefined;
+
+    const reduit = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches ?? false;
+
+    const placer = (anime: boolean) => {
+      const lien = nav.querySelector<HTMLElement>(`[data-nav-lien="${pathname}"]`);
+      const duree = anime && !reduit ? 0.35 : 0;
+      if (!lien) {
+        gsap.to(pastille, { opacity: 0, duration: duree, ease: "power3.out", overwrite: true });
+        return;
+      }
+      // Revenir d'une page sans onglet : la pastille réapparaît sur place au
+      // lieu de glisser depuis l'ancien onglet.
+      const reapparait = Number(gsap.getProperty(pastille, "opacity")) === 0;
+      gsap.to(pastille, {
+        x: lien.offsetLeft,
+        y: lien.offsetTop,
+        width: lien.offsetWidth,
+        height: lien.offsetHeight,
+        opacity: 1,
+        duration: reapparait ? 0 : duree,
+        ease: "power3.out",
+        // Un placement remplace le précédent : sans cela, un placement
+        // instantané pendant une glissade était rattrapé par la glissade
+        // encore en cours, d'où un aller-retour de la pastille.
+        overwrite: true,
+      });
+    };
+
+    placer(dejaPlacee.current);
+    dejaPlacee.current = true;
+    nav.setAttribute("data-pastille", "");
+
+    // Largeurs recalculées quand la police finit de charger ou que la
+    // fenêtre passe sous `lg` puis revient.
+    // Le premier appel, immédiat à l'observation, est ignoré : il couperait
+    // la glissade qui vient de partir.
+    let premier = true;
+    const observateur = new ResizeObserver(() => {
+      if (premier) {
+        premier = false;
+        return;
+      }
+      placer(false);
+    });
+    observateur.observe(nav);
+    return () => observateur.disconnect();
+  }, [pathname]);
 
   // Fond opaque : sur la maquette, la bande de nav ne laisse rien passer du
   // halo (bleuité B-R mesurée à 0.00 sur toute sa hauteur). Un fond translucide
@@ -44,7 +103,11 @@ export function Nav({
                 // Affiché dans un rond de 40 px : sans `sizes`, Next servait
                 // l'image en 1200 px (relevé par Lighthouse).
                 sizes="40px"
-                className="size-full object-contain p-1"
+                // Sans marge : comme sur la maquette, le logo posé sur sa
+                // planète remplit tout le rond. Avec l'ancien logo (petite
+                // planète en coin, large marge transparente) et un padding,
+                // le mot « BAPZ » tombait à une dizaine de pixels.
+                className="size-full object-contain"
                 priority
               />
             ) : (
@@ -56,17 +119,31 @@ export function Nav({
           </span>
         </Link>
 
-        {/* Centré sur la fenêtre, pas entre le logo et le bouton */}
-        <nav className="absolute left-1/2 hidden -translate-x-1/2 items-center gap-1 lg:flex">
+        {/* Centré sur la fenêtre, pas entre le logo et le bouton. La pastille
+            de la page courante glisse d'un onglet à l'autre, comme la barre
+            des jours du calendrier sur téléphone. Tant qu'elle n'est pas
+            placée (`data-pastille` absent, JavaScript pas encore exécuté),
+            l'onglet actif garde son propre fond. */}
+        <nav
+          ref={navRef}
+          className="group absolute left-1/2 hidden -translate-x-1/2 items-center gap-1 lg:flex"
+        >
+          <span
+            ref={pastilleRef}
+            aria-hidden
+            className="absolute top-0 left-0 rounded-full bg-light opacity-0"
+          />
           {links.map((link) => {
             const active = pathname === link.href;
             return (
               <Link
                 key={link.href}
                 href={link.href}
-                className={`rounded-full px-5 py-2 text-petit font-bold uppercase tracking-[0.05em] transition-colors ${
+                data-nav-lien={link.href}
+                aria-current={active ? "page" : undefined}
+                className={`relative rounded-full px-5 py-2 text-petit font-bold uppercase tracking-[0.05em] transition-colors duration-300 ${
                   active
-                    ? "bg-light text-background"
+                    ? "bg-light text-background group-data-pastille:bg-transparent"
                     : "text-secondary hover:text-foreground"
                 }`}
               >

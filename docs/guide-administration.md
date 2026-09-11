@@ -259,8 +259,9 @@ Le bouton blanc « Cours d'essai » reprend tout seul le prix du tarif d'essai
 - **Bandeau défilant** : les mots qui défilent en bas de l'accueil. **Les deux
   premiers** apparaissent aussi au centre du pied de page : y mettre les
   disciplines phares.
-- **Logo** : affiché dans un rond en haut à gauche. Fond transparent de
-  préférence.
+- **Logo** : affiché dans un petit rond en haut à gauche. Utiliser une image
+  **carrée**, sur fond transparent, dont le visuel remplit tout le cadre (le
+  logo posé sur sa planète) : une marge vide autour le rendrait illisible.
 
 ### Informations légales
 

@@ -5,6 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { gsap } from "gsap";
 import { lienInstagram } from "@/lib/instagram";
+import { Planete } from "./Planete";
 
 const useIsomorphicLayoutEffect =
   typeof window !== "undefined" ? useLayoutEffect : useEffect;
@@ -187,6 +188,16 @@ export function MobileMenu({
         inert={!open}
         className="menu-panel lg:hidden"
       >
+        {/* La planète du logo en filigrane, au bas du panneau. Rognée par son
+            cadre : sans lui, son débordement ajouterait une barre de
+            défilement au panneau. `-z-10` la garde derrière les liens, le
+            panneau formant son propre contexte d'empilement. */}
+        <div className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
+          <Planete
+            sizes="320px"
+            className="absolute -right-24 -bottom-24 w-80 opacity-[0.12]"
+          />
+        </div>
         <nav aria-label="Navigation principale">
           <ul className="menu-list">
             {items.map((item) => (

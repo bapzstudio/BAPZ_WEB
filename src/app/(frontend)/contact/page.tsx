@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { ContactForm } from "../_components/ContactForm";
 import { PageTransition } from "../_components/PageTransition";
+import { Planete } from "../_components/Planete";
 import { lienInstagram } from "@/lib/instagram";
 import { getSiteSettings } from "@/lib/queries";
 import { pageMetadata } from "@/lib/seo";
@@ -15,6 +16,14 @@ export const metadata: Metadata = pageMetadata({
 export default async function ContactPage() {
   const settings = await getSiteSettings();
   const horaires = settings.openingHours ?? [];
+
+  // Légende du bloc « Où nous trouver » : la commune (fin de l'adresse) et la
+  // ville de référence, sans doublon si ce sont les mêmes.
+  const commune = settings.address?.split(",").pop()?.trim();
+  const lieu = [...new Set([commune, settings.city].filter(Boolean))].join(" · ");
+  const itineraire = settings.address
+    ? `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(`${settings.address}, France`)}`
+    : undefined;
 
   return (
     <PageTransition>
@@ -80,6 +89,42 @@ export default async function ContactPage() {
                     </div>
                   ))}
                 </dl>
+              </div>
+            )}
+
+            {/* « Où nous trouver » : la planète du logo, un point bleu sur le
+                studio et le lien d'itinéraire. Pas de carte autour, il occupe
+                l'espace libre sous les rubriques (`flex-1`) ; sa taille reste
+                modérée pour que la page tienne dans l'écran. */}
+            {itineraire && (
+              <div className="flex flex-1 items-center gap-6 py-4 sm:gap-8">
+                <div aria-hidden className="relative size-28 shrink-0 sm:size-36 lg:size-44">
+                  <Planete sizes="176px" className="size-full opacity-40" />
+                  <span className="point-studio absolute top-[38%] left-[57%]" />
+                </div>
+                <div>
+                  <p className="eyebrow">OÙ NOUS TROUVER</p>
+                  {lieu && (
+                    <p className="mt-2.5 font-mono text-label tracking-widest text-discret uppercase">
+                      {lieu}
+                    </p>
+                  )}
+                  <a
+                    href={itineraire}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label="Itinéraire vers le studio sur Google Maps (nouvel onglet)"
+                    className="pill pill-outline group mt-5 gap-2"
+                  >
+                    Itinéraire
+                    <span
+                      aria-hidden
+                      className="transition-transform duration-200 group-hover:translate-x-0.5"
+                    >
+                      →
+                    </span>
+                  </a>
+                </div>
               </div>
             )}
           </div>

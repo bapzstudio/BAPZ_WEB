@@ -4,6 +4,7 @@ import type { Course, PricingPlan, SiteSettings } from "@/lib/types";
 import { CourseCard } from "../_components/CourseCard";
 import { FoldText } from "../_components/FoldText";
 import { Marquee } from "../_components/Marquee";
+import { PlaneteDessinee } from "../_components/PlaneteDessinee";
 import { ProximityGlow } from "../_components/ProximityGlow";
 import { Reveal } from "../_components/Reveal";
 
@@ -29,6 +30,17 @@ export function Hero({
             haut de « PROCHAINS COURS » (y=564). Le pb-24 d'origine en mettait
             96, à lui seul la cause du défilement de la page d'accueil. */}
         <div className="container-page relative z-10 pt-16 pb-6">
+          {/* Le logo du studio, à droite du titre, là où la maquette laisse
+              le hero vide : il se dessine ligne par ligne pendant que le titre
+              se déplie. Il tient dans la hauteur du hero (sinon il passerait
+              devant les cartes de « Prochains cours ») et reste derrière le
+              texte. Masqué sur téléphone, où il couvrirait le titre.
+              Fixe une fois dessiné : la dérive (`planete-derive`) faisait
+              pencher le mot BAPZ, elle reste réservée à la planète seule.
+              Retrait de 24 px en haut (il touchait le filet de la nav), 8 px
+              en bas et 32 px à droite : entièrement visible, sans déborder du
+              hero vers « Tout voir ». */}
+          <PlaneteDessinee className="absolute top-6 right-8 bottom-2 -z-10 hidden aspect-square opacity-[0.16] md:block" />
           <p className="eyebrow">
             [ {city} - {handle} ]
           </p>

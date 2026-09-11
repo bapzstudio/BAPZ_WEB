@@ -266,7 +266,9 @@ export const siteSettings: SiteSettings = {
   instagramHandle: "@bapz.studio",
   marqueeItems: ["Heels", "Commercial", "Metz", "@bapz.studio"],
   // Logo réel reçu de la cliente (dossier /content, fond transparent).
-  logo: { src: "/images/logo/bapz-logo.png", width: 600, height: 600 },
+  // Variante « V2 » (le mot sur sa planète), rognée en carré de 512 px : c'est
+  // celle de la maquette, et la seule lisible dans le rond de 40 px de la nav.
+  logo: { src: "/images/logo/bapz-logo.png", width: 512, height: 512 },
 };
 
 // Photos reçues des 2e et 3e shoots, recadrées dans src/seed/assets/images/gallery.

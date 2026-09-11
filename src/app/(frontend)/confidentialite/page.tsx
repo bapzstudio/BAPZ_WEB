@@ -101,7 +101,8 @@ export default async function ConfidentialitePage() {
             de réservation, ta saisie est gardée dans l&apos;onglet pour que tu ne
             perdes rien d&apos;une étape à l&apos;autre : elle s&apos;efface à
             l&apos;envoi ou à la fermeture de l&apos;onglet. Les liens vers Instagram
-            mènent à un site tiers, qui applique ses propres règles.
+            et Google Maps mènent à des sites tiers, qui appliquent leurs propres
+            règles.
           </p>
         </Section>
 

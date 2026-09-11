@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { Planete } from "./_components/Planete";
 import { SITE_NAME } from "@/lib/seo";
 
 export const metadata: Metadata = {
@@ -12,15 +13,18 @@ export const metadata: Metadata = {
  *
  * Sert aux `notFound()` des pages (un prof sans fiche, par exemple) et, via
  * `[...introuvable]`, à toute adresse qui ne correspond à rien. Mêmes titre et
- * boutons que le reste du site : pas de maquette pour cette page.
+ * boutons que le reste du site : pas de maquette pour cette page. La planète
+ * du logo occupe la droite, derrière le texte (`isolate` borne son `-z-10`).
  */
 export default function NotFound() {
   return (
-    <div className="container-page pt-[var(--vr-104)] pb-8.5">
+    <div className="container-page relative isolate pt-[var(--vr-104)] pb-8.5">
+      <Planete
+        sizes="(min-width: 768px) 420px, 1px"
+        className="planete-derive absolute right-10 top-[var(--vr-104)] -z-10 hidden w-[min(34vw,420px)] opacity-[0.14] md:block"
+      />
       <p className="eyebrow">ERREUR 404</p>
-      <h1 className="mt-6 titre-page">
-        Page introuvable
-      </h1>
+      <h1 className="mt-6 titre-page">Page introuvable</h1>
       <p className="mt-6 max-w-160 text-base leading-[1.3] text-secondary">
         Cette page n&apos;existe pas, ou plus. Le planning et les tarifs, eux,
         sont toujours là.

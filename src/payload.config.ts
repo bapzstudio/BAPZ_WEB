@@ -33,6 +33,14 @@ export default buildConfig({
     user: Users.slug,
     // Même icône d'onglet que le site : sans elle, l'admin réclamait un
     // `/favicon.ico` inexistant.
+    // Logo du studio sur l'écran de connexion et dans le menu, à la place de
+    // celui de Payload. Après tout changement ici : `pnpm generate:importmap`.
+    components: {
+      graphics: {
+        Logo: "/admin/Logo#Logo",
+        Icon: "/admin/Icone#Icone",
+      },
+    },
     meta: {
       // Payload ajoute lui-même l'espace avant le suffixe.
       titleSuffix: "- BAPZ Studio",

@@ -111,6 +111,18 @@ du bureau (1 549px de haut à 390px, 901 après) :
 - pied de page sur deux lignes, sans les disciplines que le bandeau affiche
   déjà.
 
+Le calendrier en liste (sous 1280 px) a une barre des jours collante sous la
+nav, dont la pastille suit le jour affiché et qui fait défiler au toucher, et
+chaque jour entre au défilement (nom, filet qui se trace, cartes décalées) :
+`CalendrierAnimations`, qui anime le balisage serveur de `WeekSchedule` par ses
+attributs `data-jour…`. Sans JavaScript ou en mouvement réduit, liste entière
+et ancres simples.
+
+Sur ordinateur, la pastille de la page courante de la nav glisse de la même
+façon d'un onglet à l'autre (`Nav.tsx`). Tant que JavaScript n'a pas placé la
+pastille, l'onglet actif garde son propre fond, sans quoi il apparaîtrait nu
+au premier affichage.
+
 Tout passe par des classes `sm:` : au-dessus, les valeurs de la maquette
 restent intactes.
 
@@ -185,6 +197,14 @@ palier gratuit 2 Go). L'adaptateur désactive le stockage local : la collection
 Payload sert les fichiers derrière `/api/media/file/...` et relaie vers
 UploadThing, ce qui est couvert par `images.localPatterns` dans
 `next.config.ts`.
+
+**Correctif d'en-tête dans `Media.ts`** (`upload.modifyResponseHeaders`) :
+l'adaptateur prend la taille du fichier dans une requête HEAD à UploadThing, qui
+n'annonce jamais de `content-length`. Il répondait donc « longueur 0 » et le
+navigateur recevait une image vide sur tout accès direct à `/api/media/file`
+(vignettes de l'admin notamment) ; les pages, servies par l'optimiseur de Next,
+n'étaient pas touchées. Le correctif retire cet en-tête nul. À retirer si une
+version de l'adaptateur corrige le problème.
 
 `next.config.ts` déclare aussi `images.qualities = [75, 90]`, obligatoire
 depuis Next 16 pour les portraits rendus en qualité 90.
@@ -286,6 +306,39 @@ portrait de Léna passait *sous* l'ancienne extraction, sa réduction étant de
 site sert les portraits depuis Payload/UploadThing, pas depuis ce dossier. Les
 images du seed vivent hors de `public/` pour ne pas être publiées avec le site.
 
+## Identité du studio
+
+Les logos fournis par la cliente sont dans `content/DOSSIER PNG/` (fond noir et
+fond transparent) : le mot seul (« SIMPLE »), le mot avec une petite planète, le
+mot posé sur sa planète (« V2 ») et la planète seule. Les fichiers du site en
+sont tirés, rognés, dans `public/images/marque/` :
+
+| Fichier | Variante | Où |
+|---|---|---|
+| `planete.png` | planète seule | composant `Planete` : menu mobile (filigrane), 404, galerie vide, écran « Demande envoyée », bloc « Où nous trouver » de la page Contact (avec un point bleu pulsant et un lien « Itinéraire » vers Google Maps, mentionné dans Confidentialité) |
+| `bapz-mot.png` | mot seul | pied de page, à la place du texte « BAPZ STUDIO » |
+| `bapz-planete.png` | V2 | logo et icône de l'admin (`src/admin/`), inversés en thème clair par `custom.scss` |
+
+**Le hero dessine le logo** (le mot sur sa planète) à partir du SVG de la
+graphiste, `content/LOGO BAPZ- white.svg` : 75 tracés pour la planète, 4 pour
+le mot (un 76ᵉ tracé, sans remplissage ni contour, est invisible et écarté). `scripts/extraire-logo-vectoriel.mjs` les copie dans
+`_components/logo-vectoriel.ts` (généré, à relancer si le logo change).
+`PlaneteDessinee` (serveur) rend le SVG, `DessinPlanete` (client) l'anime avec
+GSAP : chaque ligne se trace (technique du `stroke-dashoffset`), se remplit,
+puis le mot apparaît. Il reste ensuite fixe : la dérive lente, qui tourne de
+quelques degrés, faisait pencher le mot BAPZ ; elle est réservée à la planète
+seule. Ne pas partir d'une vectorisation automatique du PNG : un seul tracé en
+escalier, impossible à dessiner ligne par ligne.
+
+Le logo de la nav est le média des Réglages (variante V2, carrée) ; l'icône
+d'onglet est le mot seul (`app/icon.png`), l'icône Apple la V2. L'image de
+partage (`public/partage.jpg`) pose la V2 sur la photo `shoot-2`.
+
+Aucune maquette pour ces emplacements : la planète reste discrète (opacité
+0,12 à 0,14, dérive lente coupée si le visiteur réduit les animations) et ne
+change jamais la mise en page — vérifié, hauteurs de page et bande du pied de
+page identiques.
+
 ## SEO
 
 `lib/seo.ts` est le seul fichier qui connaît l'adresse publique et la forme des
@@ -338,11 +391,16 @@ Mesures posées après l'audit du 2026-09-11, chacune vérifiée sur le serveur 
   domaine n'est vérifié, Resend n'écrit qu'à l'adresse du compte : le compte
   admin de la cliente doit donc porter cette adresse.
 - **Données structurées** : `<` échappé dans le JSON injecté par le layout.
-- **Dépendances** : `sharp` 0.35.4 ; surcharges pnpm pour `effect` et
-  `dompurify` (`package.json`). Restent deux alertes sans impact : `esbuild`
-  (outil de développement de drizzle-kit) et une faille Payload sans correctif
-  publié, qui ne concerne que des comptes aux droits différents — ici tous les
-  comptes ont les mêmes.
+- **Dépendances** : `sharp` 0.35.4 ; surcharge pnpm pour `dompurify`
+  (`package.json`). Restent trois alertes sans impact : `esbuild` (outil de
+  développement de drizzle-kit), une faille Payload sans correctif publié, qui
+  ne concerne que des comptes aux droits différents — ici tous les comptes ont
+  les mêmes —, et `effect` < 3.20.
+- **Ne jamais surcharger `effect`.** UploadThing 7.3 exige exactement la 3.10.3.
+  Une surcharge en 3.22 (posée puis retirée le 2026-09-11) cassait l'adaptateur :
+  « ManagedRuntime disposed », images servies en 500 ou vides par
+  `/api/media/file/...`, upload impossible. L'alerte visait
+  `@hookform/resolvers`, qui ne s'en sert pas.
 
 ## Accessibilité, erreurs et performance
 

@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import type { SiteSettings } from "@/lib/types";
 
@@ -26,7 +27,17 @@ export function Footer({ settings }: { settings: SiteSettings }) {
           rangée, sans changer la structure de la grille. */}
       <div className="container-page flex flex-wrap items-center justify-center gap-x-5 gap-y-2 py-[18px] text-center font-mono text-xs text-tertiary sm:grid sm:grid-cols-[1fr_auto_1fr] sm:gap-6 sm:text-left">
         <span className="contents sm:flex sm:flex-wrap sm:items-center sm:gap-x-5 sm:gap-y-1">
-          <span className="order-2 sm:order-none">BAPZ STUDIO</span>
+          {/* Le mot du logo à la place du texte « BAPZ STUDIO », à la hauteur
+              de la ligne (16 px) : la bande de 53 px du pied de page ne change
+              pas. À 60 % d'opacité, il a la valeur du gris tertiaire voisin. */}
+          <Image
+            src="/images/marque/bapz-mot.png"
+            alt="BAPZ Studio"
+            width={600}
+            height={253}
+            sizes="40px"
+            className="order-2 h-4 w-auto opacity-60 sm:order-none"
+          />
           <span className="order-1 flex w-full justify-center gap-x-5 sm:contents">
             <Link href="/mentions-legales" className={LIEN}>
               MENTIONS LÉGALES

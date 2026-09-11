@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import Link from "next/link";
 import { Gallery } from "../_components/Gallery";
 import { PageTransition } from "../_components/PageTransition";
+import { Planete } from "../_components/Planete";
 import { Reveal } from "../_components/Reveal";
 import { lienInstagram } from "@/lib/instagram";
 import { getGalleryItems, getSiteSettings } from "@/lib/queries";
@@ -26,7 +27,15 @@ export default async function GaleriePage() {
 
   return (
     <PageTransition>
-      <div className="container-page pt-[var(--vr-104)] pb-8.5">
+      <div className="container-page relative isolate pt-[var(--vr-104)] pb-8.5">
+        {/* Tant que la galerie est vide, la planète du logo occupe la place
+            des photos, derrière le texte. */}
+        {items.length === 0 && (
+          <Planete
+            sizes="(min-width: 768px) 420px, 1px"
+            className="planete-derive absolute right-10 top-[var(--vr-104)] -z-10 hidden w-[min(34vw,420px)] opacity-[0.14] md:block"
+          />
+        )}
         <h1 className="titre-page">
           Galerie
         </h1>

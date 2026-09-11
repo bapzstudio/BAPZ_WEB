@@ -181,7 +181,8 @@ export const SiteSettings: GlobalConfig = {
           relationTo: "media",
           label: "Logo",
           admin: {
-            description: "Affiché dans un rond, en haut à gauche de chaque page. Fond transparent de préférence.",
+            description:
+              "Affiché dans un rond de 40 px, en haut à gauche de chaque page. Une image carrée sur fond transparent, dont le visuel remplit tout le cadre (le logo posé sur sa planète) : une marge vide autour le rendrait illisible.",
           },
         },
       ],

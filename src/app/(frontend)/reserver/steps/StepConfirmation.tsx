@@ -1,15 +1,13 @@
 import Link from "next/link";
+import { Planete } from "../../_components/Planete";
 import { Titre } from "../ui";
 
 export function StepConfirmation({ prenom }: { prenom: string }) {
   return (
     <div className="flex flex-col items-center gap-7 text-center">
-      <span
-        aria-hidden
-        className="flex size-16 items-center justify-center rounded-full border border-rule text-2xl"
-      >
-        ✓
-      </span>
+      {/* La planète du logo à la place du ✓ : le titre dit déjà que la demande
+          est partie. */}
+      <Planete sizes="96px" className="planete-derive size-24 opacity-80" />
       <Titre>Demande envoyée</Titre>
       {/* « Pas encore une réservation » : rien n'est réservé automatiquement,
           la cliente répond à la main. Le dire évite qu'un visiteur se présente
