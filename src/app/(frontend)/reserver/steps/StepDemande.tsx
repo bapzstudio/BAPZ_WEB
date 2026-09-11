@@ -25,7 +25,7 @@ export function StepDemande({
         ))}
       </ListeChoix>
 
-      <p className="text-center text-[15px] text-tertiary">
+      <p className="text-center text-courant text-tertiary">
         Une simple question ?{" "}
         <Link href="/contact" className="text-foreground underline underline-offset-4">
           Écris-nous

@@ -243,7 +243,7 @@ export function ReservationFunnel({
                   onClick={() => aller(element.etape)}
                   className="flex flex-col gap-0.5 border-l border-rule-faint py-2 pl-3 text-left transition-colors hover:border-foreground"
                 >
-                  <span className="font-mono text-[10px] uppercase tracking-widest text-tertiary">
+                  <span className="font-mono text-label uppercase tracking-widest text-tertiary">
                     {element.label}
                   </span>
                   <span className="truncate text-sm font-semibold">{element.valeur}</span>
@@ -257,7 +257,7 @@ export function ReservationFunnel({
                 setErreur(null);
                 focusApresRendu.current = true;
               }}
-              className="mt-4 w-fit font-mono text-[11px] uppercase tracking-widest text-tertiary transition-colors hover:text-foreground"
+              className="mt-4 w-fit font-mono text-label uppercase tracking-widest text-tertiary transition-colors hover:text-foreground"
             >
               Recommencer
             </button>
@@ -338,7 +338,7 @@ export function ReservationFunnel({
             )}
 
             {erreur && (
-              <p role="alert" className="mt-5 text-center text-[14px] text-white/80">
+              <p role="alert" className="mt-5 text-center text-petit text-secondary">
                 {erreur}
               </p>
             )}

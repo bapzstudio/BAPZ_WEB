@@ -66,7 +66,7 @@ export function StepCoordonnees({
         />
       </Champ>
 
-      <p className="text-[13px] leading-snug text-tertiary">
+      <p className="text-petit leading-snug text-tertiary">
         Tes coordonnées servent uniquement à répondre à ta demande.{" "}
         {/* Même onglet : la saisie est conservée, le retour ramène à cette étape. */}
         <Link

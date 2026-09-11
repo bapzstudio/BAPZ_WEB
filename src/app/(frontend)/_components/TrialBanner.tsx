@@ -23,7 +23,7 @@ export function TrialBanner({ plan }: { plan: PricingPlan }) {
       >
         <div>
           {plan.label && (
-            <div className="font-mono text-[11px] uppercase tracking-widest text-foreground">
+            <div className="font-mono text-label uppercase tracking-widest text-foreground">
               {plan.label}
             </div>
           )}
@@ -36,7 +36,7 @@ export function TrialBanner({ plan }: { plan: PricingPlan }) {
           </div>
 
           {plan.description && (
-            <p className="mt-3 text-[15px] leading-snug text-secondary">
+            <p className="mt-3 text-courant leading-snug text-secondary">
               {plan.description}
             </p>
           )}

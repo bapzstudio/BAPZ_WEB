@@ -42,7 +42,7 @@ export function RoomCard({ room }: { room: Room }) {
       data-glow-card={ouverte || undefined}
       className={`cal-card relative flex h-full flex-col p-7.5 ${ouverte ? "cal-glow" : ""}`}
     >
-      <div className="flex items-baseline justify-between gap-4 font-mono text-[11px] uppercase tracking-widest text-rule">
+      <div className="flex items-baseline justify-between gap-4 font-mono text-label uppercase tracking-widest text-discret">
         <span>{room.name}</span>
         {room.availableFrom && (
           <span className="shrink-0">Ouverture {room.availableFrom}</span>
@@ -85,11 +85,11 @@ export function RoomCard({ room }: { room: Room }) {
       {titre && <div className="mt-5 text-lg font-bold uppercase">{titre}</div>}
 
       {room.equipment && room.equipment.length > 0 ? (
-        <p className="mt-3 text-[15px] leading-snug text-secondary">
+        <p className="mt-3 text-courant leading-snug text-secondary">
           {equipements(room.equipment)}
         </p>
       ) : (
-        <p className="mt-3 text-[15px] leading-snug text-tertiary">
+        <p className="mt-3 text-courant leading-snug text-tertiary">
           Équipements communiqués prochainement.
         </p>
       )}

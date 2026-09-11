@@ -28,7 +28,7 @@ export function Section({ titre, children }: { titre: string; children: ReactNod
   return (
     <section>
       <h2 className="text-lg font-bold uppercase">{titre}</h2>
-      <div className="mt-3 flex flex-col gap-3 text-[15px] leading-relaxed text-secondary">
+      <div className="mt-3 flex flex-col gap-3 text-courant leading-relaxed text-secondary">
         {children}
       </div>
     </section>
@@ -41,7 +41,7 @@ export function Infos({ lignes }: { lignes: { label: string; valeur: ReactNode }
     <dl className="grid gap-x-6 gap-y-2 sm:grid-cols-[220px_minmax(0,1fr)]">
       {lignes.map((ligne) => (
         <div key={ligne.label} className="contents">
-          <dt className="pt-1 font-mono text-[12px] uppercase tracking-widest text-tertiary">
+          <dt className="pt-1 font-mono text-label uppercase tracking-widest text-tertiary">
             {ligne.label}
           </dt>
           <dd className="mb-2 whitespace-pre-line text-foreground sm:mb-0">{ligne.valeur}</dd>

@@ -43,7 +43,7 @@ function CalendarCard({ course }: { course: Course }) {
         data-glow-card
         className="cal-card cal-glow relative flex h-full flex-col p-5"
       >
-      <div className="flex items-baseline justify-between gap-2 font-mono text-[11px] text-rule">
+      <div className="flex items-baseline justify-between gap-2 font-mono text-label text-discret">
         {/* Même format d'heure que le reste du site (« 19h00 »), en capitales
             comme sur la maquette : la salle, elle, garde sa casse. */}
         <span className="uppercase">
@@ -57,12 +57,12 @@ function CalendarCard({ course }: { course: Course }) {
       </div>
 
       {course.level && (
-        <div className="mt-2 text-[13px] leading-snug text-secondary">
+        <div className="mt-2 text-petit leading-snug text-secondary">
           {course.level}
         </div>
       )}
         {course.teacher && (
-          <div className="text-[13px] leading-snug text-secondary">
+          <div className="text-petit leading-snug text-secondary">
             {course.teacher.name}
           </div>
         )}
@@ -74,7 +74,7 @@ function CalendarCard({ course }: { course: Course }) {
 function DayHeader({ day }: { day: string }) {
   return (
     <>
-      <div className="font-mono text-base uppercase tracking-widest text-rule">
+      <div className="font-mono text-base uppercase tracking-widest text-discret">
         {day}
       </div>
       <div className="mt-4 h-px bg-rule-faint" />

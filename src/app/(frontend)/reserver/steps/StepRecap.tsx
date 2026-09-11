@@ -23,9 +23,9 @@ export function StepRecap({
           >
             <span className="flex min-w-0 flex-col gap-1 sm:flex-row sm:items-baseline sm:gap-6">
               <span className={`${LIBELLE} sm:w-28 sm:shrink-0`}>{element.label}</span>
-              <span className="break-words text-[15px] font-semibold">{element.valeur}</span>
+              <span className="break-words text-courant font-semibold">{element.valeur}</span>
             </span>
-            <span className="shrink-0 font-mono text-[11px] uppercase tracking-widest text-tertiary transition-colors group-hover:text-foreground">
+            <span className="shrink-0 font-mono text-label uppercase tracking-widest text-tertiary transition-colors group-hover:text-foreground">
               Modifier
             </span>
           </button>

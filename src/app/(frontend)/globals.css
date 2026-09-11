@@ -10,6 +10,12 @@
   --card: #1d1d1d;
   --card-border: #3c3c3c;
   --rule: #707070; /* séparateurs de section + contour des boutons */
+  /* Petits textes discrets (jours et heures du calendrier, discipline des profs,
+     libellés de carte). La maquette les met en #707070, soit 4,04:1 sur le fond :
+     sous le seuil d'accessibilité de 4,5:1. #8a8a8a est le gris le plus proche
+     qui passe partout (5,8:1 sur le fond, 4,9:1 sur les cartes). `--rule`
+     reste réservé aux filets et contours. */
+  --text-discret: #8a8a8a;
   --rule-faint: #635b5b; /* filets du calendrier (sous les jours, bas de grille) */
   --light: #d9d9d9; /* pastilles et boutons pleins */
   --outline-fill: #2d2d2d; /* fond du bouton à contour */
@@ -69,6 +75,7 @@
   --color-foreground: var(--foreground);
   --color-secondary: var(--text-secondary);
   --color-tertiary: var(--text-tertiary);
+  --color-discret: var(--text-discret);
   --color-card: var(--card);
   --color-card-border: var(--card-border);
   --color-rule: var(--rule);
@@ -77,6 +84,12 @@
   --color-glow: var(--glow);
   --font-sans: var(--font-archivo);
   --font-mono: var(--font-space-mono);
+  /* Échelle des petits textes, en plus de celle de Tailwind (xs, sm, base…) :
+     `text-label` (libellés en Space Mono), `text-petit` (mentions, erreurs),
+     `text-courant` (paragraphes des cartes et du parcours). */
+  --text-label: 11px;
+  --text-petit: 13px;
+  --text-courant: 15px;
 }
 
 body {

@@ -106,7 +106,7 @@ export function StepChoix({
 
 function Vide() {
   return (
-    <p className="text-center text-[15px] text-tertiary">
+    <p className="text-center text-courant text-tertiary">
       Rien n&apos;est proposé ici pour le moment.{" "}
       <Link href="/contact" className="text-foreground underline underline-offset-4">
         Écris-nous

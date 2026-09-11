@@ -2,7 +2,7 @@ import type { ReactNode } from "react";
 import { ProximityGlow } from "../_components/ProximityGlow";
 
 /** Petit libellé en Space Mono, comme partout sur le site. */
-export const LIBELLE = "font-mono text-[11px] uppercase tracking-widest text-secondary";
+export const LIBELLE = "font-mono text-label uppercase tracking-widest text-secondary";
 
 /**
  * Titre d'étape. `tabIndex={-1}` : le parcours y place le focus à chaque
@@ -34,7 +34,7 @@ export function Champ({
       <span className={LIBELLE}>{label}</span>
       {children}
       {erreur && (
-        <span role="alert" className="text-[13px] text-white/70">
+        <span role="alert" className="text-petit text-secondary">
           {erreur}
         </span>
       )}
@@ -81,7 +81,7 @@ export function LigneChoix({
         <span className="block text-lg font-black uppercase leading-tight">{titre}</span>
         {detail && <span className={`mt-1.5 block ${LIBELLE}`}>{detail}</span>}
         {precision && (
-          <span className="mt-1 block text-[13px] text-tertiary">{precision}</span>
+          <span className="mt-1 block text-petit text-tertiary">{precision}</span>
         )}
       </span>
       <span className="flex shrink-0 items-center gap-4">

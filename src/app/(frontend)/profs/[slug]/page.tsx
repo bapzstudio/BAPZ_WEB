@@ -81,7 +81,7 @@ export default async function ProfPage({ params }: Props) {
             </div>
 
             {teacher.bio && (
-              <div className="mt-9 flex flex-col gap-4 text-[15px] leading-snug text-tertiary">
+              <div className="mt-9 flex flex-col gap-4 text-courant leading-snug text-tertiary">
                 {teacher.bio.map((paragraph, i) => (
                   <BioParagraph key={i} text={paragraph} />
                 ))}

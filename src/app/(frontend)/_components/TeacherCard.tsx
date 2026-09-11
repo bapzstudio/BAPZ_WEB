@@ -37,7 +37,7 @@ export function TeacherCard({ teacher }: { teacher: Teacher }) {
             {teacher.name}
           </h2>
           {teacher.discipline && (
-            <span className="shrink-0 font-mono text-base uppercase tracking-widest text-rule">
+            <span className="shrink-0 font-mono text-base uppercase tracking-widest text-discret">
               {teacher.discipline}
             </span>
           )}

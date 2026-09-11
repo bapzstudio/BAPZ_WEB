@@ -62,7 +62,7 @@ Dans chaque rubrique :
 ## 4. Les demandes
 
 C'est la rubrique principale. Quand un visiteur clique sur « Réserver »,
-« Choisir » ou « S'inscrire », il remplit un court formulaire en quelques
+« Choisir » ou « Cours d'essai », il remplit un court formulaire en quelques
 étapes. Sa demande arrive **à deux endroits** :
 
 - **par mail**, dans la boîte du studio, avec un objet qui la résume

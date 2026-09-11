@@ -73,7 +73,7 @@ export function ContactForm() {
         {pending ? "Envoi…" : "Envoyer"}
       </button>
 
-      <p className="text-center text-[13px] leading-snug text-tertiary">
+      <p className="text-center text-petit leading-snug text-tertiary">
         Ton message sert uniquement à te répondre.{" "}
         <Link
           href="/confidentialite"
@@ -84,7 +84,7 @@ export function ContactForm() {
       </p>
 
       {state.status === "error" && state.message && (
-        <p role="alert" className="text-center text-[11px] text-white/60">
+        <p role="alert" className="text-center text-label text-secondary">
           {state.message}
         </p>
       )}

@@ -49,8 +49,8 @@ export function PricingCard({ plan }: { plan: PricingPlan }) {
         // Le libellé d'une formule mise en avant passe en blanc : en gris, il
         // se confondait avec ceux des autres cartes et ne mettait rien en avant.
         <div
-          className={`font-mono text-[11px] uppercase tracking-widest ${
-            plan.highlighted ? "text-foreground" : "text-rule"
+          className={`font-mono text-label uppercase tracking-widest ${
+            plan.highlighted ? "text-foreground" : "text-discret"
           }`}
         >
           {plan.label}
@@ -69,7 +69,7 @@ export function PricingCard({ plan }: { plan: PricingPlan }) {
       </div>
 
       {unitaire && (
-        <div className="mt-2 font-mono text-[11px] uppercase tracking-widest text-glow">
+        <div className="mt-2 font-mono text-label uppercase tracking-widest text-glow">
           {unitaire}
         </div>
       )}
@@ -77,7 +77,7 @@ export function PricingCard({ plan }: { plan: PricingPlan }) {
       <div className="mt-5 text-lg font-bold uppercase">{plan.name}</div>
 
       {plan.description && (
-        <p className="mt-3 text-[15px] leading-snug text-secondary">
+        <p className="mt-3 text-courant leading-snug text-secondary">
           {plan.description}
         </p>
       )}

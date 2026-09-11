@@ -14,7 +14,7 @@ export function StepConfirmation({ prenom }: { prenom: string }) {
       {/* « Pas encore une réservation » : rien n'est réservé automatiquement,
           la cliente répond à la main. Le dire évite qu'un visiteur se présente
           au cours en croyant sa place acquise. */}
-      <p className="max-w-md text-[15px] leading-snug text-secondary">
+      <p className="max-w-md text-courant leading-snug text-secondary">
         Merci{prenom ? ` ${prenom}` : ""}. Ce n&apos;est pas encore une réservation : on
         revient vers toi très vite pour la confirmer.
       </p>

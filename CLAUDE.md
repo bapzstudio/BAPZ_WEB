@@ -73,6 +73,13 @@ relevées au pixel sur les exports Figma, qui vivent hors du repo dans
 
 - Conteneur de 1700 px centré (`.container-page`)
 - Fond `#080808`, titres `#ffffff`, secondaire `#c8c8c8`, tertiaire `#9a9a9a`
+- Petits textes discrets `#8a8a8a` (`text-discret`) : la maquette les met en
+  `#707070`, sous le seuil de contraste (4,04:1) ; `#8a8a8a` est le plus proche
+  qui passe partout. `#707070` (`--rule`) reste aux filets et contours
+- Tailles nommées des petits textes : `text-label` 11 px, `text-petit` 13 px,
+  `text-courant` 15 px — pas de valeur libre à côté
+- Messages d'erreur en gris secondaire ; rayon 15 px pour tout ce qui est carte
+  ou image de carte
 - Cartes d'accueil : `#1d1d1d` sur bordure `#3c3c3c` (`.card`)
 - Cartes calendrier / profs / tarifs : bordure en dégradé + halo, rayon 15 (`.cal-card`)
 - Polices : Archivo (texte), Space Mono (libellés, horaires)
@@ -208,7 +215,7 @@ visée : `pnpm seed confirmer`.
 ## Parcours de réservation
 
 `/reserver` reçoit tous les boutons d'action du site (hero, cartes de cours,
-calendrier, tarifs, location, « S'inscrire »). Structure reprise du tunnel de
+calendrier, tarifs, location, « Réserver » de la nav). Structure reprise du tunnel de
 devis de chuttt.ch : état conservé par onglet (zustand, `sessionStorage`),
 barre de progression, colonne qui récapitule les choix, étapes validées par
 zod, récapitulatif modifiable, confirmation. `/contact` reste pour les simples
@@ -381,9 +388,6 @@ clair).
 
 Restent signalés, et ce sont des choix de design, pas des oublis :
 
-- Contraste : `--rule` (`#707070`) en texte sur `#080808` donne 4,04:1, sous le
-  seuil de 4,5:1 (jours du calendrier, discipline sur la carte prof). `#7a7a7a`
-  passerait sur le fond de page (4,67:1), pas sur les cartes (3,93:1).
 - Textes de 11 px en Space Mono : 45 % du texte de `/reserver`.
 - LCP autour de 3 s en 4G simulée, sur un texte : la page est prête plus tôt
   (FCP 0,9 s).

@@ -7,7 +7,7 @@ export function Gallery({ items }: { items: GalleryItem[] }) {
       {items.map((item) => (
         <div
           key={item._id}
-          className="relative aspect-2/3 overflow-hidden rounded-[18px] border border-card-border"
+          className="relative aspect-2/3 overflow-hidden rounded-[15px] border border-card-border"
         >
           <Image
             src={item.image.src}

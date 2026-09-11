@@ -48,7 +48,7 @@ export function Nav({
                 priority
               />
             ) : (
-              <span className="text-[10px] font-black">BAPZ</span>
+              <span className="text-label font-black">BAPZ</span>
             )}
           </span>
           <span className="hidden font-mono text-sm tracking-[0.15em] text-secondary sm:inline">
@@ -64,7 +64,7 @@ export function Nav({
               <Link
                 key={link.href}
                 href={link.href}
-                className={`rounded-full px-5 py-2 text-[13px] font-bold uppercase tracking-[0.05em] transition-colors ${
+                className={`rounded-full px-5 py-2 text-petit font-bold uppercase tracking-[0.05em] transition-colors ${
                   active
                     ? "bg-light text-background"
                     : "text-secondary hover:text-foreground"
@@ -77,8 +77,11 @@ export function Nav({
         </nav>
 
         <div className="flex shrink-0 items-center gap-3">
-          <Link href={lienReservation()} className="pill pill-light shrink-0 text-[13px]">
-            S&apos;inscrire
+          <Link href={lienReservation()} className="pill pill-light shrink-0 text-petit">
+            {/* « Réserver » plutôt que « S'inscrire » (maquette) : le bouton
+                ouvre les quatre types de demande — essai, inscription,
+                location, cours privé — et pas seulement l'inscription. */}
+            Réserver
           </Link>
           {/* En dessous de `lg` les onglets ci-dessus sont masqués : sans ce
               menu, cinq pages sur six seraient inatteignables. */}
