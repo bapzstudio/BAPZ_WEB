@@ -18,6 +18,16 @@ export const Media: CollectionConfig = {
     // `payload.config.ts` désactive le stockage local et envoie les fichiers
     // chez UploadThing.
     mimeTypes: ["image/*"],
+    // L'adaptateur UploadThing lit la taille du fichier dans une requête HEAD,
+    // or UploadThing n'y annonce jamais `content-length` (vérifié) : il
+    // répondait donc « Content-Length: 0 », et le navigateur recevait une
+    // image vide — vignettes de l'admin, tout accès direct à /api/media/file.
+    // Les pages du site passaient par l'optimiseur de Next, qui lit le flux
+    // sans s'y fier. Sans cet en-tête, la réponse est simplement streamée.
+    modifyResponseHeaders: ({ headers }) => {
+      if (headers.get("content-length") === "0") headers.delete("content-length");
+      return headers;
+    },
   },
   fields: [
     {
