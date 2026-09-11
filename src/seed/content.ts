@@ -269,7 +269,7 @@ export const siteSettings: SiteSettings = {
   logo: { src: "/images/logo/bapz-logo.png", width: 600, height: 600 },
 };
 
-// Photos reçues des 2e et 3e shoots, recadrées dans public/images/gallery.
+// Photos reçues des 2e et 3e shoots, recadrées dans src/seed/assets/images/gallery.
 // Personne n'y est identifié. Non injectées par le seed : la cliente choisit
 // elle-même ses photos de galerie depuis l'admin.
 export const galleryItems: GalleryItem[] = [

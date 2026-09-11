@@ -1,10 +1,6 @@
 import type { ReactNode } from "react";
 import { ProximityGlow } from "../_components/ProximityGlow";
 
-/** Champs de saisie, repris du formulaire de contact. */
-export const CHAMP =
-  "w-full rounded-xl border border-card-border bg-white/[0.06] p-3.5 text-[15px] text-foreground placeholder:text-tertiary";
-
 /** Petit libellé en Space Mono, comme partout sur le site. */
 export const LIBELLE = "font-mono text-[11px] uppercase tracking-widest text-secondary";
 
@@ -77,7 +73,7 @@ export function LigneChoix({
       onClick={onClick}
       aria-pressed={actif}
       data-glow-card
-      className={`group cal-card cal-glow relative flex w-full items-center justify-between gap-5 p-5 text-left focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white/60 ${
+      className={`group cal-card cal-glow relative flex w-full items-center justify-between gap-5 p-5 text-left ${
         actif ? "cal-card-avant" : ""
       }`}
     >

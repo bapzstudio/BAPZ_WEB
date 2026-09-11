@@ -19,19 +19,6 @@
   --glow-rgb: 143 180 255;
 }
 
-/* Rythme vertical élastique.
-   Les maquettes sont calées sur une fenêtre de 1080px de haut : leurs pages
-   tiennent pile dans un écran. Dans une fenêtre plus courte, ces écarts fixes
-   poussaient le contenu dehors et produisaient un scroll de quelques dizaines
-   de pixels qui ne révélait rien.
-   Chaque valeur vaut exactement celle relevée sur la maquette à 1080px de haut,
-   et se comprime en dessous. La pente est volontairement le double de la
-   proportionnelle : `calc(2V/1080 * 100svh - V)` passe par (1080, V) tout en
-   diminuant deux fois plus vite quand la fenêtre raccourcit. Une compression
-   simplement proportionnelle laissait encore trop d'air en haut des pages sur
-   un écran de portable.
-   `svh` plutôt que `vh` : la barre d'URL mobile ne doit pas faire sauter la
-   mise en page au défilement. Le suffixe est la valeur de la maquette. */
 /* Focus clavier. Le contour par défaut du navigateur prend la couleur du texte :
    sombre sur un bouton clair, et quasi invisible sur le fond #080808. On étend
    à tout le site celui déjà posé sur les cartes cliquables (blanc à 60 %,
@@ -56,6 +43,19 @@
   transform: none;
 }
 
+/* Rythme vertical élastique.
+   Les maquettes sont calées sur une fenêtre de 1080px de haut : leurs pages
+   tiennent pile dans un écran. Dans une fenêtre plus courte, ces écarts fixes
+   poussaient le contenu dehors et produisaient un scroll de quelques dizaines
+   de pixels qui ne révélait rien.
+   Chaque valeur vaut exactement celle relevée sur la maquette à 1080px de haut,
+   et se comprime en dessous. La pente est volontairement le double de la
+   proportionnelle : `calc(2V/1080 * 100svh - V)` passe par (1080, V) tout en
+   diminuant deux fois plus vite quand la fenêtre raccourcit. Une compression
+   simplement proportionnelle laissait encore trop d'air en haut des pages sur
+   un écran de portable.
+   `svh` plutôt que `vh` : la barre d'URL mobile ne doit pas faire sauter la
+   mise en page au défilement. Le suffixe est la valeur de la maquette. */
 :root {
   --vr-152: clamp(68px, calc(28.15svh - 152px), 152px); /* tarifs -> locations de salle */
   --vr-104: clamp(47px, calc(19.26svh - 104px), 104px); /* haut de page sous la nav */
@@ -295,6 +295,58 @@ body {
     transition: none;
   }
 }
+
+/* ---- Éléments communs ----
+   Une seule définition pour ce qui était recopié de page en page. En couche
+   `components` : un utilitaire ajouté à côté (`mt-6`, `resize-y`…) garde la
+   main. */
+
+/* Titre de page (h1 de toutes les pages, et « Locations de salle »). */
+.titre-page {
+  font-size: clamp(38px, 3.1vw, 59px);
+  font-weight: 900;
+  line-height: 1;
+  letter-spacing: -0.025em;
+  text-transform: uppercase;
+}
+
+/* Champ de formulaire : contact et parcours de réservation. */
+.champ {
+  width: 100%;
+  border: 1px solid var(--card-border);
+  border-radius: 12px;
+  background: rgb(255 255 255 / 0.06);
+  padding: 14px;
+  font-size: 15px;
+  color: var(--foreground);
+}
+.champ::placeholder {
+  color: var(--text-tertiary);
+}
+
+/* Bouton « Choisir » des cartes de tarif et de salle. C'est un lien étiré :
+   son pseudo-élément couvre toute la carte (qui doit être `relative`), sans
+   imbriquer un second lien, ce qui serait invalide. */
+.bouton-carte {
+  display: block;
+  border: 1px solid var(--rule);
+  border-radius: 999px;
+  padding-block: 10px;
+  text-align: center;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  transition: background-color 0.15s;
+}
+.bouton-carte:hover {
+  background: rgb(255 255 255 / 0.1);
+}
+.bouton-carte::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+}
 }
 /* fin de la couche `components` */
 
@@ -430,10 +482,6 @@ body {
   display: inline;
 }
 
-.fold-text-line {
-  display: block;
-}
-
 .fold-text-whitespace {
   display: inline;
 }
@@ -441,25 +489,24 @@ body {
 .fold-text-segment {
   display: inline-block;
   line-height: inherit;
-  perspective: var(--fold-perspective, 700px);
+  perspective: 700px;
   transform-style: preserve-3d;
   vertical-align: baseline;
 }
 
-.fold-text-segment[data-fold-split="line"] {
-  display: block;
-}
-
+/* Charnière en haut : chaque mot pivote depuis son bord supérieur. */
 .fold-text-piece {
   position: relative;
   display: inline-block;
   color: inherit;
   line-height: inherit;
+  transform-origin: 50% 0%;
   transform-style: preserve-3d;
   backface-visibility: hidden;
   will-change: transform, opacity;
 }
 
+/* Ombre du pli, dont GSAP fait varier l'intensité (`--fold-crease`). */
 .fold-text-piece::after {
   content: "";
   position: absolute;
@@ -468,38 +515,8 @@ body {
   opacity: var(--fold-crease, 0);
   mix-blend-mode: multiply;
   border-radius: 0.08em;
-}
-
-.fold-text-piece[data-fold-hinge="top"]::after {
   background: linear-gradient(
     180deg,
-    rgba(0, 0, 0, 0.58) 0%,
-    rgba(0, 0, 0, 0.22) 42%,
-    rgba(255, 255, 255, 0.26) 100%
-  );
-}
-
-.fold-text-piece[data-fold-hinge="bottom"]::after {
-  background: linear-gradient(
-    0deg,
-    rgba(0, 0, 0, 0.58) 0%,
-    rgba(0, 0, 0, 0.22) 42%,
-    rgba(255, 255, 255, 0.26) 100%
-  );
-}
-
-.fold-text-piece[data-fold-hinge="left"]::after {
-  background: linear-gradient(
-    90deg,
-    rgba(0, 0, 0, 0.58) 0%,
-    rgba(0, 0, 0, 0.22) 42%,
-    rgba(255, 255, 255, 0.26) 100%
-  );
-}
-
-.fold-text-piece[data-fold-hinge="right"]::after {
-  background: linear-gradient(
-    270deg,
     rgba(0, 0, 0, 0.58) 0%,
     rgba(0, 0, 0, 0.22) 42%,
     rgba(255, 255, 255, 0.26) 100%

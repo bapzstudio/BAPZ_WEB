@@ -95,7 +95,7 @@ export function PricingCard({ plan }: { plan: PricingPlan }) {
               ? { type: "essai" }
               : { type: "inscription", formule: plan.slug }
           )}
-          className="block rounded-full border border-rule py-2.5 text-center text-[13px] font-bold uppercase tracking-widest transition-colors hover:bg-white/10 after:absolute after:inset-0 after:content-['']"
+          className="bouton-carte"
         >
           Choisir
         </Link>

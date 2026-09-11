@@ -23,7 +23,7 @@ export default async function ProfsPage() {
           filet du footer (y=1027), ce qui fait tenir la page dans un écran de
           1080. */}
       <div className="container-page pt-[var(--vr-104)] pb-8.5">
-        <h1 className="text-[clamp(38px,3.1vw,59px)] font-black uppercase leading-none tracking-tight">
+        <h1 className="titre-page">
           Les profs
         </h1>
 

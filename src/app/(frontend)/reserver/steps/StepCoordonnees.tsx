@@ -2,7 +2,7 @@ import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { coordonneesFormSchema, type CoordonneesData } from "@/lib/reservation/schemas";
-import { CHAMP, Champ, Titre } from "../ui";
+import { Champ, Titre } from "../ui";
 
 export function StepCoordonnees({
   defaultValues,
@@ -44,7 +44,7 @@ export function StepCoordonnees({
           {...register("prenom")}
           autoComplete="given-name"
           aria-invalid={errors.prenom ? true : undefined}
-          className={CHAMP}
+          className="champ"
         />
       </Champ>
       <Champ label="E-mail" erreur={errors.email?.message}>
@@ -53,7 +53,7 @@ export function StepCoordonnees({
           type="email"
           autoComplete="email"
           aria-invalid={errors.email ? true : undefined}
-          className={CHAMP}
+          className="champ"
         />
       </Champ>
       <Champ label="Téléphone (facultatif)" erreur={errors.telephone?.message}>
@@ -62,7 +62,7 @@ export function StepCoordonnees({
           type="tel"
           autoComplete="tel"
           aria-invalid={errors.telephone ? true : undefined}
-          className={CHAMP}
+          className="champ"
         />
       </Champ>
 

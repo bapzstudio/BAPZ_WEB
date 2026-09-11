@@ -25,6 +25,10 @@ pnpm payload migrate      # applique les migrations en attente
 pnpm lint
 ```
 
+`playwright` (dépendance de développement) n'est appelé par aucun script : il
+sert aux vérifications au navigateur — mesures au pixel, captures, parcours au
+clavier — lancées au cas par cas.
+
 **pnpm uniquement.** Ne jamais lancer `npm install` ici. `@payloadcms/translations`
 est importé directement par `src/payload.config.ts` et n'est résolu que parce
 qu'il est déclaré explicitement en dépendance : pnpm ne le remonte pas par
@@ -72,6 +76,9 @@ relevées au pixel sur les exports Figma, qui vivent hors du repo dans
 - Cartes d'accueil : `#1d1d1d` sur bordure `#3c3c3c` (`.card`)
 - Cartes calendrier / profs / tarifs : bordure en dégradé + halo, rayon 15 (`.cal-card`)
 - Polices : Archivo (texte), Space Mono (libellés, horaires)
+- Éléments communs, définis une fois dans la couche `components` de
+  `globals.css` : `.titre-page` (titre de page), `.champ` (champ de
+  formulaire), `.bouton-carte` (« Choisir », lien étiré sur toute la carte)
 
 **Rythme vertical.** Les maquettes tiennent dans 1080px de haut, et les pages
 doivent en faire autant. Valeurs relevées : nav 66, bas de page 34 (seul écart
@@ -247,7 +254,7 @@ attendant), et si les cours ont un nombre de places limité.
 
 ## Portraits des profs
 
-`public/images/profs/` contient les portraits tirés des originaux du shooting
+`src/seed/assets/images/profs/` contient les portraits tirés des originaux du shooting
 (`../BAPZ/content`), au format 1086 x 944 attendu par `TeacherCard`.
 
 Les originaux sont des prises de vue **verticales** de 4480 x 6720 une fois
@@ -268,8 +275,9 @@ choisi sur mesure de netteté (variance du laplacien) : en qualité 88 le
 portrait de Léna passait *sous* l'ancienne extraction, sa réduction étant de
 4,1x contre 1,7x et 2,2x pour les autres.
 
-**Après tout changement de ces fichiers, relancer `pnpm seed`** : le site sert
-les portraits depuis Payload/UploadThing, pas depuis `public/`.
+**Après tout changement de ces fichiers, relancer `pnpm seed confirmer`** : le
+site sert les portraits depuis Payload/UploadThing, pas depuis ce dossier. Les
+images du seed vivent hors de `public/` pour ne pas être publiées avec le site.
 
 ## SEO
 

@@ -1,6 +1,7 @@
 // Métadonnées du site : seul endroit qui connaît l'adresse publique et la
 // forme des balises de partage. Même principe que `queries.ts` pour Payload.
 import type { Metadata } from "next";
+import { lienInstagram } from "./instagram";
 import type { SiteSettings } from "./types";
 
 /**
@@ -83,7 +84,6 @@ export function pageMetadata({
  * dès qu'ils seront saisis dans `/admin`.
  */
 export function structuredData(settings: SiteSettings, priceRange?: string) {
-  const instagram = settings.instagramHandle?.replace(/^@/, "");
 
   return {
     "@context": "https://schema.org",
@@ -106,7 +106,7 @@ export function structuredData(settings: SiteSettings, priceRange?: string) {
     // Les horaires restent hors des données structurées : saisis en texte
     // libre (« Lundi - Vendredi »), ils ne se traduisent pas sans risque dans
     // le format strict attendu par schema.org.
-    ...(instagram && { sameAs: [`https://instagram.com/${instagram}`] }),
+    ...(settings.instagramHandle && { sameAs: [lienInstagram(settings.instagramHandle)] }),
     ...(priceRange && { priceRange }),
   };
 }

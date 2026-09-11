@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Gallery } from "../_components/Gallery";
 import { PageTransition } from "../_components/PageTransition";
 import { Reveal } from "../_components/Reveal";
+import { lienInstagram } from "@/lib/instagram";
 import { getGalleryItems, getSiteSettings } from "@/lib/queries";
 import { pageMetadata } from "@/lib/seo";
 
@@ -26,7 +27,7 @@ export default async function GaleriePage() {
   return (
     <PageTransition>
       <div className="container-page pt-[var(--vr-104)] pb-8.5">
-        <h1 className="text-[clamp(38px,3.1vw,59px)] font-black uppercase leading-none tracking-tight">
+        <h1 className="titre-page">
           Galerie
         </h1>
 
@@ -43,7 +44,7 @@ export default async function GaleriePage() {
             <div className="mt-[var(--vr-64)] flex flex-wrap gap-7">
               {instagram && (
                 <a
-                  href={`https://www.instagram.com/${instagram.replace(/^@/, "")}/`}
+                  href={lienInstagram(instagram)}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="pill pill-light"

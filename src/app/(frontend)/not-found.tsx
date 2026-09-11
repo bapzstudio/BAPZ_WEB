@@ -18,7 +18,7 @@ export default function NotFound() {
   return (
     <div className="container-page pt-[var(--vr-104)] pb-8.5">
       <p className="eyebrow">ERREUR 404</p>
-      <h1 className="mt-6 text-[clamp(38px,3.1vw,59px)] font-black uppercase leading-none tracking-tight">
+      <h1 className="mt-6 titre-page">
         Page introuvable
       </h1>
       <p className="mt-6 max-w-160 text-base leading-[1.3] text-secondary">

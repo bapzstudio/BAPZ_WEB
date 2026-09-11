@@ -37,7 +37,7 @@ function CalendarCard({ course }: { course: Course }) {
     // ce cours déjà choisi, comme les cartes de l'accueil.
     <Link
       href={lienReservation({ type: "essai", cours: course.slug })}
-      className="group block h-full rounded-[15px] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white/60"
+      className="group block h-full rounded-[15px]"
     >
       <div
         data-glow-card

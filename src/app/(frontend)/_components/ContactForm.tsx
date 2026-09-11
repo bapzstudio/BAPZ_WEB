@@ -7,8 +7,6 @@ import { Turnstile, TURNSTILE_ACTIF, type TurnstileHandle } from "./Turnstile";
 
 const INITIAL: ContactState = { status: "idle" };
 
-const field =
-  "rounded-xl border border-card-border bg-white/[0.06] p-3.5 text-sm text-foreground placeholder:text-tertiary";
 
 export function ContactForm() {
   const [state, action, pending] = useActionState(submitContact, INITIAL);
@@ -47,14 +45,14 @@ export function ContactForm() {
         </label>
       </div>
 
-      <input name="name" placeholder="Ton nom" required maxLength={100} className={field} />
+      <input name="name" placeholder="Ton nom" required maxLength={100} className="champ" />
       <input
         name="email"
         type="email"
         placeholder="Ton e-mail"
         required
         maxLength={200}
-        className={field}
+        className="champ"
       />
       <textarea
         name="message"
@@ -62,7 +60,7 @@ export function ContactForm() {
         rows={4}
         required
         maxLength={4000}
-        className={`resize-y ${field}`}
+        className="champ resize-y"
       />
 
       <Turnstile ref={turnstile} onJeton={setJeton} />

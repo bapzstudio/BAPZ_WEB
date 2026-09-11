@@ -31,6 +31,13 @@ const dirname = path.dirname(filename);
 export default buildConfig({
   admin: {
     user: Users.slug,
+    // Même icône d'onglet que le site : sans elle, l'admin réclamait un
+    // `/favicon.ico` inexistant.
+    meta: {
+      // Payload ajoute lui-même l'espace avant le suffixe.
+      titleSuffix: "- BAPZ Studio",
+      icons: [{ rel: "icon", type: "image/png", url: "/icon.png" }],
+    },
     importMap: {
       baseDir: path.resolve(dirname),
     },

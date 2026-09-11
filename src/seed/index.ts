@@ -24,7 +24,9 @@ import {
 } from "./content";
 
 const dirname = path.dirname(fileURLToPath(import.meta.url));
-const publicDir = path.resolve(dirname, "../../public");
+// Images d'amorçage, hors de `public/` : le site sert les siennes depuis
+// Payload et UploadThing, celles-ci n'ont pas à être publiées.
+const assetsDir = path.resolve(dirname, "assets");
 
 const seed = async () => {
   // Garde-fou : le seed vide les collections de la base pointée par
@@ -63,7 +65,7 @@ const seed = async () => {
     const doc = await payload.create({
       collection: "media",
       data: { alt },
-      filePath: path.join(publicDir, relativePath),
+      filePath: path.join(assetsDir, relativePath),
     });
     return doc.id;
   };

@@ -7,7 +7,7 @@ import {
   type DetailsData,
   type TypeDemande,
 } from "@/lib/reservation/schemas";
-import { CHAMP, Champ, LIBELLE, Titre } from "../ui";
+import { Champ, LIBELLE, Titre } from "../ui";
 
 const INVITES: Record<TypeDemande, string> = {
   essai: "Une question, une contrainte, une envie particulière…",
@@ -69,7 +69,7 @@ export function StepDetails({
               {...register("dateSouhaitee")}
               aria-invalid={errors.dateSouhaitee ? true : undefined}
               placeholder="Ex : un samedi après-midi en juin"
-              className={CHAMP}
+              className="champ"
             />
           </Champ>
           <Champ label="Nombre de personnes (facultatif)" erreur={errors.personnes?.message}>
@@ -78,7 +78,7 @@ export function StepDetails({
               aria-invalid={errors.personnes ? true : undefined}
               inputMode="numeric"
               placeholder="Ex : 12"
-              className={CHAMP}
+              className="champ"
             />
           </Champ>
         </>
@@ -90,7 +90,7 @@ export function StepDetails({
           aria-invalid={errors.message ? true : undefined}
           rows={4}
           placeholder={type ? INVITES[type] : undefined}
-          className={`resize-y ${CHAMP}`}
+          className="champ resize-y"
         />
       </Champ>
     </form>

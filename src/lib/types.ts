@@ -26,7 +26,6 @@ export interface Course {
   teacher?: Teacher;
   /** Salle affichée en haut à droite de la carte du calendrier (ex : "Studio A"). */
   room?: string;
-  isPrivateCourse?: boolean;
   /** Identifiant stable dans les liens de réservation (ex : heels-mardi-19-00). */
   slug?: string;
 }

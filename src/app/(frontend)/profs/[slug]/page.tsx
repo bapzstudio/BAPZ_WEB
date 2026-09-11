@@ -72,7 +72,7 @@ export default async function ProfPage({ params }: Props) {
 
           <div>
             <div className="flex items-baseline justify-between gap-4">
-              <h1 className="text-[clamp(38px,3.1vw,59px)] font-black uppercase leading-none tracking-tight">
+              <h1 className="titre-page">
                 {teacher.name}
               </h1>
               {teacher.discipline && (

@@ -4,6 +4,7 @@ import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { gsap } from "gsap";
+import { lienInstagram } from "@/lib/instagram";
 
 const useIsomorphicLayoutEffect =
   typeof window !== "undefined" ? useLayoutEffect : useEffect;
@@ -206,7 +207,7 @@ export function MobileMenu({
             {instagram && (
               <a
                 data-social
-                href={`https://instagram.com/${instagram.replace(/^@/, "")}`}
+                href={lienInstagram(instagram)}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="-my-2 py-2 text-secondary transition-colors hover:text-foreground"

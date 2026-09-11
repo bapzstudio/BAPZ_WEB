@@ -95,7 +95,8 @@ et se charge du relais ; l'URL UploadThing directe
 (`xthjbjqeai.ufs.sh/f/<clé>`) n'apparaît pas dans les pages.
 
 Il n'y a donc pas de dossier `public/uploads` : l'adaptateur désactive le
-stockage local. `public/images/` ne contient que les fichiers servant au seed.
+stockage local. Les images qui servent au seed sont dans `src/seed/assets/`,
+hors de `public/` : elles ne sont pas publiées avec le site.
 
 ## Repères de design
 

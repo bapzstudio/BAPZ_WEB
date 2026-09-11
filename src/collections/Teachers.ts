@@ -1,4 +1,5 @@
 import type { CollectionConfig } from "payload";
+import { slugField } from "./fields/slug";
 import { hooksRevalidation } from "./hooks/revalider";
 
 export const Teachers: CollectionConfig = {
@@ -21,38 +22,13 @@ export const Teachers: CollectionConfig = {
       required: true,
       admin: { description: "Tel qu'affiché sur le site, ex : Léna Bapz." },
     },
-    {
-      name: "slug",
-      type: "text",
-      label: "Adresse de la page",
-      unique: true,
-      index: true,
-      admin: {
-        position: "sidebar",
-        description:
-          "Fin de l'adresse de sa page, par exemple lena-bapz pour /profs/lena-bapz. Rempli tout seul à partir du nom ; à ne changer que si la page n'est pas encore en ligne, sinon les liens existants se cassent.",
-      },
-      hooks: {
-        beforeValidate: [
-          ({ value, data, siblingData }) => {
-            const source =
-              value || siblingData?.name || (data?.name as string) || "";
-            return (
-              source
-                .toString()
-                .normalize("NFD")
-                // `normalize("NFD")` sépare la lettre de son accent ; on retire
-                // ici les signes diacritiques combinants, sinon le filtre
-                // suivant les remplacerait par un tiret (« Léna » -> « l-na »).
-                .replace(/[̀-ͯ]/g, "")
-                .toLowerCase()
-                .replace(/[^a-z0-9]+/g, "-")
-                .replace(/^-+|-+$/g, "") || undefined
-            );
-          },
-        ],
-      },
-    },
+    // Même champ que cours, formules et salles ; seuls le libellé et l'aide
+    // changent, parce qu'ici l'identifiant est l'adresse d'une page.
+    slugField(
+      ["name"],
+      "Fin de l'adresse de sa page, par exemple lena-bapz pour /profs/lena-bapz. Rempli tout seul à partir du nom ; à ne changer que si la page n'est pas encore en ligne, sinon les liens existants se cassent.",
+      "Adresse de la page"
+    ),
     {
       name: "discipline",
       type: "text",

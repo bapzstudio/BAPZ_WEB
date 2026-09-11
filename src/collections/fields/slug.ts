@@ -10,11 +10,15 @@ import { slugify } from "../../lib/slug";
  * Indispensable parce que les identifiants numériques de la base changent à
  * chaque exécution du seed.
  */
-export function slugField(sources: string[], description: string): Field {
+export function slugField(
+  sources: string[],
+  description: string,
+  label = "Identifiant de lien"
+): Field {
   return {
     name: "slug",
     type: "text",
-    label: "Identifiant de lien",
+    label,
     unique: true,
     index: true,
     admin: { position: "sidebar", description },

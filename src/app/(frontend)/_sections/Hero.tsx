@@ -36,7 +36,7 @@ export function Hero({
           {/* Le \n de la donnée pilote la coupe du titre (FoldText le convertit
               en <br>). Les tailles restent portées par le h1. */}
           <h1 className="mt-6 text-[clamp(44px,8.3vw,158px)] font-black uppercase leading-[0.94] tracking-[-0.02em]">
-            <FoldText text={settings.heroTitle} splitBy="word" hinge="top" />
+            <FoldText text={settings.heroTitle} />
           </h1>
 
           {/* Le retour à la ligne de la donnée cale la coupe sur la largeur de la

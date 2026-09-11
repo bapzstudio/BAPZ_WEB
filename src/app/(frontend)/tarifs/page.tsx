@@ -29,7 +29,7 @@ export default async function TarifsPage() {
       {/* Un seul écouteur pour toute la page : le halo réagit donc aussi d'une
           rangée à l'autre. */}
       <ProximityGlow className="container-page pt-[var(--vr-104)] pb-8.5">
-        <h1 className="text-[clamp(38px,3.1vw,59px)] font-black uppercase leading-none tracking-tight">
+        <h1 className="titre-page">
           Tarifs
         </h1>
         <p className="eyebrow mt-6">
@@ -71,7 +71,7 @@ export default async function TarifsPage() {
             salles — le même que « titre -> grille de cartes » ailleurs. */}
         {rooms.length > 0 && (
           <section id="locations" className="mt-[var(--vr-152)] scroll-mt-24">
-            <h2 className="text-[clamp(38px,3.1vw,59px)] font-black uppercase leading-none tracking-tight">
+            <h2 className="titre-page">
               Locations de salle
             </h2>
             <Reveal className="mt-[var(--vr-64)] grid gap-11.5 lg:grid-cols-2">

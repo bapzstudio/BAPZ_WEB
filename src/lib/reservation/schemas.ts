@@ -37,7 +37,7 @@ export const TYPE_LABELS: Record<
 };
 
 export const NIVEAUX = ["debutant", "intermediaire", "avance", "ne-sais-pas"] as const;
-export const niveauSchema = z.enum(NIVEAUX);
+const niveauSchema = z.enum(NIVEAUX);
 export type Niveau = z.infer<typeof niveauSchema>;
 
 export const NIVEAU_LABELS: Record<Niveau, string> = {
@@ -61,7 +61,7 @@ export const detailsSchema = z.object({
 export type DetailsData = z.infer<typeof detailsSchema>;
 
 // Étape 4 - coordonnées
-export const coordonneesSchema = z.object({
+const coordonneesSchema = z.object({
   prenom: z
     .string()
     .trim()

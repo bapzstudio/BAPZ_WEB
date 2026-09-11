@@ -28,12 +28,12 @@ function revalider() {
   }
 }
 
-export const revaliderApresModification: CollectionAfterChangeHook = ({ doc }) => {
+const revaliderApresModification: CollectionAfterChangeHook = ({ doc }) => {
   revalider();
   return doc;
 };
 
-export const revaliderApresSuppression: CollectionAfterDeleteHook = ({ doc }) => {
+const revaliderApresSuppression: CollectionAfterDeleteHook = ({ doc }) => {
   revalider();
   return doc;
 };

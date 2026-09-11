@@ -100,7 +100,7 @@ export function RoomCard({ room }: { room: Room }) {
               le parcours de réservation, la salle déjà choisie. */}
           <Link
             href={lienReservation({ type: "location", salle: room.slug })}
-            className="block rounded-full border border-rule py-2.5 text-center text-[13px] font-bold uppercase tracking-widest transition-colors hover:bg-white/10 after:absolute after:inset-0 after:content-['']"
+            className="bouton-carte"
           >
             Choisir
           </Link>

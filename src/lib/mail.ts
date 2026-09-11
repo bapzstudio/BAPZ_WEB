@@ -48,23 +48,16 @@ export async function sendContactMessage({
   email,
   message,
 }: ContactMessage): Promise<void> {
-  const apiKey = process.env.RESEND_API_KEY;
-  const to = process.env.CONTACT_TO_EMAIL;
+  const { resend, to, from } = configuration();
 
-  if (!apiKey || !to) {
-    throw new Error(
-      "RESEND_API_KEY ou CONTACT_TO_EMAIL manquant : envoi impossible."
-    );
-  }
-
-  const { error } = await new Resend(apiKey).emails.send({
-    from: process.env.CONTACT_FROM_EMAIL || FALLBACK_FROM,
+  const { error } = await resend.emails.send({
+    from,
     to,
     // Le visiteur n'est pas l'expéditeur (son domaine n'est pas vérifié chez
     // nous, l'envoi serait rejeté) : on le met en réponse, pour que répondre
     // dans la boîte du studio lui écrive directement.
     replyTo: email,
-    subject: `Message de ${name} depuis le site`,
+    subject: `Message de ${uneLigne(name)} depuis le site`,
     text: `${message}\n\n---\nEnvoyé par ${name} <${email}> depuis le formulaire de contact.`,
   });
 

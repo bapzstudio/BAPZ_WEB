@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { ContactForm } from "../_components/ContactForm";
 import { PageTransition } from "../_components/PageTransition";
+import { lienInstagram } from "@/lib/instagram";
 import { getSiteSettings } from "@/lib/queries";
 import { pageMetadata } from "@/lib/seo";
 
@@ -19,7 +20,7 @@ export default async function ContactPage() {
     <PageTransition>
       <div className="container-page pt-[var(--vr-104)] pb-8.5">
         {/* Même titre et même écart titre -> cartes que les autres pages. */}
-        <h1 className="text-[clamp(38px,3.1vw,59px)] font-black uppercase leading-none tracking-tight">
+        <h1 className="titre-page">
           Contact
         </h1>
         <div className="mt-[var(--vr-64)] grid gap-5 lg:grid-cols-2">
@@ -54,7 +55,7 @@ export default async function ContactPage() {
               <div className="card p-6">
                 <div className="eyebrow mb-2.5">INSTAGRAM</div>
                 <a
-                  href={`https://www.instagram.com/${settings.instagramHandle.replace(/^@/, "")}/`}
+                  href={lienInstagram(settings.instagramHandle)}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-xl font-bold transition-colors hover:text-secondary"

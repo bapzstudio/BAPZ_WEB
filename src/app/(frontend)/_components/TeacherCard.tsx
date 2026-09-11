@@ -9,7 +9,7 @@ export function TeacherCard({ teacher }: { teacher: Teacher }) {
   return (
     <Link
       href={`/profs/${teacher.slug}`}
-      className="block h-full rounded-[15px] focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white/60"
+      className="block h-full rounded-[15px]"
     >
       <article
         data-glow-card

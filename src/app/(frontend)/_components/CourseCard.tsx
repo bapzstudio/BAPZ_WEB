@@ -18,7 +18,7 @@ export function CourseCard({
     // réserver"). Elle ouvre le parcours de réservation, ce cours déjà choisi.
     <Link
       href={lienReservation({ type: "essai", cours: course.slug })}
-      className="group block h-full rounded-xl focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-white/60"
+      className="group block h-full rounded-xl"
     >
       {/* `.card` reste la carte mesurée de l'accueil (bordure plate, rayon 12),
           différente de la `.cal-card` des autres pages : c'est la maquette qui
