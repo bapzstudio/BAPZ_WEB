@@ -304,7 +304,7 @@ export interface Media {
 export interface PricingPlan {
   id: number;
   /**
-   * Détermine dans quelle section de la page Tarifs la formule apparaît. « Offre d'essai » s'affiche en bandeau pleine largeur, en haut de la page.
+   * Détermine dans quelle section de la page Tarifs la formule apparaît. « Offre d'essai » s'affiche en bandeau pleine largeur, en haut de la page, et son prix apparaît aussi sur le bouton « Cours d'essai » de l'accueil.
    */
   group: 'carte' | 'abonnement' | 'essai';
   /**
@@ -756,10 +756,6 @@ export interface SiteSetting {
    */
   heroSubtitle?: string | null;
   /**
-   * Texte du bouton blanc de la bannière, qui ouvre une demande de cours d'essai. Ex : "Cours d'essai - 10 €". Penser à le mettre à jour si le prix de l'essai change dans Tarifs.
-   */
-  trialLabel?: string | null;
-  /**
    * Numéro, rue et commune. Affichée sur la page Contact et transmise à Google.
    */
   address?: string | null;
@@ -838,7 +834,6 @@ export interface SiteSetting {
 export interface SiteSettingsSelect<T extends boolean = true> {
   heroTitle?: T;
   heroSubtitle?: T;
-  trialLabel?: T;
   address?: T;
   city?: T;
   phone?: T;

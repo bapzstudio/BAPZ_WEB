@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { formaterHeure } from "@/lib/reservation/format";
 import { lienReservation } from "@/lib/reservation/liens";
 import type { Course } from "@/lib/types";
 
@@ -31,7 +32,7 @@ export function CourseCard({
           {/* La maquette affiche ce libellé très sombre (#3c3c3c) : remonté à 45%
               d'opacité pour rester lisible une fois rempli avec de vraies données. */}
           <div className="font-mono text-[11px] uppercase tracking-[0.12em] text-white/45">
-            {course.dayOfWeek} - {course.startTime}
+            {course.dayOfWeek} - {formaterHeure(course.startTime)}
           </div>
           {/* Sur téléphone, une flèche remplace la pastille « Réserver » : la
               carte entière est déjà le lien, la pastille répétée sur chaque

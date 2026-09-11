@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { lienReservation } from "@/lib/reservation/liens";
-import type { Course, SiteSettings } from "@/lib/types";
+import type { Course, PricingPlan, SiteSettings } from "@/lib/types";
 import { CourseCard } from "../_components/CourseCard";
 import { FoldText } from "../_components/FoldText";
 import { Marquee } from "../_components/Marquee";
@@ -10,9 +10,12 @@ import { Reveal } from "../_components/Reveal";
 export function Hero({
   settings,
   courses,
+  essai,
 }: {
   settings: SiteSettings;
   courses: Course[];
+  /** Tarif « Offre d'essai » : son prix est repris sur le bouton. */
+  essai?: PricingPlan;
 }) {
   const handle = settings.instagramHandle?.toUpperCase() ?? "@BAPZ.STUDIO";
   const city = settings.city?.toUpperCase() ?? "METZ";
@@ -54,7 +57,9 @@ export function Hero({
               href={lienReservation({ type: "essai" })}
               className="pill pill-light order-first w-full sm:order-none sm:w-auto"
             >
-              {settings.trialLabel ?? "Cours d'essai"}
+              {/* Le prix vient du tarif lui-même : saisi une seule fois, dans
+                  Tarifs, il ne peut plus différer entre le bouton et la page. */}
+              {essai ? `Cours d'essai - ${essai.price}` : "Cours d'essai"}
             </Link>
           </div>
         </div>

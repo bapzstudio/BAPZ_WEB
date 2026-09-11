@@ -27,7 +27,7 @@ export const PricingPlans: CollectionConfig = {
       ],
       admin: {
         description:
-          "Détermine dans quelle section de la page Tarifs la formule apparaît. « Offre d'essai » s'affiche en bandeau pleine largeur, en haut de la page.",
+          "Détermine dans quelle section de la page Tarifs la formule apparaît. « Offre d'essai » s'affiche en bandeau pleine largeur, en haut de la page, et son prix apparaît aussi sur le bouton « Cours d'essai » de l'accueil.",
       },
     },
     {

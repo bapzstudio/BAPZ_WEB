@@ -177,7 +177,6 @@ const seed = async () => {
       address: siteSettings.address,
       city: siteSettings.city,
       instagramHandle: siteSettings.instagramHandle,
-      trialLabel: siteSettings.trialLabel,
       marqueeItems: siteSettings.marqueeItems?.map((text) => ({ text })),
       logo: logoId,
     },

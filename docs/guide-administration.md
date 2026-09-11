@@ -208,9 +208,8 @@ Chaque formule appartient à une **Section** :
 - **Mettre en avant** : bordure plus marquée. **Une seule formule par
   section**, sinon plus rien ne ressort.
 
-> **Le prix du cours d'essai apparaît à deux endroits** : dans Tarifs, et sur
-> le bouton blanc de la bannière d'accueil (Réglages du site → Bannière
-> d'accueil → Bouton cours d'essai). Pense à changer les deux.
+> **Le prix du cours d'essai** saisi dans Tarifs apparaît aussi sur le bouton
+> blanc « Cours d'essai » de l'accueil : il suffit de le changer ici.
 
 ---
 
@@ -239,8 +238,9 @@ Une seule page, rangée en trois blocs.
 - **Titre** : le grand titre. Un retour à la ligne dans le champ coupe le
   titre au même endroit sur le site.
 - **Sous-titre** : le texte en dessous.
-- **Bouton cours d'essai** : le texte du bouton blanc (ex :
-  `Cours d'essai - 10 €`).
+
+Le bouton blanc « Cours d'essai » reprend tout seul le prix du tarif d'essai
+(voir partie 7).
 
 ### Coordonnées
 

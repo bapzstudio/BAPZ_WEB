@@ -13,11 +13,9 @@ export const metadata: Metadata = pageMetadata({
 });
 
 export default async function ProfsPage() {
-  const teachers = await getTeachers();
-
-  // Seuls les profs ayant un portrait et une bio sont présentés ici. Les
-  // intervenants du calendrier sans fiche fournie ne s'affichent pas.
-  const profiles = teachers.filter((t) => t.photo && t.bio?.length);
+  // Seuls les profs qui ont une fiche (portrait et présentation) : la règle
+  // vit dans `getTeachers`, la même que pour leur page personnelle.
+  const profiles = await getTeachers();
 
   return (
     <PageTransition>

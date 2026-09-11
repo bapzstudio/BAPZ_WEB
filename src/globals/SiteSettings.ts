@@ -37,15 +37,6 @@ export const SiteSettings: GlobalConfig = {
               "Le texte sous le titre. Les retours à la ligne sont conservés. Il sert aussi de description du studio pour Google.",
           },
         },
-        {
-          name: "trialLabel",
-          type: "text",
-          label: "Bouton cours d'essai",
-          admin: {
-            description:
-              'Texte du bouton blanc de la bannière, qui ouvre une demande de cours d\'essai. Ex : "Cours d\'essai - 10 €". Penser à le mettre à jour si le prix de l\'essai change dans Tarifs.',
-          },
-        },
       ],
     },
     {

@@ -84,7 +84,6 @@ export async function getSiteSettings(): Promise<SiteSettings> {
           .filter((row) => row.days && row.hours)
       : [],
     instagramHandle: (doc.instagramHandle as string) || undefined,
-    trialLabel: (doc.trialLabel as string) || undefined,
     marqueeItems: toStrings(doc.marqueeItems, "text"),
     logo: toImage(doc.logo),
   };
@@ -169,12 +168,16 @@ export async function getTeacherBySlug(
   return { teacher: toTeacher(doc), courses: courses.map(toCourse) };
 }
 
+/**
+ * Les profs présentés sur `/profs` : ceux qui ont une fiche, selon la même
+ * règle que leur page. Les autres restent choisissables comme prof d'un cours.
+ */
 export async function getTeachers(): Promise<Teacher[]> {
   const { docs } = await (
     await payload()
   ).find({ collection: "teachers", limit: 100, sort: "order", depth: 1 });
 
-  return docs.map(toTeacher);
+  return docs.filter(aUneFiche).map(toTeacher);
 }
 
 export async function getPricingPlans(): Promise<PricingPlan[]> {

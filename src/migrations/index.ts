@@ -5,6 +5,7 @@ import * as migration_20260910_082126_parcours_reservation from './20260910_0821
 import * as migration_20260910_090517_salles_photo_tarif from './20260910_090517_salles_photo_tarif';
 import * as migration_20260910_104950_reglages_telephone_horaires from './20260910_104950_reglages_telephone_horaires';
 import * as migration_20260910_130815_reglages_informations_legales from './20260910_130815_reglages_informations_legales';
+import * as migration_20260911_074738_retrait_bouton_essai from './20260911_074738_retrait_bouton_essai';
 
 export const migrations = [
   {
@@ -40,6 +41,11 @@ export const migrations = [
   {
     up: migration_20260910_130815_reglages_informations_legales.up,
     down: migration_20260910_130815_reglages_informations_legales.down,
-    name: '20260910_130815_reglages_informations_legales'
+    name: '20260910_130815_reglages_informations_legales',
+  },
+  {
+    up: migration_20260911_074738_retrait_bouton_essai.up,
+    down: migration_20260911_074738_retrait_bouton_essai.down,
+    name: '20260911_074738_retrait_bouton_essai'
   },
 ];

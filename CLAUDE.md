@@ -123,7 +123,16 @@ quel format. Le guide d'utilisation, ébauche du PDF, est
 Les pages lisent Payload sans `fetch`, donc Next les fige au build : sans ce
 hook, une modification faite dans l'admin n'apparaîtrait qu'au déploiement
 suivant. `pnpm dev` rend tout à la demande et ne permet pas de le constater —
-seul `pnpm build && pnpm start` le montre.
+seul `pnpm build && pnpm start` le montre. L'accueil est en plus régénéré
+toutes les heures (`revalidate = 3600`) : « Prochains cours » y dépend de
+l'heure (`lib/planning.ts`, calculé à l'heure de Paris, le serveur tournant en
+UTC).
+
+**Une donnée n'est saisie qu'une fois.** Le bouton « Cours d'essai » de
+l'accueil lit le prix du tarif « Offre d'essai » ; les heures passent toutes par
+`formaterHeure` (« 19h00 », en capitales dans les libellés Space Mono) ; la
+règle « un prof a une fiche » vit dans `queries.ts`, pour `/profs` comme pour
+les pages de prof.
 
 **Après un changement de collection** : `pnpm generate:types`, puis
 `pnpm payload migrate:create <nom>` et `pnpm payload migrate`.
@@ -140,6 +149,11 @@ par les migrations. Trois conséquences :
   pas déclencher ce garde-fou.
 - Un schéma qui « marche en local » ne prouve donc rien sur les migrations.
   Seule une base reconstruite depuis les seuls fichiers de migration le prouve.
+- **Retirer un champ bloque le serveur de dev.** Dès que la config change, il
+  veut supprimer la colonne et pose une question « perte de données ? » dans
+  son terminal ; lancé en arrière-plan, il reste figé et chaque page attend.
+  Créer et appliquer la migration **avant** de recharger une page, ou relancer
+  `pnpm dev` une fois la migration passée.
 
 ## Base de données et médias
 

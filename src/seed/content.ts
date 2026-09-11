@@ -220,9 +220,8 @@ export const pricingPlans: PricingPlan[] = [
   },
   {
     // À confirmer : seul tarif non transmis par la cliente. Il vient de la maquette,
-    // dont tous les autres prix se sont révélés faux. Il est aussi utilisé par
-    // le bouton d'accueil (`siteSettings.trialLabel`) : les deux sont à
-    // corriger ensemble.
+    // dont tous les autres prix se sont révélés faux. Son prix est aussi repris
+    // par le bouton « Cours d'essai » de l'accueil.
     _id: "essai",
     group: "essai",
     label: "Découverte",
@@ -265,8 +264,6 @@ export const siteSettings: SiteSettings = {
   city: "Metz",
   // Compte confirmé le 2026-09-10 : instagram.com/bapz.studio (avec un point).
   instagramHandle: "@bapz.studio",
-  // À confirmer : suit le tarif du cours d'essai ci-dessus.
-  trialLabel: "Cours d'essai - 10 €",
   marqueeItems: ["Heels", "Commercial", "Metz", "@bapz.studio"],
   // Logo réel reçu de la cliente (dossier /content, fond transparent).
   logo: { src: "/images/logo/bapz-logo.png", width: 600, height: 600 },

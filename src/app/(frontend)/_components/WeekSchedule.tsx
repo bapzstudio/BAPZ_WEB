@@ -1,33 +1,16 @@
 import Link from "next/link";
+import { formaterHeure, JOURS, minutes } from "@/lib/reservation/format";
 import { lienReservation } from "@/lib/reservation/liens";
 import type { Course } from "@/lib/types";
 import { ProximityGlow } from "./ProximityGlow";
-
-const WEEK_DAYS = [
-  "Lundi",
-  "Mardi",
-  "Mercredi",
-  "Jeudi",
-  "Vendredi",
-  "Samedi",
-  "Dimanche",
-];
 
 // Modèle déduit de la maquette : les cartes ne sont pas proportionnelles à la
 // durée (elles font toutes la même hauteur), elles sont rangées dans trois
 // bandes horaires et s'étendent sur les bandes que couvre leur créneau.
 const BAND_BOUNDS = [12 * 60, 19 * 60]; // matin | après-midi | soir
 
-const toMinutes = (time: string) => {
-  const [h, m] = time.split(":").map(Number);
-  return (h || 0) * 60 + (m || 0);
-};
-
-const bandOf = (minutes: number) =>
-  minutes < BAND_BOUNDS[0] ? 0 : minutes < BAND_BOUNDS[1] ? 1 : 2;
-
-/** "19:00" -> "19H00", comme sur la maquette. */
-const formatTime = (time: string) => time.replace(":", "H");
+const bandOf = (minute: number) =>
+  minute < BAND_BOUNDS[0] ? 0 : minute < BAND_BOUNDS[1] ? 1 : 2;
 
 type Placed = {
   course: Course;
@@ -38,11 +21,11 @@ type Placed = {
 
 function place(courses: Course[]): Placed[] {
   return courses.flatMap((course) => {
-    const day = WEEK_DAYS.indexOf(course.dayOfWeek);
+    const day = JOURS.indexOf(course.dayOfWeek);
     if (day === -1) return [];
-    const start = toMinutes(course.startTime);
+    const start = minutes(course.startTime);
     // -1 minute : un cours qui finit à 19:00 appartient encore à l'après-midi.
-    const end = Math.max(start, toMinutes(course.endTime) - 1);
+    const end = Math.max(start, minutes(course.endTime) - 1);
     return [{ course, day, startBand: bandOf(start), endBand: bandOf(end) }];
   });
 }
@@ -61,8 +44,10 @@ function CalendarCard({ course }: { course: Course }) {
         className="cal-card cal-glow relative flex h-full flex-col p-5"
       >
       <div className="flex items-baseline justify-between gap-2 font-mono text-[11px] text-rule">
-        <span>
-          {formatTime(course.startTime)} - {formatTime(course.endTime)}
+        {/* Même format d'heure que le reste du site (« 19h00 »), en capitales
+            comme sur la maquette : la salle, elle, garde sa casse. */}
+        <span className="uppercase">
+          {formaterHeure(course.startTime)} - {formaterHeure(course.endTime)}
         </span>
         {course.room && <span>{course.room}</span>}
       </div>
@@ -137,12 +122,12 @@ export function WeekSchedule({ courses }: { courses: Course[] }) {
     }
   }
 
-  const daysWithCourses = WEEK_DAYS.map((day, index) => ({
+  const daysWithCourses = JOURS.map((day, index) => ({
     day,
     courses: placed
       .filter((p) => p.day === index)
       .map((p) => p.course)
-      .sort((a, b) => toMinutes(a.startTime) - toMinutes(b.startTime)),
+      .sort((a, b) => minutes(a.startTime) - minutes(b.startTime)),
   })).filter((d) => d.courses.length > 0);
 
   return (
@@ -150,7 +135,7 @@ export function WeekSchedule({ courses }: { courses: Course[] }) {
       {/* Grille hebdomadaire complète, à partir de xl seulement */}
       <div className="hidden xl:block">
         <div className="grid grid-cols-7 gap-x-7.5">
-          {WEEK_DAYS.map((day) => (
+          {JOURS.map((day) => (
             <div key={day} className="text-center">
               <DayHeader day={day} />
             </div>
