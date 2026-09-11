@@ -27,6 +27,22 @@ const dirname = path.dirname(fileURLToPath(import.meta.url));
 const publicDir = path.resolve(dirname, "../../public");
 
 const seed = async () => {
+  // Garde-fou : le seed vide les collections de la base pointée par
+  // DATABASE_URL, quelle qu'elle soit. Lancé par erreur sur la base de
+  // production, il effacerait tout ce que la cliente a saisi.
+  if (!process.argv.includes("confirmer")) {
+    let hote = "inconnue";
+    try {
+      hote = new URL(process.env.DATABASE_URL ?? "").hostname;
+    } catch {
+      // Adresse illisible : on garde « inconnue ».
+    }
+    console.error(
+      `\nLe seed EFFACE les cours, profs, tarifs, salles, la galerie et les médias de la base :\n  ${hote}\n\nPour confirmer :  pnpm seed confirmer\n`
+    );
+    process.exit(1);
+  }
+
   const payload = await getPayload({ config });
 
   // --- table rase ------------------------------------------------------

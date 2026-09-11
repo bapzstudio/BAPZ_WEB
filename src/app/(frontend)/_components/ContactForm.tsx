@@ -1,8 +1,9 @@
 "use client";
 
 import Link from "next/link";
-import { useActionState } from "react";
+import { useActionState, useEffect, useRef, useState } from "react";
 import { submitContact, type ContactState } from "../contact/actions";
+import { Turnstile, TURNSTILE_ACTIF, type TurnstileHandle } from "./Turnstile";
 
 const INITIAL: ContactState = { status: "idle" };
 
@@ -11,6 +12,14 @@ const field =
 
 export function ContactForm() {
   const [state, action, pending] = useActionState(submitContact, INITIAL);
+  const [jeton, setJeton] = useState<string | null>(null);
+  const turnstile = useRef<TurnstileHandle>(null);
+
+  // Un jeton anti-robot ne sert qu'une fois : après un envoi refusé, on en
+  // redemande un pour le prochain essai.
+  useEffect(() => {
+    if (state.status === "error") turnstile.current?.reinitialiser();
+  }, [state]);
 
   if (state.status === "sent") {
     return (
@@ -56,9 +65,11 @@ export function ContactForm() {
         className={`resize-y ${field}`}
       />
 
+      <Turnstile ref={turnstile} onJeton={setJeton} />
+
       <button
         type="submit"
-        disabled={pending}
+        disabled={pending || (TURNSTILE_ACTIF && !jeton)}
         className="pill pill-light mt-2 disabled:opacity-50"
       >
         {pending ? "Envoi…" : "Envoyer"}

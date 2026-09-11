@@ -384,3 +384,17 @@ export async function enregistrerDemande(
     email: demande.email,
   };
 }
+
+/** Nombre de demandes envoyées depuis cette adresse sur la période donnée. */
+export async function compterDemandesRecentes(email: string, periodeMs: number): Promise<number> {
+  const { totalDocs } = await (await payload()).count({
+    collection: "demandes",
+    where: {
+      and: [
+        { email: { equals: email } },
+        { createdAt: { greater_than: new Date(Date.now() - periodeMs).toISOString() } },
+      ],
+    },
+  });
+  return totalDocs;
+}

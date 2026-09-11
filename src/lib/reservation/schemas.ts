@@ -67,9 +67,12 @@ export const coordonneesSchema = z.object({
     .trim()
     .min(1, "Indique ton prénom")
     .max(80, "80 caractères au maximum"),
+  // En minuscules : la limite d'un accusé de réception par adresse ne doit pas
+  // se contourner en changeant une majuscule.
   email: z
     .string()
     .trim()
+    .toLowerCase()
     .email("Cette adresse e-mail semble invalide")
     .max(200, "200 caractères au maximum"),
   telephone: z

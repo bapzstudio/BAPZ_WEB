@@ -22,6 +22,7 @@ import { StepDemande } from "./steps/StepDemande";
 import { StepDetails } from "./steps/StepDetails";
 import { StepRecap, type ElementRecap } from "./steps/StepRecap";
 import { LIBELLE } from "./ui";
+import { Turnstile, TURNSTILE_ACTIF, type TurnstileHandle } from "../_components/Turnstile";
 
 const useIsomorphicLayoutEffect =
   typeof window !== "undefined" ? useLayoutEffect : useEffect;
@@ -74,6 +75,9 @@ export function ReservationFunnel({
   const [sens, setSens] = useState(1);
   const [envoiEnCours, setEnvoiEnCours] = useState(false);
   const [erreur, setErreur] = useState<string | null>(null);
+  // Jeton anti-robot du récapitulatif, redemandé après chaque envoi refusé.
+  const [jeton, setJeton] = useState<string | null>(null);
+  const turnstile = useRef<TurnstileHandle>(null);
   const [prenomEnvoye, setPrenomEnvoye] = useState<string | null>(null);
 
   // Focus clavier et lecteurs d'écran : après chaque changement d'étape voulu
@@ -185,7 +189,7 @@ export function ReservationFunnel({
   const envoyer = useCallback(async () => {
     setEnvoiEnCours(true);
     setErreur(null);
-    const resultat = await envoyerDemande(donnees);
+    const resultat = await envoyerDemande(donnees, jeton);
     setEnvoiEnCours(false);
     if (resultat.succes) {
       focusApresRendu.current = true;
@@ -194,7 +198,8 @@ export function ReservationFunnel({
       return;
     }
     setErreur(resultat.erreur);
-  }, [donnees, recommencer]);
+    turnstile.current?.reinitialiser();
+  }, [donnees, jeton, recommencer]);
 
   if (prenomEnvoye !== null) {
     return (
@@ -299,6 +304,8 @@ export function ReservationFunnel({
               {etape === 4 && <StepRecap elements={elements} onModifier={aller} />}
             </div>
 
+            {etape === 4 && <Turnstile ref={turnstile} onJeton={setJeton} />}
+
             {etape >= 1 && (
               <div className="mt-10 flex items-center justify-between gap-4">
                 <button
@@ -317,10 +324,14 @@ export function ReservationFunnel({
                   <button
                     type="button"
                     onClick={envoyer}
-                    disabled={envoiEnCours}
+                    disabled={envoiEnCours || (TURNSTILE_ACTIF && !jeton)}
                     className="pill pill-light disabled:opacity-50"
                   >
-                    {envoiEnCours ? "Envoi…" : "Envoyer ma demande"}
+                    {envoiEnCours
+                      ? "Envoi…"
+                      : TURNSTILE_ACTIF && !jeton
+                        ? "Vérification…"
+                        : "Envoyer ma demande"}
                   </button>
                 )}
               </div>

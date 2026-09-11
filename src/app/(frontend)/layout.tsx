@@ -55,8 +55,14 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
             pour le référencement local. */}
         <script
           type="application/ld+json"
+          // `<` échappé : `JSON.stringify` le laisse tel quel, et un
+          // `</script>` saisi dans les réglages fermerait la balise pour
+          // injecter du HTML dans la page.
           dangerouslySetInnerHTML={{
-            __html: JSON.stringify(structuredData(settings, priceRange)),
+            __html: JSON.stringify(structuredData(settings, priceRange)).replace(
+              /</g,
+              "\\u003c"
+            ),
           }}
         />
         {/* Lien d'évitement : invisible tant qu'il n'a pas le focus. Au

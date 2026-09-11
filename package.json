@@ -19,6 +19,7 @@
   "dependencies": {
     "@hookform/resolvers": "^5.9.1",
     "@payloadcms/db-postgres": "3.88.0",
+    "@payloadcms/email-resend": "3.88.0",
     "@payloadcms/next": "3.88.0",
     "@payloadcms/richtext-lexical": "3.88.0",
     "@payloadcms/storage-uploadthing": "3.88.0",
@@ -33,7 +34,7 @@
     "react-dom": "19.2.6",
     "react-hook-form": "^7.87.0",
     "resend": "^6.26.0",
-    "sharp": "0.34.2",
+    "sharp": "0.35.4",
     "zod": "^4.6.1",
     "zustand": "^5.0.15"
   },
@@ -55,6 +56,11 @@
     "pnpm": "^9 || ^10 || ^11"
   },
   "pnpm": {
+    "overrides": {
+      "sharp": "0.35.4",
+      "effect": "^3.20.0",
+      "dompurify": "^3.4.13"
+    },
     "onlyBuiltDependencies": [
       "sharp",
       "esbuild",

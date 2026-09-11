@@ -1,10 +1,14 @@
 "use server";
 
+import { verifierHumain } from "@/lib/antispam";
 import { sendReservationConfirmation, sendReservationRequest } from "@/lib/mail";
-import { enregistrerDemande } from "@/lib/queries";
+import { compterDemandesRecentes, enregistrerDemande } from "@/lib/queries";
 import { demandeSchema } from "./schemas";
 
 export type ResultatEnvoi = { succes: true } | { succes: false; erreur: string };
+
+/** Un seul accusé de réception par adresse sur cette période. */
+const DELAI_ACCUSE_MS = 24 * 60 * 60 * 1000;
 
 /**
  * Traite l'envoi du parcours de réservation.
@@ -14,7 +18,10 @@ export type ResultatEnvoi = { succes: true } | { succes: false; erreur: string }
  * et le visiteur voit la confirmation : lui annoncer un échec le ferait
  * recommencer, et la cliente recevrait la même demande deux fois.
  */
-export async function envoyerDemande(donnees: unknown): Promise<ResultatEnvoi> {
+export async function envoyerDemande(
+  donnees: unknown,
+  jetonAntiRobot?: string | null
+): Promise<ResultatEnvoi> {
   // Champ leurre, comme sur le formulaire de contact : rempli, on répond
   // « envoyé » sans rien faire — un robot à qui l'on annonce l'échec réessaie.
   const leurre = (donnees as Record<string, unknown> | null)?.website;
@@ -28,6 +35,14 @@ export async function envoyerDemande(donnees: unknown): Promise<ResultatEnvoi> {
       succes: false,
       erreur:
         "Certaines informations manquent ou sont invalides. Reviens sur l'étape concernée.",
+    };
+  }
+
+  // Le leurre n'arrête que les robots naïfs : la vraie barrière est ici.
+  if (!(await verifierHumain(jetonAntiRobot))) {
+    return {
+      succes: false,
+      erreur: "La vérification anti-robot n'a pas abouti. Réessaie dans un instant.",
     };
   }
 
@@ -55,8 +70,13 @@ export async function envoyerDemande(donnees: unknown): Promise<ResultatEnvoi> {
   } catch (error) {
     console.error("Parcours de réservation, mail à la cliente :", error);
   }
+
+  // L'accusé part vers l'adresse saisie par le visiteur : on en limite le
+  // nombre, pour que le formulaire ne serve pas à écrire en boucle à une
+  // adresse qui n'a rien demandé. La demande, elle, est toujours enregistrée.
   try {
-    await sendReservationConfirmation(resume);
+    const recentes = await compterDemandesRecentes(resume.email, DELAI_ACCUSE_MS);
+    if (recentes <= 1) await sendReservationConfirmation(resume);
   } catch (error) {
     console.error("Parcours de réservation, accusé de réception :", error);
   }

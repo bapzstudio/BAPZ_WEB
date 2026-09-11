@@ -8,10 +8,10 @@ français.
 
 ```bash
 pnpm install
-cp .env.example .env      # puis remplir les trois variables
+cp .env.example .env      # puis remplir les variables
 pnpm payload migrate      # applique le schéma à la base
 pnpm dev                  # site + admin sur http://localhost:3000
-pnpm seed                 # (re)remplit la base avec le contenu d'amorçage
+pnpm seed confirmer       # VIDE puis remplit la base avec le contenu d'amorçage
 ```
 
 Au premier lancement, `/admin` demande de créer un compte administrateur.
@@ -33,7 +33,9 @@ la résolution des dépendances.
 | `RESEND_API_KEY` | envoi du formulaire de contact |
 | `CONTACT_TO_EMAIL` | boîte qui reçoit les messages du formulaire |
 | `CONTACT_FROM_EMAIL` | facultatif, une fois un domaine vérifié chez Resend |
-| `NEXT_PUBLIC_SITE_URL` | adresse publique, sans barre finale (URL canoniques, sitemap, partage) |
+| `NEXT_PUBLIC_SITE_URL` | adresse publique, sans barre finale (URL canoniques, sitemap, partage, protection CSRF de l'admin) |
+| `NEXT_PUBLIC_TURNSTILE_SITE_KEY` | clé publique de la vérification anti-robot Cloudflare Turnstile |
+| `TURNSTILE_SECRET_KEY` | clé secrète Turnstile ; absente en production, les formulaires refusent tout envoi |
 
 ## Structure
 

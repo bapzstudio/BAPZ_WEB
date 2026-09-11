@@ -1,5 +1,6 @@
 "use server";
 
+import { verifierHumain } from "@/lib/antispam";
 import { sendContactMessage } from "@/lib/mail";
 
 export type ContactState = {
@@ -16,9 +17,9 @@ const MAX = { name: 100, email: 200, message: 4000 };
  * les robots remplissent volontiers. Quand il est rempli, on répond « envoyé »
  * sans rien envoyer — un robot à qui l'on annonce l'échec réessaie.
  *
- * Il n'y a pas de limitation de débit : elle demanderait un stockage partagé
- * entre instances. À ajouter (Turnstile ou compteur externe) si du spam
- * passe le leurre.
+ * Le leurre n'arrête que les robots naïfs : un script qui lit le formulaire
+ * l'évite sans effort. La vraie barrière est la vérification Cloudflare
+ * Turnstile (`lib/antispam.ts`), contrôlée une fois les champs validés.
  */
 export async function submitContact(
   _prev: ContactState,
@@ -44,6 +45,13 @@ export async function submitContact(
     message.length > MAX.message
   ) {
     return { status: "error", message: "Le message est trop long." };
+  }
+
+  if (!(await verifierHumain(formData.get("cf-turnstile-response")))) {
+    return {
+      status: "error",
+      message: "La vérification anti-robot n'a pas abouti. Réessaie dans un instant.",
+    };
   }
 
   try {

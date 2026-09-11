@@ -18,7 +18,7 @@ d'un shell frais.
 pnpm install
 pnpm dev                  # site + admin sur http://localhost:3000
 pnpm build                # seul contrôle de types couvrant tout le projet
-pnpm seed                 # (re)remplit la base depuis src/seed/content.ts
+pnpm seed confirmer       # VIDE puis remplit la base depuis src/seed/content.ts
 pnpm generate:types       # après un changement de collection
 pnpm generate:importmap   # après tout ajout de composant admin personnalisé
 pnpm payload migrate      # applique les migrations en attente
@@ -174,13 +174,15 @@ vérifié, renseigner `CONTACT_FROM_EMAIL` et la contrainte tombe.
 
 Anti-spam : un champ leurre `website`, hors flux et hors tabulation. Rempli, le
 message est ignoré et le visiteur voit quand même une confirmation — annoncer
-l'échec à un robot le fait réessayer. Pas de limitation de débit : elle
-demanderait un stockage partagé entre instances. `delivered@resend.dev` est un
-destinataire simulé, pratique pour tester sans écrire à personne.
+l'échec à un robot le fait réessayer. Le leurre n'arrête que les robots naïfs :
+la vraie barrière est Cloudflare Turnstile (voir « Sécurité »).
+`delivered@resend.dev` est un destinataire simulé, pratique pour tester sans
+écrire à personne.
 
 **Le seed est destructeur.** `src/seed/index.ts` vide les collections avant de
 réinsérer. À réserver au développement : il effacerait les saisies de la
-cliente.
+cliente. Il refuse de tourner sans l'argument `confirmer` et affiche la base
+visée : `pnpm seed confirmer`.
 
 ## Parcours de réservation
 
@@ -213,7 +215,11 @@ Règles :
 - Les valeurs saisies sont échappées avant d'entrer dans le HTML du mail.
 - L'accusé de réception au visiteur (récapitulatif de sa demande, réponse
   dirigée vers la boîte du studio) ne part qu'une fois `CONTACT_FROM_EMAIL`
-  renseigné ; avant, Resend le refuserait.
+  renseigné ; avant, Resend le refuserait. **Il ne recopie aucun texte libre**
+  (ni prénom, ni message, ni date saisie) et **part au plus une fois par
+  adresse sur 24 h** : il est envoyé à l'adresse que tape le visiteur, sans
+  quoi le formulaire servirait à faire écrire le domaine du studio à n'importe
+  qui. Les e-mails sont enregistrés en minuscules pour que cette limite tienne.
 - `useReservationStore.persist` n'existe pas côté serveur : zustand n'attache
   son API que si le stockage est disponible. Y accéder sans garde fait
   répondre la page en 500.
@@ -273,6 +279,41 @@ alimentent le référencement local. La fourchette de prix est déduite des tari
 saisis, donc elle suit ce que la cliente modifie. **Les champs absents ne sont
 pas inventés** : horaires d'ouverture et téléphone apparaîtront dès qu'ils
 seront fournis et ajoutés à `SiteSettings`.
+
+## Sécurité
+
+Mesures posées après l'audit du 2026-09-11, chacune vérifiée sur le serveur :
+
+- **Anti-robot** : Cloudflare Turnstile, invisible sauf doute, sur le
+  formulaire de contact et l'envoi du parcours de réservation. Widget
+  `_components/Turnstile.tsx`, vérification serveur `lib/antispam.ts`.
+  Variables `NEXT_PUBLIC_TURNSTILE_SITE_KEY` et `TURNSTILE_SECRET_KEY` : en
+  local, les clés de test de Cloudflare (dans `.env.example`) ; en production,
+  celles d'un widget créé sur le domaine du site. **Sans clé secrète, tout envoi
+  est refusé en production** — volontairement, pour qu'un oubli se voie.
+- **Images** : pas de `remotePatterns`. Il en existait un pour `**.ufs.sh` ; il
+  permettait à n'importe qui de faire traiter par notre optimiseur une image
+  hébergée ailleurs, et donc d'exposer les failles de `sharp`. Ne pas le
+  remettre : Payload sert toutes nos images par `/api/media/file/...`.
+- **En-têtes** (`next.config.ts`) : `nosniff`, `Referrer-Policy`, interdiction
+  d'affichage dans un cadre tiers, `Permissions-Policy`. HSTS est posé par
+  l'hébergeur.
+- **Payload** : `csrf` renseigné (adresse publique et adresses Vercel). Sans
+  liste, Payload accepte le cookie de connexion quelle que soit l'origine de la
+  requête. Conséquence : l'admin ouvert depuis une adresse absente de la liste
+  (`127.0.0.1`, un autre port) ne reconnaît plus la session.
+- **GraphQL désactivé** : le site n'en a pas l'usage, et le schéma de toutes les
+  collections était lisible par tous.
+- **E-mails de l'admin** (« Mot de passe oublié ») : adaptateur
+  `@payloadcms/email-resend`, même expéditeur que les formulaires. Tant qu'aucun
+  domaine n'est vérifié, Resend n'écrit qu'à l'adresse du compte : le compte
+  admin de la cliente doit donc porter cette adresse.
+- **Données structurées** : `<` échappé dans le JSON injecté par le layout.
+- **Dépendances** : `sharp` 0.35.4 ; surcharges pnpm pour `effect` et
+  `dompurify` (`package.json`). Restent deux alertes sans impact : `esbuild`
+  (outil de développement de drizzle-kit) et une faille Payload sans correctif
+  publié, qui ne concerne que des comptes aux droits différents — ici tous les
+  comptes ont les mêmes.
 
 ## Accessibilité, erreurs et performance
 
@@ -338,8 +379,8 @@ messages de contact envoyés par mail sans être enregistrés, aucun cookie ni
 outil de mesure côté visiteur, saisie du parcours gardée dans le
 `sessionStorage` de l'onglet. **Toute nouvelle collecte** — mesure d'audience,
 champ de formulaire, service tiers — **doit y être ajoutée** en même temps
-que le code. La liste des prestataires (Neon, Resend, hébergeur) est à relire
-au déploiement.
+que le code. La liste des prestataires (Neon, Resend, Cloudflare, hébergeur)
+est à relire au déploiement.
 
 ## Contenu
 

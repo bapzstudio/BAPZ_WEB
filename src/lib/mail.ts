@@ -20,6 +20,18 @@ import type { ResumeDemande } from "./types";
  */
 const FALLBACK_FROM = "BAPZ Studio <onboarding@resend.dev>";
 
+/**
+ * L'expéditeur découpé en nom et adresse, forme qu'attend l'adaptateur e-mail
+ * de Payload (« Mot de passe oublié » de l'admin).
+ */
+export function expediteur(): { nom: string; adresse: string } {
+  const brut = process.env.CONTACT_FROM_EMAIL || FALLBACK_FROM;
+  const morceaux = brut.match(/^\s*(.*?)\s*<([^>]+)>\s*$/);
+  return morceaux
+    ? { nom: morceaux[1] || "BAPZ Studio", adresse: morceaux[2].trim() }
+    : { nom: "BAPZ Studio", adresse: brut.trim() };
+}
+
 export type ContactMessage = {
   name: string;
   email: string;
@@ -128,28 +140,32 @@ const tableauHtml = (lignes: ResumeDemande["lignes"]) =>
     .join("")}</table>`;
 
 /**
+ * Lignes du récapitulatif reprises dans l'accusé de réception : seulement
+ * celles dont la valeur vient du catalogue ou d'un format contrôlé.
+ */
+const LIGNES_ACCUSE = new Set(["Demande", "Cours", "Formule", "Salle", "Niveau", "Personnes"]);
+
+/**
  * Accusé de réception au visiteur, avec le récapitulatif de sa demande.
  *
  * Seulement une fois un domaine vérifié chez Resend (`CONTACT_FROM_EMAIL`) :
  * avant cela, le compte ne peut écrire qu'à sa propre adresse, et l'envoi au
  * visiteur échouerait à coup sûr.
  *
- * Prénom et e-mail sont retirés du récapitulatif : la personne les connaît.
- * La réponse est dirigée vers la boîte du studio, pour qu'un « je me suis
+ * Aucun texte libre n'y est recopié — ni prénom, ni message, ni date saisie.
+ * L'adresse de destination est celle que tape le visiteur : si l'accusé
+ * reprenait ce qu'il écrit, n'importe qui pourrait faire envoyer par le
+ * domaine du studio un message de son choix à l'adresse de son choix. La
+ * réponse est dirigée vers la boîte du studio, pour qu'un « je me suis
  * trompée de jour » arrive à quelqu'un.
  */
 export async function sendReservationConfirmation(demande: ResumeDemande): Promise<void> {
   if (!process.env.CONTACT_FROM_EMAIL) return;
   const { resend, to, from } = configuration();
 
-  const lignes = demande.lignes.filter(
-    (ligne) => ligne.label !== "Prénom" && ligne.label !== "E-mail"
-  );
+  const lignes = demande.lignes.filter((ligne) => LIGNES_ACCUSE.has(ligne.label));
   const intro =
     "On a bien reçu ta demande. Ce n'est pas encore une réservation : on revient vers toi très vite pour la confirmer.";
-  const messageHtml = demande.message
-    ? `<p style="margin:24px 0 8px;color:#707070">Ton message</p><p style="margin:0;white-space:pre-wrap">${echapper(demande.message)}</p>`
-    : "";
 
   const { error } = await resend.emails.send({
     from,
@@ -157,19 +173,18 @@ export async function sendReservationConfirmation(demande: ResumeDemande): Promi
     replyTo: to,
     subject: "Ta demande a bien été reçue - BAPZ Studio",
     text: [
-      `Bonjour ${demande.prenom},`,
+      "Bonjour,",
       "",
       intro,
       "",
       "Récapitulatif :",
       ...lignes.map((ligne) => `${ligne.label} : ${ligne.valeur}`),
-      demande.message ? `\nTon message :\n${demande.message}` : "",
       "",
       "Une erreur dans ta demande ? Réponds simplement à ce mail.",
       "",
       "BAPZ Studio",
     ].join("\n"),
-    html: `<div style="font-family:Arial,Helvetica,sans-serif;max-width:600px;margin:0 auto;color:#080808"><div style="background:#080808;color:#ffffff;padding:22px 28px;font-size:16px;font-weight:700;letter-spacing:.08em">DEMANDE REÇUE</div><div style="padding:24px 28px"><p style="margin:0 0 8px;font-size:15px">Bonjour ${echapper(demande.prenom)},</p><p style="margin:0 0 20px;font-size:15px;line-height:1.5">${intro}</p>${tableauHtml(lignes)}${messageHtml}<p style="margin:28px 0 0;font-size:13px;color:#707070">Une erreur dans ta demande ? Réponds simplement à ce mail.</p><p style="margin:16px 0 0;font-size:13px;font-weight:700;letter-spacing:.08em">BAPZ STUDIO</p></div></div>`,
+    html: `<div style="font-family:Arial,Helvetica,sans-serif;max-width:600px;margin:0 auto;color:#080808"><div style="background:#080808;color:#ffffff;padding:22px 28px;font-size:16px;font-weight:700;letter-spacing:.08em">DEMANDE REÇUE</div><div style="padding:24px 28px"><p style="margin:0 0 8px;font-size:15px">Bonjour,</p><p style="margin:0 0 20px;font-size:15px;line-height:1.5">${intro}</p>${tableauHtml(lignes)}<p style="margin:28px 0 0;font-size:13px;color:#707070">Une erreur dans ta demande ? Réponds simplement à ce mail.</p><p style="margin:16px 0 0;font-size:13px;font-weight:700;letter-spacing:.08em">BAPZ STUDIO</p></div></div>`,
   });
 
   if (error) {

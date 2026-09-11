@@ -55,6 +55,13 @@ export default async function ConfidentialitePage() {
             enregistré sur le site.
           </p>
           <p>
+            <strong className="text-foreground">Au moment d&apos;envoyer un formulaire</strong>
+            , une vérification anti-robot (Cloudflare Turnstile) examine des
+            informations techniques : ton adresse IP et des caractéristiques de ton
+            navigateur. Elles servent uniquement à bloquer les envois automatisés
+            (intérêt légitime du studio à protéger ses formulaires, article 6.1.f).
+          </p>
+          <p>
             Rien d&apos;autre : pas de compte visiteur, pas de mesure d&apos;audience,
             pas de publicité.
           </p>
@@ -69,6 +76,7 @@ export default async function ConfidentialitePage() {
           <ul className="flex list-disc flex-col gap-1.5 pl-5">
             <li>Neon, pour la base de données où sont enregistrées les demandes, hébergée dans l&apos;Union européenne (Francfort) ;</li>
             <li>Resend, pour l&apos;envoi des e-mails ;</li>
+            <li>Cloudflare, pour la vérification anti-robot des formulaires ;</li>
             <li>l&apos;hébergeur du site, indiqué dans les{" "}
               <Link href="/mentions-legales" className={lien}>mentions légales</Link>.
             </li>
