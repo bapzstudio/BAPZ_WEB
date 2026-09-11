@@ -102,6 +102,7 @@ export function structuredData(settings: SiteSettings, priceRange?: string) {
       },
     }),
     ...(settings.phone && { telephone: settings.phone }),
+    ...(settings.email && { email: settings.email }),
     // Les horaires restent hors des données structurées : saisis en texte
     // libre (« Lundi - Vendredi »), ils ne se traduisent pas sans risque dans
     // le format strict attendu par schema.org.

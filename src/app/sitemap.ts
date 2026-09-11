@@ -13,6 +13,8 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     { chemin: "/contact", priorite: 0.7 },
     { chemin: "/reserver", priorite: 0.8 },
     { chemin: "/galerie", priorite: 0.5 },
+    { chemin: "/mentions-legales", priorite: 0.2 },
+    { chemin: "/confidentialite", priorite: 0.2 },
   ];
 
   const profs = (await getTeacherSlugs()).map((slug) => ({

@@ -122,6 +122,7 @@ Le style vient de Tailwind 4, chargé par `@import "tailwindcss"` en tête de
 | Contact | Formulaire branché ; téléphone et horaires éditables dans les réglages, à fournir |
 | Réserver (`/reserver`) | Parcours en étapes depuis tous les boutons d'action ; demandes enregistrées dans l'admin |
 | Galerie | Branchée sur l'admin ; vide pour l'instant, elle renvoie vers Instagram |
+| Mentions légales, Confidentialité | Rédigées ; informations légales à saisir dans les Réglages de l'admin |
 
 ## Prochaines étapes
 

@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { coordonneesFormSchema, type CoordonneesData } from "@/lib/reservation/schemas";
@@ -66,7 +67,14 @@ export function StepCoordonnees({
       </Champ>
 
       <p className="text-[13px] leading-snug text-tertiary">
-        Tes coordonnées servent uniquement à répondre à ta demande.
+        Tes coordonnées servent uniquement à répondre à ta demande.{" "}
+        {/* Même onglet : la saisie est conservée, le retour ramène à cette étape. */}
+        <Link
+          href="/confidentialite"
+          className="underline underline-offset-4 transition-colors hover:text-foreground"
+        >
+          En savoir plus
+        </Link>
       </p>
     </form>
   );

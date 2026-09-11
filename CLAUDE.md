@@ -85,6 +85,21 @@ Deux pages débordent encore à 1080, et c'est du contenu, pas de l'espacement :
 montrait un, d'où une seconde rangée) et `/profs` d'une trentaine de pixels,
 les bios se répartissant sur plus de lignes qu'au rendu Figma.
 
+**Téléphone.** Les maquettes sont au format bureau ; en dessous de `sm`
+(640px), l'accueil a sa propre répartition, pour ne pas empiler les espacements
+du bureau (1 549px de haut à 390px, 901 après) :
+
+- boutons du hero pleine largeur, le cours d'essai en premier ; sous-titre
+  sans le retour à la ligne calé sur la maquette ;
+- « Prochains cours » en carrousel horizontal à arrêt par carte (85 % de la
+  largeur) au lieu de trois cartes empilées ; sur mobile la pastille
+  « Réserver » des cartes devient une flèche ;
+- pied de page sur deux lignes, sans les disciplines que le bandeau affiche
+  déjà.
+
+Tout passe par des classes `sm:` : au-dessus, les valeurs de la maquette
+restent intactes.
+
 **Une seule interaction pour toutes les cartes cliquables.** Elles n'ont pas
 toutes la même apparence — l'accueil utilise `.card` (bordure plate, rayon 12)
 et les autres pages `.cal-card` (bordure en dégradé, rayon 15), parce que c'est
@@ -310,6 +325,22 @@ Restent signalés, et ce sont des choix de design, pas des oublis :
 - LCP autour de 3 s en 4G simulée, sur un texte : la page est prête plus tôt
   (FCP 0,9 s).
 
+## Pages légales
+
+`/mentions-legales` et `/confidentialite` lisent les Réglages (bloc
+« Informations légales » et e-mail de contact). Un champ vide s'affiche
+« À compléter » plutôt que de disparaître : une mention obligatoire manquante
+doit se voir avant la mise en ligne.
+
+**La page Confidentialité décrit ce que le site fait réellement**, vérifié dans
+le code : demandes de réservation enregistrées en base et envoyées par mail,
+messages de contact envoyés par mail sans être enregistrés, aucun cookie ni
+outil de mesure côté visiteur, saisie du parcours gardée dans le
+`sessionStorage` de l'onglet. **Toute nouvelle collecte** — mesure d'audience,
+champ de formulaire, service tiers — **doit y être ajoutée** en même temps
+que le code. La liste des prestataires (Neon, Resend, hébergeur) est à relire
+au déploiement.
+
 ## Contenu
 
 `content/` contient les notes reçues de la cliente et le logo vectoriel. Les
@@ -325,6 +356,7 @@ restent hors du repo, dans `../BAPZ/maquette` et `../BAPZ/content`.
 | Location (`/location`) | Redirigée vers `/tarifs#locations`, où sont les salles |
 | Contact | Formulaire branché ; téléphone et horaires éditables, encore vides |
 | Galerie | Branchée sur la rubrique Galerie ; vide, elle renvoie vers Instagram |
+| Mentions légales, Confidentialité | Rédigées ; informations légales à saisir dans les Réglages |
 
 ## Points ouverts
 
@@ -347,5 +379,10 @@ entre dans ce cadre et n'est donc plus un point ouvert.
   image. La maquette rend aussi la salle B réservable, alors qu'elle n'ouvre
   qu'en 2027 : elle reste non cliquable tant que « Année d'ouverture » est
   rempli.
-- Statut légal et SIRET manquants pour les mentions légales.
+- Informations légales : nom de l'entreprise, statut, SIRET, responsable de
+  la publication et e-mail sont à saisir par la cliente, l'hébergeur au
+  déploiement. D'ici là, les pages légales affichent « À compléter ».
+- Conservation des demandes : la page Confidentialité annonce trois ans au
+  plus après le dernier échange. Aucune suppression automatique : c'est une
+  opération manuelle, décrite dans le guide.
 - « Cours privés » : poste du devis absent de toutes les maquettes reçues.

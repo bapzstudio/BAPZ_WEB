@@ -772,6 +772,10 @@ export interface SiteSetting {
    */
   phone?: string | null;
   /**
+   * Adresse publique du studio. Affichée sur la page Contact et dans les pages légales, où elle sert aussi aux demandes sur les données personnelles.
+   */
+  email?: string | null;
+  /**
    * Une ligne par créneau, affichées sur la page Contact. Laisser vide : la rubrique Horaires n'apparaît pas.
    */
   openingHours?:
@@ -791,6 +795,26 @@ export interface SiteSetting {
    * Avec le @, ex : @bapz.studio. Affiché dans la bannière, en pied de page et sur la page Contact, où il renvoie vers le compte.
    */
   instagramHandle?: string | null;
+  /**
+   * Obligatoire avant la mise en ligne. Nom officiel tel qu'inscrit au registre, ou prénom et nom pour une micro-entreprise. Affiché dans les mentions légales et la page Confidentialité ; vide, elles indiquent « À compléter ».
+   */
+  legalName?: string | null;
+  /**
+   * Obligatoire. Ex : Micro-entreprise, SAS au capital de 1 000 €, Association loi 1901.
+   */
+  legalForm?: string | null;
+  /**
+   * Obligatoire. 14 chiffres, ex : 123 456 789 00012.
+   */
+  siret?: string | null;
+  /**
+   * Obligatoire. Prénom et nom de la personne responsable du contenu du site.
+   */
+  publisher?: string | null;
+  /**
+   * Obligatoire. Nom, adresse et téléphone de l'hébergeur, un élément par ligne. Rempli au moment de la mise en ligne.
+   */
+  host?: string | null;
   /**
    * Les mots qui défilent en bas de l'accueil. Les deux premiers apparaissent aussi au centre du pied de page : y mettre les disciplines phares.
    */
@@ -818,6 +842,7 @@ export interface SiteSettingsSelect<T extends boolean = true> {
   address?: T;
   city?: T;
   phone?: T;
+  email?: T;
   openingHours?:
     | T
     | {
@@ -826,6 +851,11 @@ export interface SiteSettingsSelect<T extends boolean = true> {
         id?: T;
       };
   instagramHandle?: T;
+  legalName?: T;
+  legalForm?: T;
+  siret?: T;
+  publisher?: T;
+  host?: T;
   marqueeItems?:
     | T
     | {

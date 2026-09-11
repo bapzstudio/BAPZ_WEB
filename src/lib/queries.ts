@@ -72,6 +72,12 @@ export async function getSiteSettings(): Promise<SiteSettings> {
     address: String(doc.address ?? ""),
     city: (doc.city as string) || undefined,
     phone: (doc.phone as string) || undefined,
+    email: (doc.email as string) || undefined,
+    legalName: (doc.legalName as string) || undefined,
+    legalForm: (doc.legalForm as string) || undefined,
+    siret: (doc.siret as string) || undefined,
+    publisher: (doc.publisher as string) || undefined,
+    host: (doc.host as string) || undefined,
     openingHours: Array.isArray(doc.openingHours)
       ? doc.openingHours
           .map((row) => ({ days: String(row?.days ?? ""), hours: String(row?.hours ?? "") }))

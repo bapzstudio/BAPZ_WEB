@@ -25,15 +25,23 @@ export function CourseCard({
           bordure comme partout ailleurs. */}
       <div
         data-glow-card
-        className="card card-interactive cal-glow relative flex h-full flex-col p-[30px]"
+        className="card card-interactive cal-glow relative flex h-full flex-col p-6 sm:p-[30px]"
       >
-        {/* La maquette affiche ce libellé très sombre (#3c3c3c) : remonté à 45%
-            d'opacité pour rester lisible une fois rempli avec de vraies données. */}
-        <div className="font-mono text-[11px] uppercase tracking-[0.12em] text-white/45">
-          {course.dayOfWeek} - {course.startTime}
+        <div className="flex items-baseline justify-between gap-4">
+          {/* La maquette affiche ce libellé très sombre (#3c3c3c) : remonté à 45%
+              d'opacité pour rester lisible une fois rempli avec de vraies données. */}
+          <div className="font-mono text-[11px] uppercase tracking-[0.12em] text-white/45">
+            {course.dayOfWeek} - {course.startTime}
+          </div>
+          {/* Sur téléphone, une flèche remplace la pastille « Réserver » : la
+              carte entière est déjà le lien, la pastille répétée sur chaque
+              carte alourdissait l'accueil. */}
+          <span aria-hidden className="text-tertiary sm:hidden">
+            →
+          </span>
         </div>
 
-        <div className="mt-6 text-[clamp(24px,1.55vw,29px)] font-black uppercase leading-none tracking-tight">
+        <div className="mt-4 text-[clamp(24px,1.55vw,29px)] font-black uppercase leading-none tracking-tight sm:mt-6">
           {course.title}
         </div>
 
@@ -47,7 +55,7 @@ export function CourseCard({
 
         {/* Pastille décorative : c'est le lien parent qui porte l'interaction,
             imbriquer un second élément cliquable serait invalide. */}
-        <div className="mt-4 inline-flex w-fit items-center gap-2 rounded-full border border-card-border px-3.5 py-1.5 text-[11px] font-bold uppercase tracking-[0.08em] transition-colors group-hover:border-white/35">
+        <div className="mt-4 hidden w-fit items-center gap-2 rounded-full sm:inline-flex border border-card-border px-3.5 py-1.5 text-[11px] font-bold uppercase tracking-[0.08em] transition-colors group-hover:border-white/35">
           Réserver
           <span
             aria-hidden

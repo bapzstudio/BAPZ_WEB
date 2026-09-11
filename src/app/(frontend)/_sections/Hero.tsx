@@ -36,15 +36,24 @@ export function Hero({
             <FoldText text={settings.heroTitle} splitBy="word" hinge="top" />
           </h1>
 
-          <p className="mt-11 max-w-160 whitespace-pre-line text-base leading-[1.3] text-secondary">
+          {/* Le retour à la ligne de la donnée cale la coupe sur la largeur de la
+              maquette ; sur téléphone il laissait un mot seul sur sa ligne, le
+              texte y coule donc normalement, plus près du titre. */}
+          <p className="mt-6 max-w-160 text-base leading-[1.3] text-secondary sm:mt-11 sm:whitespace-pre-line">
             {settings.heroSubtitle}
           </p>
 
-          <div className="mt-6 flex flex-wrap gap-7">
-            <Link href="/cours" className="pill pill-outline">
+          {/* Sur téléphone : pleine largeur, rapprochés, et l'essai — le bouton
+              principal — en premier. L'ordre et l'écart de la maquette
+              reprennent à partir de `sm`. */}
+          <div className="mt-6 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:gap-7">
+            <Link href="/cours" className="pill pill-outline w-full sm:w-auto">
               Calendrier
             </Link>
-            <Link href={lienReservation({ type: "essai" })} className="pill pill-light">
+            <Link
+              href={lienReservation({ type: "essai" })}
+              className="pill pill-light order-first w-full sm:order-none sm:w-auto"
+            >
               {settings.trialLabel ?? "Cours d'essai"}
             </Link>
           </div>
@@ -55,7 +64,9 @@ export function Hero({
           au lieu de le laisser retomber sur un bloc inerte. */}
       <div className="container-page pb-14">
         <Reveal className="mb-7 flex items-end justify-between gap-4">
-          <h2 className="text-[clamp(28px,2.05vw,39px)] font-black uppercase leading-none tracking-tight">
+          {/* En 28px le titre se coupait sur deux lignes à côté de « Tout voir ».
+              5,2vw le garde sur une ligne jusqu'à 360px de large. */}
+          <h2 className="text-[clamp(18px,5.2vw,28px)] font-black uppercase leading-none tracking-tight sm:text-[clamp(28px,2.05vw,39px)]">
             Prochains cours
           </h2>
           <Link
@@ -66,9 +77,19 @@ export function Hero({
           </Link>
         </Reveal>
         <ProximityGlow>
-          <Reveal className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {/* Sur téléphone, carrousel horizontal plutôt que trois cartes
+              empilées (600px de défilement) : une carte à 85 % de la largeur,
+              la suivante qui dépasse pour inviter à glisser, arrêt sur chaque
+              carte. Il déborde jusqu'aux bords de l'écran (-mx-6 compense la
+              marge de `.container-page`) ; `py-3` évite de rogner l'entrée de
+              `Reveal` (12px) et le contour de focus, un conteneur à
+              défilement coupant aussi ce qui dépasse en hauteur. Grille de la
+              maquette à partir de `sm`. */}
+          <Reveal className="-mx-6 -my-3 flex snap-x snap-mandatory scroll-px-6 gap-4 overflow-x-auto px-6 py-3 [scrollbar-width:none] sm:mx-0 sm:my-0 sm:grid sm:snap-none sm:grid-cols-2 sm:gap-6 sm:overflow-visible sm:px-0 sm:py-0 lg:grid-cols-3 [&::-webkit-scrollbar]:hidden">
             {courses.map((course) => (
-              <CourseCard key={course._id} course={course} />
+              <div key={course._id} className="w-[85%] shrink-0 snap-start sm:w-auto">
+                <CourseCard course={course} />
+              </div>
             ))}
           </Reveal>
         </ProximityGlow>

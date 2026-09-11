@@ -121,6 +121,15 @@ export interface SiteSettings {
   address: string;
   city?: string;
   phone?: string;
+  /** Adresse publique du studio (page Contact, pages légales). */
+  email?: string;
+  /** Informations légales, affichées par /mentions-legales et /confidentialite. */
+  legalName?: string;
+  legalForm?: string;
+  siret?: string;
+  publisher?: string;
+  /** Nom, adresse et téléphone de l'hébergeur, un élément par ligne. */
+  host?: string;
   /** Créneaux de la page Contact, en texte libre (« Lundi - Vendredi », « 17h - 22h »). */
   openingHours?: { days: string; hours: string }[];
   instagramHandle?: string;

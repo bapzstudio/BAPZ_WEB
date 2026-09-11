@@ -39,6 +39,17 @@ export default async function ContactPage() {
                 </a>
               </div>
             )}
+            {settings.email && (
+              <div className="card p-6">
+                <div className="eyebrow mb-2.5">E-MAIL</div>
+                <a
+                  href={`mailto:${settings.email}`}
+                  className="break-all text-xl font-bold transition-colors hover:text-secondary"
+                >
+                  {settings.email}
+                </a>
+              </div>
+            )}
             {settings.instagramHandle && (
               <div className="card p-6">
                 <div className="eyebrow mb-2.5">INSTAGRAM</div>

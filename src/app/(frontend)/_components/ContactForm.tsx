@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useActionState } from "react";
 import { submitContact, type ContactState } from "../contact/actions";
 
@@ -62,6 +63,16 @@ export function ContactForm() {
       >
         {pending ? "Envoi…" : "Envoyer"}
       </button>
+
+      <p className="text-center text-[13px] leading-snug text-tertiary">
+        Ton message sert uniquement à te répondre.{" "}
+        <Link
+          href="/confidentialite"
+          className="underline underline-offset-4 transition-colors hover:text-foreground"
+        >
+          En savoir plus
+        </Link>
+      </p>
 
       {state.status === "error" && state.message && (
         <p role="alert" className="text-center text-[11px] text-white/60">

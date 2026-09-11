@@ -78,6 +78,15 @@ export const SiteSettings: GlobalConfig = {
           },
         },
         {
+          name: "email",
+          type: "email",
+          label: "E-mail de contact",
+          admin: {
+            description:
+              "Adresse publique du studio. Affichée sur la page Contact et dans les pages légales, où elle sert aussi aux demandes sur les données personnelles.",
+          },
+        },
+        {
           name: "openingHours",
           type: "array",
           label: "Horaires",
@@ -110,6 +119,52 @@ export const SiteSettings: GlobalConfig = {
           admin: {
             description:
               "Avec le @, ex : @bapz.studio. Affiché dans la bannière, en pied de page et sur la page Contact, où il renvoie vers le compte.",
+          },
+        },
+      ],
+    },
+    {
+      type: "collapsible",
+      label: "Informations légales",
+      fields: [
+        {
+          name: "legalName",
+          type: "text",
+          label: "Nom de l'entreprise",
+          admin: {
+            description:
+              "Obligatoire avant la mise en ligne. Nom officiel tel qu'inscrit au registre, ou prénom et nom pour une micro-entreprise. Affiché dans les mentions légales et la page Confidentialité ; vide, elles indiquent « À compléter ».",
+          },
+        },
+        {
+          name: "legalForm",
+          type: "text",
+          label: "Statut juridique",
+          admin: {
+            description: "Obligatoire. Ex : Micro-entreprise, SAS au capital de 1 000 €, Association loi 1901.",
+          },
+        },
+        {
+          name: "siret",
+          type: "text",
+          label: "SIRET",
+          admin: { description: "Obligatoire. 14 chiffres, ex : 123 456 789 00012." },
+        },
+        {
+          name: "publisher",
+          type: "text",
+          label: "Responsable de la publication",
+          admin: {
+            description: "Obligatoire. Prénom et nom de la personne responsable du contenu du site.",
+          },
+        },
+        {
+          name: "host",
+          type: "textarea",
+          label: "Hébergeur du site",
+          admin: {
+            description:
+              "Obligatoire. Nom, adresse et téléphone de l'hébergeur, un élément par ligne. Rempli au moment de la mise en ligne.",
           },
         },
       ],

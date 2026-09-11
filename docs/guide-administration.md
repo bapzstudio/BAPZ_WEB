@@ -108,6 +108,14 @@ La fiche d'une demande n'affiche que les champs utiles à son type.
 **Astuce** : la barre de recherche de la liste trouve une demande par prénom,
 e-mail ou résumé.
 
+### Conserver trois ans au plus
+
+La page Confidentialité du site annonce que les demandes sont gardées **au
+plus trois ans après le dernier échange**. Rien ne les efface
+automatiquement : une fois par an, supprime les demandes plus anciennes (cases
+à cocher dans la liste, puis **Supprimer**). Si une personne demande la
+suppression de ses informations, supprime sa demande de la même façon.
+
 `[Capture : fiche d'une demande avec le statut]`
 
 ---
@@ -241,6 +249,9 @@ Une seule page, rangée en trois blocs.
 - **Horaires** : un créneau par ligne, avec les **Jours**
   (`Lundi - Vendredi`) et les **Heures** (`17h - 22h`). Tant qu'aucun créneau
   n'est saisi, la rubrique Horaires n'apparaît pas sur le site.
+- **E-mail de contact** : l'adresse publique du studio, affichée sur la page
+  Contact et dans les pages légales. C'est là que les visiteurs écrivent pour
+  toute question sur leurs données.
 - **Compte Instagram** : avec le `@`.
 
 ### Bandeau et logo
@@ -250,6 +261,21 @@ Une seule page, rangée en trois blocs.
   disciplines phares.
 - **Logo** : affiché dans un rond en haut à gauche. Fond transparent de
   préférence.
+
+### Informations légales
+
+**À remplir avant la mise en ligne** : ces informations sont obligatoires sur
+un site professionnel. Elles alimentent les pages **Mentions légales** et
+**Confidentialité**, accessibles depuis le pied de page. Tant qu'un champ est
+vide, ces pages affichent « À compléter ».
+
+- **Nom de l'entreprise** : le nom officiel, ou tes prénom et nom pour une
+  micro-entreprise.
+- **Statut juridique** : ex : `Micro-entreprise`.
+- **SIRET** : les 14 chiffres.
+- **Responsable de la publication** : la personne responsable du contenu du
+  site.
+- **Hébergeur du site** : rempli par Matthias au moment de la mise en ligne.
 
 ---
 
