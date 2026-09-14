@@ -22,6 +22,7 @@ import { StepDemande } from "./steps/StepDemande";
 import { StepDetails } from "./steps/StepDetails";
 import { StepRecap, type ElementRecap } from "./steps/StepRecap";
 import { LIBELLE } from "./ui";
+import { useBalayage } from "./useBalayage";
 import { Turnstile, TURNSTILE_ACTIF, type TurnstileHandle } from "../_components/Turnstile";
 
 const useIsomorphicLayoutEffect =
@@ -151,6 +152,40 @@ export function ReservationFunnel({
     allerA(Math.max(0, cible));
   }, [etape, type, allerA]);
 
+  // Balayage au doigt, en complément des boutons (cf. useBalayage).
+  //
+  // Vers l'arrière : toujours, c'est le geste attendu et il ne perd rien.
+  //
+  // Vers l'avant : seulement pour repasser sur ce qui est déjà renseigné.
+  // Aux étapes de choix (0 et 1), le balayage n'avance que si le choix est
+  // fait — sinon il n'y a rien à valider et il faut choisir. Aux étapes de
+  // saisie (2 et 3), il déclenche l'envoi du formulaire, donc exactement ce
+  // que fait « Suivant » : la saisie en cours est enregistrée et la validation
+  // s'applique. Au récapitulatif, rien : l'envoi reste un geste explicite.
+  const choixFait =
+    etape === 0
+      ? Boolean(type)
+      : type === "prive" ||
+        (type === "essai" && Boolean(donnees.cours)) ||
+        (type === "inscription" && Boolean(donnees.formule)) ||
+        (type === "location" && Boolean(donnees.salle));
+
+  const zoneBalayage = useBalayage({
+    surRetour: () => {
+      if (etape > 0) precedent();
+    },
+    surAvance: () => {
+      if (etape === 0 || etape === 1) {
+        if (!choixFait) return;
+        aller(etape === 0 && type === "prive" ? 2 : etape + 1);
+        return;
+      }
+      if (etape === 2 || etape === 3) {
+        document.querySelector<HTMLFormElement>("#funnel-form")?.requestSubmit();
+      }
+    },
+  });
+
   const cours = catalogue.cours.find((c) => c.slug === donnees.cours);
   const formule = catalogue.formules.find((f) => f.slug === donnees.formule);
   const salle = catalogue.salles.find((s) => s.slug === donnees.salle);
@@ -263,7 +298,7 @@ export function ReservationFunnel({
             </button>
           </aside>
 
-          <div className="w-full">
+          <div ref={zoneBalayage} className="w-full">
             <div
               key={etape}
               ref={contenuRef}

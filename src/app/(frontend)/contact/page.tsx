@@ -33,8 +33,12 @@ export default async function ContactPage() {
         <h1 className="titre-page">
           <FoldText text="Contact" />
         </h1>
+        {/* Sur téléphone, le formulaire passe avant les coordonnées : c'est
+            l'action attendue de la page, et l'adresse comme l'Instagram
+            restent juste en dessous. Deux colonnes à partir de `lg`, comme
+            avant, le formulaire retrouvant sa place à droite. */}
         <div className="mt-[var(--vr-64)] grid gap-5 lg:grid-cols-2">
-          <div className="flex flex-col gap-4">
+          <div className="order-last flex flex-col gap-4 lg:order-none">
             <div className="card p-6">
               <div className="eyebrow mb-2.5">STUDIO</div>
               <div className="text-xl font-bold">{settings.address}</div>

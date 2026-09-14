@@ -94,6 +94,28 @@ footer de 53, écart hero → « prochains cours » de 25 sur l'accueil. Les éc
 hauts passent par les variables `--vr-*` de `globals.css`, exactes à 1080 et
 comprimées deux fois plus vite en dessous.
 
+**L'accueil fait exception depuis le 2026-09-14** : il s'ouvre sur une landing
+qui occupe l'écran entier (`100svh` moins les 67px de la nav) — l'œil-de-bœuf,
+le titre qui se déplie, le sous-titre, le logo qui se dessine et une invite à
+défiler — et le reste (boutons et « Prochains cours ») vient au défilement, sur
+un deuxième écran d'une fenêtre au moins, pour que le geste tombe juste. Sur la
+landing, le sous-titre suit la fenêtre au-delà de ~1400px
+(`clamp(17px,1.45vw,24px)`) : à la taille de la maquette, 16px, il paraissait
+perdu à côté d'un titre de 158px. Écart assumé, limité à la landing. La
+maquette, elle, fait tenir tout l'accueil dans un écran : **écart assumé, à
+montrer à la cliente**. Sur la landing, le titre est calé haut et la planète
+basse : au milieu, le mot BAPZ du logo passait sous la fin du titre. Le bord
+droit de la planète tombe sur la ligne du conteneur comme tout le reste du site
+(`right-0` porterait sur la boîte du conteneur, gouttière comprise, et la
+planète toucherait le bord de la fenêtre) ; sur téléphone elle est centrée et
+entière sous le titre.
+
+**Les liens d'ancre glissent** (`scroll-behavior: smooth` sur `html`, sous
+`prefers-reduced-motion: no-preference`). Un défilement calé à la main doit donc
+viser la position **collée** d'une barre, et non sa position au moment du clic :
+la barre des jours du calendrier est encore dans le flux tant qu'on n'a pas
+défilé, et le jour visé s'arrêtait 220px trop bas.
+
 Deux pages débordent encore à 1080, et c'est du contenu, pas de l'espacement :
 `/tarifs` (l'offre réelle compte quatre abonnements là où la maquette en
 montrait un, d'où une seconde rangée) et `/profs` d'une trentaine de pixels,
@@ -105,9 +127,11 @@ du bureau (1 549px de haut à 390px, 901 après) :
 
 - boutons du hero pleine largeur, le cours d'essai en premier ; sous-titre
   sans le retour à la ligne calé sur la maquette ;
-- « Prochains cours » en carrousel horizontal à arrêt par carte (85 % de la
-  largeur) au lieu de trois cartes empilées ; sur mobile la pastille
-  « Réserver » des cartes devient une flèche ;
+- « Prochains cours » : les trois cartes sont empilées, et la pastille
+  « Réserver » de chaque carte devient une flèche. C'était un carrousel
+  horizontal à arrêt par carte tant que l'accueil devait tenir en 900px ;
+  depuis la landing, le deuxième écran a la place, et rien n'est plus caché
+  hors champ ni ne demande un geste latéral ;
 - pied de page sur deux lignes, sans les disciplines que le bandeau affiche
   déjà.
 
@@ -130,6 +154,12 @@ CSS.
 écrit pour le hero). Seule exception, le `h2` « Locations de salle » de
 `/tarifs` : `FoldText` joue au chargement et non au défilement, donc un titre
 situé au milieu d'une page serait déjà déplié quand on l'atteint.
+
+**`main` est une colonne flex et chaque page en occupe toute la hauteur.**
+Quand une page est plus courte que l'écran, l'espace restant doit tomber dans
+la page et non après elle : sinon il s'ajoutait sous le bandeau défilant de
+l'accueil, qui paraissait deux fois plus haut (86px mesurés à 545x934). Le
+bandeau est poussé en bas par `mt-auto`.
 
 **Tout garde-fou `data-*-pending` vit dans `@media (scripting: enabled)`** de
 `globals.css`. Ces règles masquent du contenu en attendant que GSAP prenne la
@@ -294,6 +324,15 @@ Règles :
 Écart avec chuttt : les transitions d'étape passent par une animation CSS
 plutôt que framer-motion, pour garder une seule bibliothèque d'animation.
 
+**Balayage au doigt** (`useBalayage.ts`), en complément des boutons, jamais à
+leur place : vers l'arrière il ramène toujours à l'étape précédente ; vers
+l'avant il ne sert qu'à repasser sur ce qui est déjà renseigné. Aux étapes de
+choix, il n'avance que si le choix est fait ; aux étapes de saisie, il envoie le
+formulaire, donc exactement ce que fait « Suivant » (la saisie est enregistrée
+et la validation s'applique) ; au récapitulatif il ne fait rien, l'envoi
+restant un geste explicite. Limité au tactile, et sans effet si le geste part
+d'un champ de saisie.
+
 À confirmer avec la cliente : le délai de réponse annoncé après l'envoi
 (« très vite » en attendant), le téléphone obligatoire ou non (facultatif en
 attendant), et si les cours ont un nombre de places limité.
@@ -449,9 +488,21 @@ expérimental, et rendu sans le layout. `error.tsx` couvre une page qui échoue,
 le menu restait affiché le temps que le JavaScript s'exécute : flash visible, et
 décalage de mise en page de 0,46 sur `/reserver`.
 
-**Icônes.** `app/icon.png` et `app/apple-icon.png`, tirées du logo rogné et
-posé sur `#080808` (le logo est blanc sur transparent, invisible sur un onglet
-clair).
+**Icônes.** `app/icon.png` (512) et `app/apple-icon.png` (180) : la planète du
+logo, posée sur `#080808` — le logo est blanc sur transparent, invisible sur un
+onglet clair.
+
+La planète y est **redessinée, pleine et inversée** : disque blanc, trois
+méridiens et trois parallèles sombres, inclinés de 18° comme le logo
+(`scripts/generer-icones.mjs`, à relancer après tout réglage). L'onglet reçoit
+le disque seul, coins transparents et cerclé de sombre pour tenir sur un onglet
+clair comme sombre ; l'icône Apple garde son carré `#080808`, iOS posant
+lui-même le masque arrondi et remplissant la transparence en noir. Le tracé
+d'origine — 75 traits fins et blancs — disparaît à cette taille : à 16 et 32px
+la moyenne des pixels donne un rond presque noir, même en épaississant les
+traits (plusieurs variantes essayées, toutes illisibles). Le mot du logo, lui,
+restait lisible : c'était l'icône précédente. Choix à montrer à la cliente,
+puisqu'il simplifie et retourne son logo.
 
 **Mesures.** Lighthouse 12, mobile, build de production local, le 2026-09-10 :
 

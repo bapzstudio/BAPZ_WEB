@@ -75,8 +75,17 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
             conteneur de défilement (ce que ferait `hidden`, ce qui casserait
             la nav sticky) et sans clipper juste au-dessus du titre 3D.
             tabIndex={-1} : cible du lien d'évitement, focusable sans entrer
-            dans l'ordre de tabulation. */}
-        <main id="contenu" tabIndex={-1} className="flex-1 overflow-x-clip outline-none">
+            dans l'ordre de tabulation.
+            flex flex-col : la page occupe toute la hauteur de `main`, donc
+            l'espace restant quand le contenu est plus court que l'écran tombe
+            DANS la page et non après elle. Sans quoi il s'ajoutait sous le
+            bandeau défilant de l'accueil, qui paraissait alors deux fois plus
+            haut (86px mesurés à 545x934). */}
+        <main
+          id="contenu"
+          tabIndex={-1}
+          className="flex flex-1 flex-col overflow-x-clip outline-none"
+        >
           {children}
         </main>
         <Footer settings={settings} />

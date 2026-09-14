@@ -97,6 +97,16 @@ body {
   color: var(--foreground);
 }
 
+/* Les liens d'ancre glissent au lieu de sauter : l'invite à défiler de
+   l'accueil, « Locations de salle » depuis /location, le lien d'évitement.
+   Sous `no-preference` : qui refuse les animations garde le saut immédiat,
+   plus sûr pour le mal des transports comme pour la lisibilité. */
+@media (prefers-reduced-motion: no-preference) {
+  html {
+    scroll-behavior: smooth;
+  }
+}
+
 /* Conteneur : 1700px de contenu, centré (≈100px de marge à 1920) */
 .container-page {
   width: 100%;
@@ -651,6 +661,22 @@ body {
   animation: marquee 60s linear infinite;
 }
 
+/* Invite à défiler, en bas du premier écran de l'accueil : un va-et-vient
+   court et lent, assez discret pour ne pas concurrencer le titre. */
+@keyframes invite-defiler {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(5px);
+  }
+}
+
+.invite-defiler {
+  animation: invite-defiler 2.4s ease-in-out infinite;
+}
+
 /* Halo bleu diffus derrière le titre.
    Mesuré sur la maquette : pic ~22% d'opacité vers x=330 y=190, éteint
    horizontalement vers x=800 et verticalement vers y=620.
@@ -833,6 +859,7 @@ body:has(.funnel) footer {
 
 @media (prefers-reduced-motion: reduce) {
   .marquee-track,
+  .invite-defiler,
   .planete-derive,
   .point-studio::after,
   .hero-glow::before,

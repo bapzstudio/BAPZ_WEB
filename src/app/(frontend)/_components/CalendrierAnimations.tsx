@@ -156,7 +156,13 @@ export function CalendrierAnimations() {
         window.clearTimeout(finChoix);
         window.addEventListener("scrollend", liberer, { once: true });
         finChoix = window.setTimeout(liberer, 1200);
-        const haut = cible.getBoundingClientRect().top + window.scrollY - (barre.getBoundingClientRect().bottom + 16);
+        // Hauteur de la barre une fois collée (son `top` en CSS, soit la nav,
+        // plus sa propre hauteur), et non sa position au moment du clic : en
+        // haut de la page elle est encore dans le flux, bien plus bas, et le
+        // jour visé s'arrêtait 220px trop bas.
+        const collee = parseFloat(getComputedStyle(barre).top) || 0;
+        const haut =
+          cible.getBoundingClientRect().top + window.scrollY - (collee + barre.offsetHeight + 16);
         window.scrollTo({ top: haut, behavior: reduit ? "auto" : "smooth" });
       };
 
