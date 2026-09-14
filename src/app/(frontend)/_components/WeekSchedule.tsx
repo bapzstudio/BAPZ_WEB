@@ -45,24 +45,24 @@ function CalendarCard({ course }: { course: Course }) {
         data-glow-card
         className="cal-card cal-glow relative flex h-full flex-col p-5"
       >
-      <div className="flex items-baseline justify-between gap-2 font-mono text-label text-discret">
-        {/* Même format d'heure que le reste du site (« 19h00 »), en capitales
+        <div className="flex items-baseline justify-between gap-2 font-mono text-label text-discret">
+          {/* Même format d'heure que le reste du site (« 19h00 »), en capitales
             comme sur la maquette : la salle, elle, garde sa casse. */}
-        <span className="uppercase">
-          {formaterHeure(course.startTime)} - {formaterHeure(course.endTime)}
-        </span>
-        {course.room && <span>{course.room}</span>}
-      </div>
-
-      <div className="mt-5 text-lg font-black uppercase leading-tight">
-        {course.title}
-      </div>
-
-      {course.level && (
-        <div className="mt-2 text-petit leading-snug text-secondary">
-          {course.level}
+          <span className="uppercase">
+            {formaterHeure(course.startTime)} - {formaterHeure(course.endTime)}
+          </span>
+          {course.room && <span>{course.room}</span>}
         </div>
-      )}
+
+        <div className="mt-5 text-lg font-black uppercase leading-tight">
+          {course.title}
+        </div>
+
+        {course.level && (
+          <div className="mt-2 text-petit leading-snug text-secondary">
+            {course.level}
+          </div>
+        )}
         {course.teacher && (
           <div className="text-petit leading-snug text-secondary">
             {course.teacher.name}
@@ -79,7 +79,10 @@ function DayHeader({ day }: { day: string }) {
   // grille.
   return (
     <>
-      <div data-jour-titre="" className="font-mono text-base uppercase tracking-widest text-discret">
+      <div
+        data-jour-titre=""
+        className="font-mono text-base uppercase tracking-widest text-discret"
+      >
         {day}
       </div>
       <div data-jour-filet="" className="mt-4 h-px bg-rule-faint" />
@@ -100,9 +103,9 @@ export function WeekSchedule({ courses }: { courses: Course[] }) {
       placed.flatMap((p) =>
         Array.from(
           { length: p.endBand - p.startBand + 1 },
-          (_, i) => p.startBand + i
-        )
-      )
+          (_, i) => p.startBand + i,
+        ),
+      ),
     ),
   ].sort((a, b) => a - b);
 
@@ -225,7 +228,10 @@ export function WeekSchedule({ courses }: { courses: Course[] }) {
               className="scroll-mt-36"
             >
               <DayHeader day={day} />
-              <div data-jour-cartes="" className="mt-4.5 grid gap-4.5 sm:grid-cols-2 lg:grid-cols-3">
+              <div
+                data-jour-cartes=""
+                className="mt-4.5 grid gap-4.5 sm:grid-cols-2 lg:grid-cols-3"
+              >
                 {dayCourses.map((course) => (
                   <CalendarCard key={course._id} course={course} />
                 ))}

@@ -77,29 +77,38 @@ export function MobileMenu({
     }
 
     const reduceMotion = window.matchMedia?.(
-      "(prefers-reduced-motion: reduce)"
+      "(prefers-reduced-motion: reduce)",
     ).matches;
 
     timelineRef.current?.kill();
-    gsap.killTweensOf([...p.layers, p.panel, ...p.labels, ...p.numbers, ...p.socials]);
+    gsap.killTweensOf([
+      ...p.layers,
+      p.panel,
+      ...p.labels,
+      ...p.numbers,
+      ...p.socials,
+    ]);
 
     if (reduceMotion) {
       const shown = open ? 0 : 100;
       gsap.set([...p.layers, p.panel], { xPercent: shown });
-      gsap.set([...p.labels, ...p.socials], { y: 0, yPercent: 0, rotate: 0, opacity: 1 });
+      gsap.set([...p.labels, ...p.socials], {
+        y: 0,
+        yPercent: 0,
+        rotate: 0,
+        opacity: 1,
+      });
       gsap.set(p.numbers, { "--num-opacity": open ? 1 : 0 });
       return;
     }
 
     if (!open) {
-      timelineRef.current = gsap
-        .timeline()
-        .to([...p.layers, p.panel], {
-          xPercent: 100,
-          duration: 0.32,
-          ease: "power3.in",
-          overwrite: "auto",
-        });
+      timelineRef.current = gsap.timeline().to([...p.layers, p.panel], {
+        xPercent: 100,
+        duration: 0.32,
+        ease: "power3.in",
+        overwrite: "auto",
+      });
       return;
     }
 
@@ -111,26 +120,34 @@ export function MobileMenu({
     const tl = gsap.timeline();
     // Les pré-couches balaient l'écran l'une après l'autre, puis le panneau.
     p.layers.forEach((layer, i) => {
-      tl.to(layer, { xPercent: 0, duration: 0.5, ease: "power4.out" }, i * 0.07);
+      tl.to(
+        layer,
+        { xPercent: 0, duration: 0.5, ease: "power4.out" },
+        i * 0.07,
+      );
     });
     const panelStart = p.layers.length * 0.07;
-    tl.to(p.panel, { xPercent: 0, duration: 0.65, ease: "power4.out" }, panelStart);
+    tl.to(
+      p.panel,
+      { xPercent: 0, duration: 0.65, ease: "power4.out" },
+      panelStart,
+    );
 
     const itemsStart = panelStart + 0.65 * 0.15;
     tl.to(
       p.labels,
       { yPercent: 0, rotate: 0, duration: 1, ease: "power4.out", stagger: 0.1 },
-      itemsStart
+      itemsStart,
     );
     tl.to(
       p.numbers,
       { "--num-opacity": 1, duration: 0.6, ease: "power2.out", stagger: 0.08 },
-      itemsStart + 0.1
+      itemsStart + 0.1,
     );
     tl.to(
       p.socials,
       { y: 0, opacity: 1, duration: 0.55, ease: "power3.out", stagger: 0.08 },
-      panelStart + 0.65 * 0.4
+      panelStart + 0.65 * 0.4,
     );
 
     timelineRef.current = tl;

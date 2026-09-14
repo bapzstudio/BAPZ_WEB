@@ -63,11 +63,27 @@
    `svh` plutôt que `vh` : la barre d'URL mobile ne doit pas faire sauter la
    mise en page au défilement. Le suffixe est la valeur de la maquette. */
 :root {
-  --vr-152: clamp(68px, calc(28.15svh - 152px), 152px); /* tarifs -> locations de salle */
-  --vr-104: clamp(47px, calc(19.26svh - 104px), 104px); /* haut de page sous la nav */
+  --vr-152: clamp(
+    68px,
+    calc(28.15svh - 152px),
+    152px
+  ); /* tarifs -> locations de salle */
+  --vr-104: clamp(
+    47px,
+    calc(19.26svh - 104px),
+    104px
+  ); /* haut de page sous la nav */
   --vr-92: clamp(41px, calc(17.04svh - 92px), 92px); /* titre -> calendrier */
-  --vr-80: clamp(36px, calc(14.81svh - 80px), 80px); /* titre -> sections de tarifs */
-  --vr-64: clamp(29px, calc(11.85svh - 64px), 64px); /* titre -> grille de cartes */
+  --vr-80: clamp(
+    36px,
+    calc(14.81svh - 80px),
+    80px
+  ); /* titre -> sections de tarifs */
+  --vr-64: clamp(
+    29px,
+    calc(11.85svh - 64px),
+    64px
+  ); /* titre -> grille de cartes */
 }
 
 @theme inline {
@@ -133,7 +149,10 @@ body {
   letter-spacing: 0.06em;
   text-transform: uppercase;
   white-space: nowrap;
-  transition: background-color 0.15s, border-color 0.15s, color 0.15s;
+  transition:
+    background-color 0.15s,
+    border-color 0.15s,
+    color 0.15s;
 }
 
 .pill-light {
@@ -191,185 +210,185 @@ body {
    `@import "tailwindcss"`, l'emportent à spécificité égale sur les utilitaires
    et `lg:hidden` ne masquerait plus rien. */
 @layer components {
-/* ---- Menu mobile (cf. composant MobileMenu) ----
+  /* ---- Menu mobile (cf. composant MobileMenu) ----
    Le panneau et ses pré-couches partent sous la nav (66px) et vont jusqu'en
    bas : la barre reste visible et le bouton reste cliquable, contrairement au
    recouvrement plein écran de l'original. */
-.menu-panel,
-.menu-layers > * {
-  position: fixed;
-  top: 66px;
-  right: 0;
-  bottom: 0;
-  /* Toute la largeur, sans plafond : limité à 420 px, le panneau laissait une
+  .menu-panel,
+  .menu-layers > * {
+    position: fixed;
+    top: 66px;
+    right: 0;
+    bottom: 0;
+    /* Toute la largeur, sans plafond : limité à 420 px, le panneau laissait une
      bande de la page visible à gauche sur les grands téléphones. */
-  width: 100%;
-  /* Fermé dès le HTML : sans cette valeur, le panneau restait à l'écran le
+    width: 100%;
+    /* Fermé dès le HTML : sans cette valeur, le panneau restait à l'écran le
      temps que le JavaScript s'exécute, puis GSAP le chassait hors champ — un
      flash du menu, et un décalage de mise en page de 0,46 relevé par
      Lighthouse sur /reserver. */
-  transform: translateX(100%);
-  will-change: transform;
-}
-
-.menu-layers {
-  pointer-events: none;
-  z-index: 39;
-}
-
-.menu-panel {
-  z-index: 40;
-  display: flex;
-  flex-direction: column;
-  overflow-y: auto;
-  padding: 40px 24px 32px;
-  background: var(--background);
-}
-
-.menu-list {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  counter-reset: menu-item;
-}
-
-/* Le libellé monte depuis le bas de sa propre ligne : le conteneur masque le
-   débordement, l'enfant `[data-label]` est ce que GSAP déplace. */
-.menu-link {
-  position: relative;
-  display: block;
-  overflow: hidden;
-  padding: 6px 0;
-  font-size: clamp(34px, 11vw, 52px);
-  font-weight: 900;
-  line-height: 1.05;
-  letter-spacing: -0.02em;
-  text-transform: uppercase;
-}
-
-.menu-link > span {
-  display: inline-block;
-  transform-origin: 50% 100%;
-  will-change: transform;
-}
-
-/* Numérotation 01, 02… en Space Mono, dans le bleu du halo du hero. */
-.menu-list > li {
-  position: relative;
-}
-
-.menu-list > li::after {
-  counter-increment: menu-item;
-  content: counter(menu-item, decimal-leading-zero);
-  position: absolute;
-  top: 12px;
-  right: 0;
-  font-family: var(--font-mono);
-  font-size: 12px;
-  letter-spacing: 0.1em;
-  color: var(--glow);
-  opacity: var(--num-opacity, 0);
-  pointer-events: none;
-}
-
-/* Bouton bascule : deux traits en croix, qui pivotent d'un quart de tour et
-   deviennent une croix à l'ouverture. */
-.menu-toggle {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  width: 38px;
-  height: 38px;
-  flex-shrink: 0;
-  border: 1px solid var(--rule);
-  border-radius: 999px;
-  background: var(--outline-fill);
-  z-index: 60;
-}
-
-.menu-toggle-icon {
-  position: relative;
-  width: 14px;
-  height: 14px;
-  transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.menu-toggle[data-open] .menu-toggle-icon {
-  transform: rotate(225deg);
-}
-
-.menu-toggle-icon > span {
-  position: absolute;
-  top: 50%;
-  left: 0;
-  width: 100%;
-  height: 2px;
-  margin-top: -1px;
-  border-radius: 2px;
-  background: var(--foreground);
-}
-
-.menu-toggle-icon > span:last-child {
-  transform: rotate(90deg);
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .menu-toggle-icon {
-    transition: none;
+    transform: translateX(100%);
+    will-change: transform;
   }
-}
 
-/* ---- Éléments communs ----
+  .menu-layers {
+    pointer-events: none;
+    z-index: 39;
+  }
+
+  .menu-panel {
+    z-index: 40;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    padding: 40px 24px 32px;
+    background: var(--background);
+  }
+
+  .menu-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    counter-reset: menu-item;
+  }
+
+  /* Le libellé monte depuis le bas de sa propre ligne : le conteneur masque le
+   débordement, l'enfant `[data-label]` est ce que GSAP déplace. */
+  .menu-link {
+    position: relative;
+    display: block;
+    overflow: hidden;
+    padding: 6px 0;
+    font-size: clamp(34px, 11vw, 52px);
+    font-weight: 900;
+    line-height: 1.05;
+    letter-spacing: -0.02em;
+    text-transform: uppercase;
+  }
+
+  .menu-link > span {
+    display: inline-block;
+    transform-origin: 50% 100%;
+    will-change: transform;
+  }
+
+  /* Numérotation 01, 02… en Space Mono, dans le bleu du halo du hero. */
+  .menu-list > li {
+    position: relative;
+  }
+
+  .menu-list > li::after {
+    counter-increment: menu-item;
+    content: counter(menu-item, decimal-leading-zero);
+    position: absolute;
+    top: 12px;
+    right: 0;
+    font-family: var(--font-mono);
+    font-size: 12px;
+    letter-spacing: 0.1em;
+    color: var(--glow);
+    opacity: var(--num-opacity, 0);
+    pointer-events: none;
+  }
+
+  /* Bouton bascule : deux traits en croix, qui pivotent d'un quart de tour et
+   deviennent une croix à l'ouverture. */
+  .menu-toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    flex-shrink: 0;
+    border: 1px solid var(--rule);
+    border-radius: 999px;
+    background: var(--outline-fill);
+    z-index: 60;
+  }
+
+  .menu-toggle-icon {
+    position: relative;
+    width: 14px;
+    height: 14px;
+    transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .menu-toggle[data-open] .menu-toggle-icon {
+    transform: rotate(225deg);
+  }
+
+  .menu-toggle-icon > span {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    margin-top: -1px;
+    border-radius: 2px;
+    background: var(--foreground);
+  }
+
+  .menu-toggle-icon > span:last-child {
+    transform: rotate(90deg);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .menu-toggle-icon {
+      transition: none;
+    }
+  }
+
+  /* ---- Éléments communs ----
    Une seule définition pour ce qui était recopié de page en page. En couche
    `components` : un utilitaire ajouté à côté (`mt-6`, `resize-y`…) garde la
    main. */
 
-/* Titre de page (h1 de toutes les pages, et « Locations de salle »). */
-.titre-page {
-  font-size: clamp(38px, 3.1vw, 59px);
-  font-weight: 900;
-  line-height: 1;
-  letter-spacing: -0.025em;
-  text-transform: uppercase;
-}
+  /* Titre de page (h1 de toutes les pages, et « Locations de salle »). */
+  .titre-page {
+    font-size: clamp(38px, 3.1vw, 59px);
+    font-weight: 900;
+    line-height: 1;
+    letter-spacing: -0.025em;
+    text-transform: uppercase;
+  }
 
-/* Champ de formulaire : contact et parcours de réservation. */
-.champ {
-  width: 100%;
-  border: 1px solid var(--card-border);
-  border-radius: 12px;
-  background: rgb(255 255 255 / 0.06);
-  padding: 14px;
-  font-size: 15px;
-  color: var(--foreground);
-}
-.champ::placeholder {
-  color: var(--text-tertiary);
-}
+  /* Champ de formulaire : contact et parcours de réservation. */
+  .champ {
+    width: 100%;
+    border: 1px solid var(--card-border);
+    border-radius: 12px;
+    background: rgb(255 255 255 / 0.06);
+    padding: 14px;
+    font-size: 15px;
+    color: var(--foreground);
+  }
+  .champ::placeholder {
+    color: var(--text-tertiary);
+  }
 
-/* Bouton « Choisir » des cartes de tarif et de salle. C'est un lien étiré :
+  /* Bouton « Choisir » des cartes de tarif et de salle. C'est un lien étiré :
    son pseudo-élément couvre toute la carte (qui doit être `relative`), sans
    imbriquer un second lien, ce qui serait invalide. */
-.bouton-carte {
-  display: block;
-  border: 1px solid var(--rule);
-  border-radius: 999px;
-  padding-block: 10px;
-  text-align: center;
-  font-size: 13px;
-  font-weight: 700;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  transition: background-color 0.15s;
-}
-.bouton-carte:hover {
-  background: rgb(255 255 255 / 0.1);
-}
-.bouton-carte::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-}
+  .bouton-carte {
+    display: block;
+    border: 1px solid var(--rule);
+    border-radius: 999px;
+    padding-block: 10px;
+    text-align: center;
+    font-size: 13px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    transition: background-color 0.15s;
+  }
+  .bouton-carte:hover {
+    background: rgb(255 255 255 / 0.1);
+  }
+  .bouton-carte::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+  }
 }
 /* fin de la couche `components` */
 
@@ -446,7 +465,7 @@ body {
     linear-gradient(var(--card), var(--card)) padding-box,
     /* Le 0,84 conserve l'écart mesuré entre le bord gauche (#d5d5d5) et le
        bord droit (#ffffff) quelle que soit l'opacité choisie. */
-      linear-gradient(
+    linear-gradient(
         90deg,
         rgb(255 255 255 / calc(var(--cal-card-border-alpha) * 0.84)),
         rgb(255 255 255 / var(--cal-card-border-alpha))
@@ -850,7 +869,6 @@ body:has(.funnel) footer {
 ::view-transition-group(root) {
   animation-duration: 0s;
 }
-
 
 /* Sans ceci, la couche de transition capte les clics pendant l'animation. */
 ::view-transition {

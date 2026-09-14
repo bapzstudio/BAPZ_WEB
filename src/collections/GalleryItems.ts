@@ -30,7 +30,9 @@ export const GalleryItems: CollectionConfig = {
       type: "text",
       label: "Légende",
       required: true,
-      admin: { description: "Ce qu'on voit sur la photo, en une phrase courte." },
+      admin: {
+        description: "Ce qu'on voit sur la photo, en une phrase courte.",
+      },
     },
     {
       name: "order",

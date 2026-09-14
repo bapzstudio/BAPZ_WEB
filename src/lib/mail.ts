@@ -71,7 +71,9 @@ const echapper = (texte: string) =>
   texte.replace(
     /[&<>"']/g,
     (c) =>
-      ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[c] as string
+      ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[
+        c
+      ] as string,
   );
 
 /** Un objet de mail tient sur une ligne : on retire les retours à la ligne. */
@@ -81,7 +83,9 @@ function configuration() {
   const apiKey = process.env.RESEND_API_KEY;
   const to = process.env.CONTACT_TO_EMAIL;
   if (!apiKey || !to) {
-    throw new Error("RESEND_API_KEY ou CONTACT_TO_EMAIL manquant : envoi impossible.");
+    throw new Error(
+      "RESEND_API_KEY ou CONTACT_TO_EMAIL manquant : envoi impossible.",
+    );
   }
   return {
     resend: new Resend(apiKey),
@@ -98,7 +102,9 @@ function configuration() {
  * visiteur : elles sont échappées avant d'entrer dans le HTML, sans quoi un
  * prénom piégé pourrait injecter du contenu dans le mail.
  */
-export async function sendReservationRequest(demande: ResumeDemande): Promise<void> {
+export async function sendReservationRequest(
+  demande: ResumeDemande,
+): Promise<void> {
   const { resend, to, from } = configuration();
 
   const messageHtml = demande.message
@@ -128,7 +134,7 @@ const tableauHtml = (lignes: ResumeDemande["lignes"]) =>
   `<table style="border-collapse:collapse;font-size:15px">${lignes
     .map(
       (ligne) =>
-        `<tr><td style="padding:10px 18px 10px 0;color:#707070;white-space:nowrap;vertical-align:top">${echapper(ligne.label)}</td><td style="padding:10px 0;font-weight:600">${echapper(ligne.valeur)}</td></tr>`
+        `<tr><td style="padding:10px 18px 10px 0;color:#707070;white-space:nowrap;vertical-align:top">${echapper(ligne.label)}</td><td style="padding:10px 0;font-weight:600">${echapper(ligne.valeur)}</td></tr>`,
     )
     .join("")}</table>`;
 
@@ -136,7 +142,14 @@ const tableauHtml = (lignes: ResumeDemande["lignes"]) =>
  * Lignes du récapitulatif reprises dans l'accusé de réception : seulement
  * celles dont la valeur vient du catalogue ou d'un format contrôlé.
  */
-const LIGNES_ACCUSE = new Set(["Demande", "Cours", "Formule", "Salle", "Niveau", "Personnes"]);
+const LIGNES_ACCUSE = new Set([
+  "Demande",
+  "Cours",
+  "Formule",
+  "Salle",
+  "Niveau",
+  "Personnes",
+]);
 
 /**
  * Accusé de réception au visiteur, avec le récapitulatif de sa demande.
@@ -152,11 +165,15 @@ const LIGNES_ACCUSE = new Set(["Demande", "Cours", "Formule", "Salle", "Niveau",
  * réponse est dirigée vers la boîte du studio, pour qu'un « je me suis
  * trompée de jour » arrive à quelqu'un.
  */
-export async function sendReservationConfirmation(demande: ResumeDemande): Promise<void> {
+export async function sendReservationConfirmation(
+  demande: ResumeDemande,
+): Promise<void> {
   if (!process.env.CONTACT_FROM_EMAIL) return;
   const { resend, to, from } = configuration();
 
-  const lignes = demande.lignes.filter((ligne) => LIGNES_ACCUSE.has(ligne.label));
+  const lignes = demande.lignes.filter((ligne) =>
+    LIGNES_ACCUSE.has(ligne.label),
+  );
   const intro =
     "On a bien reçu ta demande. Ce n'est pas encore une réservation : on revient vers toi très vite pour la confirmer.";
 

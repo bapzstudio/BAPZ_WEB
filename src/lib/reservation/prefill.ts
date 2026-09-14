@@ -19,7 +19,7 @@ const premier = (valeur: Brut) => (Array.isArray(valeur) ? valeur[0] : valeur);
  */
 export function lirePrefill(
   params: Record<string, Brut>,
-  catalogue: CatalogueReservation
+  catalogue: CatalogueReservation,
 ): Prefill | undefined {
   const type = typeDemandeSchema.safeParse(premier(params.demande));
   if (!type.success) return undefined;
@@ -29,7 +29,11 @@ export function lirePrefill(
   const formule = premier(params.formule);
   const salle = premier(params.salle);
 
-  if (type.data === "essai" && cours && catalogue.cours.some((c) => c.slug === cours)) {
+  if (
+    type.data === "essai" &&
+    cours &&
+    catalogue.cours.some((c) => c.slug === cours)
+  ) {
     prefill.cours = cours;
   }
   if (
@@ -39,7 +43,11 @@ export function lirePrefill(
   ) {
     prefill.formule = formule;
   }
-  if (type.data === "location" && salle && catalogue.salles.some((s) => s.slug === salle)) {
+  if (
+    type.data === "location" &&
+    salle &&
+    catalogue.salles.some((s) => s.slug === salle)
+  ) {
     prefill.salle = salle;
   }
   return prefill;
@@ -47,7 +55,12 @@ export function lirePrefill(
 
 /** Étape d'arrivée : on saute tout ce que le bouton a déjà choisi. */
 export function etapeDepart(prefill: Prefill): number {
-  if (prefill.cours || prefill.formule || prefill.salle || prefill.type === "prive") {
+  if (
+    prefill.cours ||
+    prefill.formule ||
+    prefill.salle ||
+    prefill.type === "prive"
+  ) {
     return 2;
   }
   return 1;

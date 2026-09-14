@@ -20,11 +20,13 @@ export const Courses: CollectionConfig = {
       type: "text",
       label: "Titre du cours",
       required: true,
-      admin: { description: "Ex : Heels. Le niveau se met dans le champ suivant." },
+      admin: {
+        description: "Ex : Heels. Le niveau se met dans le champ suivant.",
+      },
     },
     slugField(
       ["title", "dayOfWeek", "startTime"],
-      "Identifiant du cours dans les liens de réservation, par exemple heels-mardi-19-00. Rempli tout seul ; à ne changer que si le cours n'est pas encore en ligne, sinon les liens existants se cassent."
+      "Identifiant du cours dans les liens de réservation, par exemple heels-mardi-19-00. Rempli tout seul ; à ne changer que si le cours n'est pas encore en ligne, sinon les liens existants se cassent.",
     ),
     {
       name: "level",
@@ -70,14 +72,18 @@ export const Courses: CollectionConfig = {
       relationTo: "teachers",
       label: "Professeur·e",
       admin: {
-        description: "Laisser vide si le cours n'a pas de prof attitré·e (ex : Training libre).",
+        description:
+          "Laisser vide si le cours n'a pas de prof attitré·e (ex : Training libre).",
       },
     },
     {
       name: "room",
       type: "text",
       label: "Salle",
-      admin: { description: "Affichée en haut à droite de la carte du calendrier, ex : Studio A." },
+      admin: {
+        description:
+          "Affichée en haut à droite de la carte du calendrier, ex : Studio A.",
+      },
     },
     {
       name: "order",

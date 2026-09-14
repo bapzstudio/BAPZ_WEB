@@ -71,7 +71,8 @@ export default buildConfig({
   // Vercel de production et du déploiement en cours.
   csrf: [
     SITE_URL,
-    process.env.VERCEL_PROJECT_PRODUCTION_URL && `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`,
+    process.env.VERCEL_PROJECT_PRODUCTION_URL &&
+      `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`,
     process.env.VERCEL_URL && `https://${process.env.VERCEL_URL}`,
   ].filter((adresse): adresse is string => Boolean(adresse)),
   // Le site lit Payload par l'API locale et l'admin par REST : l'API GraphQL

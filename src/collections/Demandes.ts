@@ -1,5 +1,10 @@
 import type { CollectionConfig } from "payload";
-import { NIVEAUX, NIVEAU_LABELS, TYPES_DEMANDE, TYPE_LABELS } from "../lib/reservation/schemas";
+import {
+  NIVEAUX,
+  NIVEAU_LABELS,
+  TYPES_DEMANDE,
+  TYPE_LABELS,
+} from "../lib/reservation/schemas";
 
 export const Demandes: CollectionConfig = {
   slug: "demandes",
@@ -34,7 +39,8 @@ export const Demandes: CollectionConfig = {
       label: "Résumé",
       admin: {
         readOnly: true,
-        description: "Rempli automatiquement à l'envoi. Sert de titre dans la liste.",
+        description:
+          "Rempli automatiquement à l'envoi. Sert de titre dans la liste.",
       },
     },
     {
@@ -42,7 +48,10 @@ export const Demandes: CollectionConfig = {
       type: "select",
       label: "Type de demande",
       required: true,
-      options: TYPES_DEMANDE.map((value) => ({ value, label: TYPE_LABELS[value].label })),
+      options: TYPES_DEMANDE.map((value) => ({
+        value,
+        label: TYPE_LABELS[value].label,
+      })),
     },
     {
       name: "cours",

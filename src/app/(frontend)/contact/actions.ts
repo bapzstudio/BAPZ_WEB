@@ -23,7 +23,7 @@ const MAX = { name: 100, email: 200, message: 4000 };
  */
 export async function submitContact(
   _prev: ContactState,
-  formData: FormData
+  formData: FormData,
 ): Promise<ContactState> {
   if (String(formData.get("website") ?? "").trim() !== "") {
     return { status: "sent" };
@@ -37,7 +37,10 @@ export async function submitContact(
     return { status: "error", message: "Tous les champs sont nécessaires." };
   }
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-    return { status: "error", message: "Cette adresse e-mail semble invalide." };
+    return {
+      status: "error",
+      message: "Cette adresse e-mail semble invalide.",
+    };
   }
   if (
     name.length > MAX.name ||
@@ -50,7 +53,8 @@ export async function submitContact(
   if (!(await verifierHumain(formData.get("cf-turnstile-response")))) {
     return {
       status: "error",
-      message: "La vérification anti-robot n'a pas abouti. Réessaie dans un instant.",
+      message:
+        "La vérification anti-robot n'a pas abouti. Réessaie dans un instant.",
     };
   }
 

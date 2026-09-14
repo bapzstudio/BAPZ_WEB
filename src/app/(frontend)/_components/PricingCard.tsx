@@ -13,9 +13,7 @@ import { PriceCounter } from "./PriceCounter";
  */
 function prixParCours(plan: PricingPlan) {
   if (!plan.sessionsIncluded || plan.sessionsIncluded < 1) return null;
-  const montant = Number(
-    plan.price.replace(/[^\d,.]/g, "").replace(",", ".")
-  );
+  const montant = Number(plan.price.replace(/[^\d,.]/g, "").replace(",", "."));
   if (!Number.isFinite(montant) || montant <= 0) return null;
 
   const unitaire = montant / plan.sessionsIncluded;
@@ -93,7 +91,7 @@ export function PricingCard({ plan }: { plan: PricingPlan }) {
           href={lienReservation(
             plan.group === "essai"
               ? { type: "essai" }
-              : { type: "inscription", formule: plan.slug }
+              : { type: "inscription", formule: plan.slug },
           )}
           className="bouton-carte"
         >

@@ -2,7 +2,8 @@ import type { ReactNode } from "react";
 import { ProximityGlow } from "../_components/ProximityGlow";
 
 /** Petit libellé en Space Mono, comme partout sur le site. */
-export const LIBELLE = "font-mono text-label uppercase tracking-widest text-secondary";
+export const LIBELLE =
+  "font-mono text-label uppercase tracking-widest text-secondary";
 
 /**
  * Titre d'étape. `tabIndex={-1}` : le parcours y place le focus à chaque
@@ -44,7 +45,9 @@ export function Champ({
 
 /** Liste de choix : un seul écouteur de halo pour toutes les lignes. */
 export function ListeChoix({ children }: { children: ReactNode }) {
-  return <ProximityGlow className="flex flex-col gap-3">{children}</ProximityGlow>;
+  return (
+    <ProximityGlow className="flex flex-col gap-3">{children}</ProximityGlow>
+  );
 }
 
 /**
@@ -78,14 +81,20 @@ export function LigneChoix({
       }`}
     >
       <span className="min-w-0">
-        <span className="block text-lg font-black uppercase leading-tight">{titre}</span>
+        <span className="block text-lg font-black uppercase leading-tight">
+          {titre}
+        </span>
         {detail && <span className={`mt-1.5 block ${LIBELLE}`}>{detail}</span>}
         {precision && (
-          <span className="mt-1 block text-petit text-tertiary">{precision}</span>
+          <span className="mt-1 block text-petit text-tertiary">
+            {precision}
+          </span>
         )}
       </span>
       <span className="flex shrink-0 items-center gap-4">
-        {aside && <span className="whitespace-nowrap text-lg font-black">{aside}</span>}
+        {aside && (
+          <span className="whitespace-nowrap text-lg font-black">{aside}</span>
+        )}
         <span
           aria-hidden
           className="text-tertiary transition-transform duration-200 group-hover:translate-x-0.5 group-hover:text-foreground"

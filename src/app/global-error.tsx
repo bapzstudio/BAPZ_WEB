@@ -24,8 +24,19 @@ export default function GlobalError({ reset }: { reset: () => void }) {
         }}
       >
         <main>
-          <p style={{ letterSpacing: "0.15em", color: "#9a9a9a", fontSize: 12 }}>BAPZ STUDIO</p>
-          <h1 style={{ fontSize: 40, fontWeight: 900, textTransform: "uppercase", margin: "16px 0" }}>
+          <p
+            style={{ letterSpacing: "0.15em", color: "#9a9a9a", fontSize: 12 }}
+          >
+            BAPZ STUDIO
+          </p>
+          <h1
+            style={{
+              fontSize: 40,
+              fontWeight: 900,
+              textTransform: "uppercase",
+              margin: "16px 0",
+            }}
+          >
             Un souci technique
           </h1>
           <p style={{ color: "#c8c8c8", maxWidth: 480, lineHeight: 1.4 }}>

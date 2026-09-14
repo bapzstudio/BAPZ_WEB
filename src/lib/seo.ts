@@ -13,7 +13,8 @@ import type { SiteSettings } from "./types";
  * repli suffit et rien n'est bloqué.
  */
 export const SITE_URL =
-  process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "") || "http://localhost:3000";
+  process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "") ||
+  "http://localhost:3000";
 
 export const SITE_NAME = "BAPZ Studio";
 
@@ -84,7 +85,6 @@ export function pageMetadata({
  * dès qu'ils seront saisis dans `/admin`.
  */
 export function structuredData(settings: SiteSettings, priceRange?: string) {
-
   return {
     "@context": "https://schema.org",
     "@type": "DanceSchool",
@@ -92,7 +92,8 @@ export function structuredData(settings: SiteSettings, priceRange?: string) {
     url: SITE_URL,
     // Le sous-titre porte un retour à la ligne qui cale la coupe sur le site ;
     // il n'a rien à faire dans une donnée structurée.
-    description: settings.heroSubtitle?.replace(/\s+/g, " ").trim() || undefined,
+    description:
+      settings.heroSubtitle?.replace(/\s+/g, " ").trim() || undefined,
     ...(settings.address && {
       address: {
         "@type": "PostalAddress",
@@ -106,7 +107,9 @@ export function structuredData(settings: SiteSettings, priceRange?: string) {
     // Les horaires restent hors des données structurées : saisis en texte
     // libre (« Lundi - Vendredi »), ils ne se traduisent pas sans risque dans
     // le format strict attendu par schema.org.
-    ...(settings.instagramHandle && { sameAs: [lienInstagram(settings.instagramHandle)] }),
+    ...(settings.instagramHandle && {
+      sameAs: [lienInstagram(settings.instagramHandle)],
+    }),
     ...(priceRange && { priceRange }),
   };
 }

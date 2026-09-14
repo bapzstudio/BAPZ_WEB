@@ -17,7 +17,9 @@ function capaciteEtSurface(room: Room) {
 /** Les équipements en une phrase : « Climatisation, vestiaires, … ». */
 function equipements(items: string[]) {
   return `${items
-    .map((item, i) => (i === 0 ? item : item.charAt(0).toLowerCase() + item.slice(1)))
+    .map((item, i) =>
+      i === 0 ? item : item.charAt(0).toLowerCase() + item.slice(1),
+    )
     .join(", ")}.`;
 }
 
@@ -65,7 +67,9 @@ export function RoomCard({ room }: { room: Room }) {
           d'afficher un montant inventé. En plus petit qu'un prix — au corps
           des noms de salle de l'ancienne page Location — pour ne pas
           donner à une absence le poids d'un chiffre. */}
-      <div className={`${room.photo ? "mt-7" : "mt-6"} flex items-baseline gap-1.5`}>
+      <div
+        className={`${room.photo ? "mt-7" : "mt-6"} flex items-baseline gap-1.5`}
+      >
         {room.price ? (
           <>
             <span className="text-[clamp(40px,3.4vw,64px)] font-black leading-none tracking-tight">
@@ -78,7 +82,9 @@ export function RoomCard({ room }: { room: Room }) {
             )}
           </>
         ) : (
-          <span className="text-[28px] font-black leading-none">Tarif sur demande</span>
+          <span className="text-[28px] font-black leading-none">
+            Tarif sur demande
+          </span>
         )}
       </div>
 

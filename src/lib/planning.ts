@@ -18,25 +18,38 @@ export function minuteDeLaSemaine(instant: Date): number {
     minute: "2-digit",
     hourCycle: "h23",
   }).formatToParts(instant);
-  const valeur = (type: string) => parties.find((p) => p.type === type)?.value ?? "";
+  const valeur = (type: string) =>
+    parties.find((p) => p.type === type)?.value ?? "";
 
   const jour = valeur("weekday");
   const index = ordreJour(jour.charAt(0).toUpperCase() + jour.slice(1));
-  return index * MINUTES_PAR_JOUR + Number(valeur("hour")) * 60 + Number(valeur("minute"));
+  return (
+    index * MINUTES_PAR_JOUR +
+    Number(valeur("hour")) * 60 +
+    Number(valeur("minute"))
+  );
 }
 
 /**
  * Les cours qui commencent le plus tôt à partir de maintenant, en bouclant sur
  * la semaine suivante. Un cours déjà commencé passe à la semaine d'après.
  */
-export function prochainsCours(cours: Course[], maintenant: Date, nombre = 3): Course[] {
+export function prochainsCours(
+  cours: Course[],
+  maintenant: Date,
+  nombre = 3,
+): Course[] {
   const repere = minuteDeLaSemaine(maintenant);
 
   return cours
     .filter((c) => ordreJour(c.dayOfWeek) < 7)
     .map((c) => {
-      const debut = ordreJour(c.dayOfWeek) * MINUTES_PAR_JOUR + minutes(c.startTime);
-      return { cours: c, attente: (debut - repere + MINUTES_PAR_SEMAINE) % MINUTES_PAR_SEMAINE };
+      const debut =
+        ordreJour(c.dayOfWeek) * MINUTES_PAR_JOUR + minutes(c.startTime);
+      return {
+        cours: c,
+        attente: (debut - repere + MINUTES_PAR_SEMAINE) % MINUTES_PAR_SEMAINE,
+      };
     })
     .sort((a, b) => a.attente - b.attente)
     .slice(0, nombre)

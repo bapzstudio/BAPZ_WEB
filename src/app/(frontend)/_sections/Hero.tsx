@@ -158,7 +158,13 @@ export function Hero({
 }
 
 /** Flèche « défiler », posée au bas du premier écran. */
-function FlecheDefiler({ cible, className }: { cible: string; className: string }) {
+function FlecheDefiler({
+  cible,
+  className,
+}: {
+  cible: string;
+  className: string;
+}) {
   return (
     <a
       href={cible}

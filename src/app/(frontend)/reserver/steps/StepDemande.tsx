@@ -1,5 +1,9 @@
 import Link from "next/link";
-import { TYPES_DEMANDE, TYPE_LABELS, type TypeDemande } from "@/lib/reservation/schemas";
+import {
+  TYPES_DEMANDE,
+  TYPE_LABELS,
+  type TypeDemande,
+} from "@/lib/reservation/schemas";
 import { LigneChoix, ListeChoix, Titre } from "../ui";
 
 export function StepDemande({
@@ -27,7 +31,10 @@ export function StepDemande({
 
       <p className="text-center text-courant text-tertiary">
         Une simple question ?{" "}
-        <Link href="/contact" className="text-foreground underline underline-offset-4">
+        <Link
+          href="/contact"
+          className="text-foreground underline underline-offset-4"
+        >
           Écris-nous
         </Link>
       </p>

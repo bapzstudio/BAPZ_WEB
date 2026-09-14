@@ -31,24 +31,32 @@ export function CalendrierAnimations() {
     const liste = repere.current?.parentElement;
     if (!liste) return undefined;
 
-    const sections = Array.from(liste.querySelectorAll<HTMLElement>("[data-jour]"));
+    const sections = Array.from(
+      liste.querySelectorAll<HTMLElement>("[data-jour]"),
+    );
     const barre = liste.querySelector<HTMLElement>("[data-jours-barre]");
     const pastille = liste.querySelector<HTMLElement>("[data-jours-pastille]");
-    const liens = Array.from(liste.querySelectorAll<HTMLAnchorElement>("[data-jour-lien]"));
+    const liens = Array.from(
+      liste.querySelectorAll<HTMLAnchorElement>("[data-jour-lien]"),
+    );
 
-    const reduit = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches ?? false;
+    const reduit =
+      window.matchMedia?.("(prefers-reduced-motion: reduce)").matches ?? false;
     // Au-delà de 1280 px la liste est masquée au profit de la grille.
     const grille = window.matchMedia?.("(min-width: 1280px)").matches ?? false;
     const nettoyages: Array<() => void> = [];
 
     // --- Entrée au défilement --------------------------------------------
     if (reduit || grille) {
-      for (const section of sections) section.removeAttribute("data-jour-pending");
+      for (const section of sections)
+        section.removeAttribute("data-jour-pending");
     } else {
       for (const section of sections) {
         const titre = section.querySelector("[data-jour-titre]");
         const filet = section.querySelector("[data-jour-filet]");
-        const cartes = Array.from(section.querySelectorAll("[data-jour-cartes] > *"));
+        const cartes = Array.from(
+          section.querySelectorAll("[data-jour-cartes] > *"),
+        );
 
         gsap.set(titre, { opacity: 0, y: 12 });
         gsap.set(filet, { scaleX: 0, transformOrigin: "0% 50%" });
@@ -59,7 +67,17 @@ export function CalendrierAnimations() {
           .timeline({ paused: true })
           .to(titre, { opacity: 1, y: 0, duration: 0.5, ease: "power3.out" })
           .to(filet, { scaleX: 1, duration: 0.65, ease: "power3.out" }, "<0.05")
-          .to(cartes, { opacity: 1, y: 0, duration: 0.65, ease: "power3.out", stagger: 0.08 }, "<0.15");
+          .to(
+            cartes,
+            {
+              opacity: 1,
+              y: 0,
+              duration: 0.65,
+              ease: "power3.out",
+              stagger: 0.08,
+            },
+            "<0.15",
+          );
 
         const declencheur = ScrollTrigger.create({
           trigger: section,
@@ -98,7 +116,10 @@ export function CalendrierAnimations() {
         });
         // Barre plus large que l'écran : le jour actif reste visible.
         if (barre.scrollWidth > barre.clientWidth) {
-          barre.scrollTo({ left: lien.offsetLeft - 16, behavior: anime && !reduit ? "smooth" : "auto" });
+          barre.scrollTo({
+            left: lien.offsetLeft - 16,
+            behavior: anime && !reduit ? "smooth" : "auto",
+          });
         }
       };
 
@@ -116,7 +137,9 @@ export function CalendrierAnimations() {
         sections.forEach((section, i) => {
           if (section.getBoundingClientRect().top <= seuil) index = i;
         });
-        const enBas = window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 2;
+        const enBas =
+          window.innerHeight + window.scrollY >=
+          document.documentElement.scrollHeight - 2;
         if (enBas) index = sections.length - 1;
         if (choisi !== -1) index = choisi;
         if (index !== actif) {
@@ -139,8 +162,14 @@ export function CalendrierAnimations() {
       };
 
       const auClic = (event: MouseEvent) => {
-        const lien = (event.target as HTMLElement).closest<HTMLAnchorElement>("[data-jour-lien]");
-        const cible = lien && liste.querySelector<HTMLElement>(`[data-jour="${lien.dataset.jourLien}"]`);
+        const lien = (event.target as HTMLElement).closest<HTMLAnchorElement>(
+          "[data-jour-lien]",
+        );
+        const cible =
+          lien &&
+          liste.querySelector<HTMLElement>(
+            `[data-jour="${lien.dataset.jourLien}"]`,
+          );
         if (!cible) return;
         event.preventDefault();
         choisi = sections.indexOf(cible);
@@ -162,7 +191,9 @@ export function CalendrierAnimations() {
         // jour visé s'arrêtait 220px trop bas.
         const collee = parseFloat(getComputedStyle(barre).top) || 0;
         const haut =
-          cible.getBoundingClientRect().top + window.scrollY - (collee + barre.offsetHeight + 16);
+          cible.getBoundingClientRect().top +
+          window.scrollY -
+          (collee + barre.offsetHeight + 16);
         window.scrollTo({ top: haut, behavior: reduit ? "auto" : "smooth" });
       };
 

@@ -18,7 +18,7 @@ export const Rooms: CollectionConfig = {
     { name: "name", type: "text", label: "Nom", required: true },
     slugField(
       ["name"],
-      "Identifiant de la salle dans les liens de réservation, par exemple salle-a. Rempli tout seul à partir du nom ; à ne changer que si la salle n'est pas encore en ligne."
+      "Identifiant de la salle dans les liens de réservation, par exemple salle-a. Rempli tout seul à partir du nom ; à ne changer que si la salle n'est pas encore en ligne.",
     ),
     {
       name: "photo",
@@ -35,14 +35,17 @@ export const Rooms: CollectionConfig = {
       type: "text",
       label: "Tarif",
       admin: {
-        description: 'Avec la devise, ex : "30 €". Laisser vide pour afficher « Tarif sur demande ».',
+        description:
+          'Avec la devise, ex : "30 €". Laisser vide pour afficher « Tarif sur demande ».',
       },
     },
     {
       name: "period",
       type: "text",
       label: "Période",
-      admin: { description: 'Accolé au tarif, ex : "/ heure". Vide si sans objet.' },
+      admin: {
+        description: 'Accolé au tarif, ex : "/ heure". Vide si sans objet.',
+      },
     },
     {
       name: "capacity",
@@ -65,7 +68,9 @@ export const Rooms: CollectionConfig = {
         description:
           "Un équipement par ligne, ex : Climatisation. Ils s'affichent à la suite, séparés par des virgules.",
       },
-      fields: [{ name: "item", type: "text", label: "Équipement", required: true }],
+      fields: [
+        { name: "item", type: "text", label: "Équipement", required: true },
+      ],
     },
     {
       name: "availableFrom",

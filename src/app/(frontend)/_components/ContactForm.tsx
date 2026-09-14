@@ -7,7 +7,6 @@ import { Turnstile, TURNSTILE_ACTIF, type TurnstileHandle } from "./Turnstile";
 
 const INITIAL: ContactState = { status: "idle" };
 
-
 export function ContactForm() {
   const [state, action, pending] = useActionState(submitContact, INITIAL);
   const [jeton, setJeton] = useState<string | null>(null);
@@ -45,7 +44,13 @@ export function ContactForm() {
         </label>
       </div>
 
-      <input name="name" placeholder="Ton nom" required maxLength={100} className="champ" />
+      <input
+        name="name"
+        placeholder="Ton nom"
+        required
+        maxLength={100}
+        className="champ"
+      />
       <input
         name="email"
         type="email"

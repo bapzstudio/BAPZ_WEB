@@ -1,7 +1,13 @@
 "use client";
 
 import Script from "next/script";
-import { useEffect, useImperativeHandle, useRef, useState, type Ref } from "react";
+import {
+  useEffect,
+  useImperativeHandle,
+  useRef,
+  useState,
+  type Ref,
+} from "react";
 
 type ApiTurnstile = {
   render: (conteneur: HTMLElement, options: Record<string, unknown>) => string;
@@ -60,12 +66,13 @@ export function Turnstile({
         if (widget.current) window.turnstile?.reset(widget.current);
       },
     }),
-    []
+    [],
   );
 
   useEffect(() => {
     const element = conteneur.current;
-    if (!CLE_SITE || !scriptPret || !element || !window.turnstile) return undefined;
+    if (!CLE_SITE || !scriptPret || !element || !window.turnstile)
+      return undefined;
 
     widget.current = window.turnstile.render(element, {
       sitekey: CLE_SITE,

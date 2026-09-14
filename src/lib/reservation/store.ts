@@ -45,6 +45,6 @@ export const useReservationStore = create<ReservationStore>()(
       name: "bapz-reservation",
       storage: createJSONStorage(() => sessionStorage),
       partialize: (state) => ({ etape: state.etape, donnees: state.donnees }),
-    }
-  )
+    },
+  ),
 );

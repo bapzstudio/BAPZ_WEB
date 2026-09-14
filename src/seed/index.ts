@@ -40,7 +40,7 @@ const seed = async () => {
       // Adresse illisible : on garde « inconnue ».
     }
     console.error(
-      `\nLe seed EFFACE les cours, profs, tarifs, salles, la galerie et les médias de la base :\n  ${hote}\n\nPour confirmer :  pnpm seed confirmer\n`
+      `\nLe seed EFFACE les cours, profs, tarifs, salles, la galerie et les médias de la base :\n  ${hote}\n\nPour confirmer :  pnpm seed confirmer\n`,
     );
     process.exit(1);
   }
@@ -81,7 +81,7 @@ const seed = async () => {
     const photoId = teacher.photo
       ? await upload(
           teacher.photo.src.replace(/^\//, ""),
-          `Portrait de ${teacher.name}`
+          `Portrait de ${teacher.name}`,
         )
       : undefined;
 
@@ -167,7 +167,7 @@ const seed = async () => {
   // Volontairement laissée vide : la cliente choisit ses photos de galerie
   // depuis l'admin. Vide, la page /galerie renvoie vers Instagram.
   payload.logger.info(
-    `Galerie ignorée (${galleryItems.length} entrées en attente).`
+    `Galerie ignorée (${galleryItems.length} entrées en attente).`,
   );
 
   // --- réglages du site ------------------------------------------------

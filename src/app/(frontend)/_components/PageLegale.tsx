@@ -20,12 +20,20 @@ export function PageLegale({
         <FoldText text={titre} />
       </h1>
       <p className="eyebrow mt-6">MISE À JOUR : {miseAJour.toUpperCase()}</p>
-      <div className="mt-[var(--vr-64)] flex max-w-190 flex-col gap-10">{children}</div>
+      <div className="mt-[var(--vr-64)] flex max-w-190 flex-col gap-10">
+        {children}
+      </div>
     </div>
   );
 }
 
-export function Section({ titre, children }: { titre: string; children: ReactNode }) {
+export function Section({
+  titre,
+  children,
+}: {
+  titre: string;
+  children: ReactNode;
+}) {
   return (
     <section>
       <h2 className="text-lg font-bold uppercase">{titre}</h2>
@@ -37,7 +45,11 @@ export function Section({ titre, children }: { titre: string; children: ReactNod
 }
 
 /** Liste « libellé : valeur », comme l'identité de l'éditeur. */
-export function Infos({ lignes }: { lignes: { label: string; valeur: ReactNode }[] }) {
+export function Infos({
+  lignes,
+}: {
+  lignes: { label: string; valeur: ReactNode }[];
+}) {
   return (
     <dl className="grid gap-x-6 gap-y-2 sm:grid-cols-[220px_minmax(0,1fr)]">
       {lignes.map((ligne) => (
@@ -45,7 +57,9 @@ export function Infos({ lignes }: { lignes: { label: string; valeur: ReactNode }
           <dt className="pt-1 font-mono text-label uppercase tracking-widest text-tertiary">
             {ligne.label}
           </dt>
-          <dd className="mb-2 whitespace-pre-line text-foreground sm:mb-0">{ligne.valeur}</dd>
+          <dd className="mb-2 whitespace-pre-line text-foreground sm:mb-0">
+            {ligne.valeur}
+          </dd>
         </div>
       ))}
     </dl>
@@ -58,5 +72,9 @@ export function Infos({ lignes }: { lignes: { label: string; valeur: ReactNode }
  * disparaître en silence.
  */
 export function ACompleter({ valeur }: { valeur?: string }) {
-  return valeur ? <>{valeur}</> : <span className="text-tertiary">À compléter</span>;
+  return valeur ? (
+    <>{valeur}</>
+  ) : (
+    <span className="text-tertiary">À compléter</span>
+  );
 }

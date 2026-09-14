@@ -59,10 +59,9 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
           // `</script>` saisi dans les réglages fermerait la balise pour
           // injecter du HTML dans la page.
           dangerouslySetInnerHTML={{
-            __html: JSON.stringify(structuredData(settings, priceRange)).replace(
-              /</g,
-              "\\u003c"
-            ),
+            __html: JSON.stringify(
+              structuredData(settings, priceRange),
+            ).replace(/</g, "\\u003c"),
           }}
         />
         {/* Lien d'évitement : invisible tant qu'il n'a pas le focus. Au

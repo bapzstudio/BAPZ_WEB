@@ -13,7 +13,7 @@ import { slugify } from "../../lib/slug";
 export function slugField(
   sources: string[],
   description: string,
-  label = "Identifiant de lien"
+  label = "Identifiant de lien",
 ): Field {
   return {
     name: "slug",

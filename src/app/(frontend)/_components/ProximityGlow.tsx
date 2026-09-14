@@ -41,7 +41,9 @@ export function ProximityGlow({
     let frame = 0;
 
     const clear = () => {
-      for (const card of root.querySelectorAll<HTMLElement>("[data-glow-card]")) {
+      for (const card of root.querySelectorAll<HTMLElement>(
+        "[data-glow-card]",
+      )) {
         card.style.setProperty("--glow-intensity", "0");
       }
     };
@@ -51,15 +53,23 @@ export function ProximityGlow({
       frame = requestAnimationFrame(() => {
         frame = 0;
         const cards = Array.from(
-          root.querySelectorAll<HTMLElement>("[data-glow-card]")
+          root.querySelectorAll<HTMLElement>("[data-glow-card]"),
         );
 
         // Phase de lecture.
         const measures = cards.map((card) => {
           const rect = card.getBoundingClientRect();
           // Distance du curseur au rectangle, nulle s'il est dedans.
-          const dx = Math.max(rect.left - event.clientX, 0, event.clientX - rect.right);
-          const dy = Math.max(rect.top - event.clientY, 0, event.clientY - rect.bottom);
+          const dx = Math.max(
+            rect.left - event.clientX,
+            0,
+            event.clientX - rect.right,
+          );
+          const dy = Math.max(
+            rect.top - event.clientY,
+            0,
+            event.clientY - rect.bottom,
+          );
           return {
             card,
             distance: Math.hypot(dx, dy),

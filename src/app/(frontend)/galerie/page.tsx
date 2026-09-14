@@ -11,7 +11,8 @@ import { pageMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = pageMetadata({
   title: "Galerie",
-  description: "Photos du studio et des cours de BAPZ Studio, studio de danse à Metz.",
+  description:
+    "Photos du studio et des cours de BAPZ Studio, studio de danse à Metz.",
   path: "/galerie",
 });
 
@@ -23,7 +24,10 @@ export const metadata: Metadata = pageMetadata({
  * plutôt que d'annoncer un chantier.
  */
 export default async function GaleriePage() {
-  const [items, settings] = await Promise.all([getGalleryItems(), getSiteSettings()]);
+  const [items, settings] = await Promise.all([
+    getGalleryItems(),
+    getSiteSettings(),
+  ]);
   const instagram = settings.instagramHandle;
 
   return (

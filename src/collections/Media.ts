@@ -25,7 +25,8 @@ export const Media: CollectionConfig = {
     // Les pages du site passaient par l'optimiseur de Next, qui lit le flux
     // sans s'y fier. Sans cet en-tête, la réponse est simplement streamée.
     modifyResponseHeaders: ({ headers }) => {
-      if (headers.get("content-length") === "0") headers.delete("content-length");
+      if (headers.get("content-length") === "0")
+        headers.delete("content-length");
       return headers;
     },
   },

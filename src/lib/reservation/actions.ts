@@ -1,11 +1,15 @@
 "use server";
 
 import { verifierHumain } from "@/lib/antispam";
-import { sendReservationConfirmation, sendReservationRequest } from "@/lib/mail";
+import {
+  sendReservationConfirmation,
+  sendReservationRequest,
+} from "@/lib/mail";
 import { compterDemandesRecentes, enregistrerDemande } from "@/lib/queries";
 import { demandeSchema } from "./schemas";
 
-export type ResultatEnvoi = { succes: true } | { succes: false; erreur: string };
+export type ResultatEnvoi =
+  { succes: true } | { succes: false; erreur: string };
 
 /** Un seul accusé de réception par adresse sur cette période. */
 const DELAI_ACCUSE_MS = 24 * 60 * 60 * 1000;
@@ -20,7 +24,7 @@ const DELAI_ACCUSE_MS = 24 * 60 * 60 * 1000;
  */
 export async function envoyerDemande(
   donnees: unknown,
-  jetonAntiRobot?: string | null
+  jetonAntiRobot?: string | null,
 ): Promise<ResultatEnvoi> {
   // Champ leurre, comme sur le formulaire de contact : rempli, on répond
   // « envoyé » sans rien faire — un robot à qui l'on annonce l'échec réessaie.
@@ -42,7 +46,8 @@ export async function envoyerDemande(
   if (!(await verifierHumain(jetonAntiRobot))) {
     return {
       succes: false,
-      erreur: "La vérification anti-robot n'a pas abouti. Réessaie dans un instant.",
+      erreur:
+        "La vérification anti-robot n'a pas abouti. Réessaie dans un instant.",
     };
   }
 
@@ -53,7 +58,8 @@ export async function envoyerDemande(
     console.error("Parcours de réservation, enregistrement :", error);
     return {
       succes: false,
-      erreur: "L'envoi a échoué. Réessaie, ou écris-nous directement sur Instagram.",
+      erreur:
+        "L'envoi a échoué. Réessaie, ou écris-nous directement sur Instagram.",
     };
   }
 
@@ -75,7 +81,10 @@ export async function envoyerDemande(
   // nombre, pour que le formulaire ne serve pas à écrire en boucle à une
   // adresse qui n'a rien demandé. La demande, elle, est toujours enregistrée.
   try {
-    const recentes = await compterDemandesRecentes(resume.email, DELAI_ACCUSE_MS);
+    const recentes = await compterDemandesRecentes(
+      resume.email,
+      DELAI_ACCUSE_MS,
+    );
     if (recentes <= 1) await sendReservationConfirmation(resume);
   } catch (error) {
     console.error("Parcours de réservation, accusé de réception :", error);

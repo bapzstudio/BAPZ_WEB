@@ -6,7 +6,12 @@ import { z } from "zod";
  * foi). Même découpage que le tunnel de devis de chuttt.ch.
  */
 
-export const TYPES_DEMANDE = ["essai", "inscription", "location", "prive"] as const;
+export const TYPES_DEMANDE = [
+  "essai",
+  "inscription",
+  "location",
+  "prive",
+] as const;
 export const typeDemandeSchema = z.enum(TYPES_DEMANDE);
 export type TypeDemande = z.infer<typeof typeDemandeSchema>;
 
@@ -36,7 +41,12 @@ export const TYPE_LABELS: Record<
   },
 };
 
-export const NIVEAUX = ["debutant", "intermediaire", "avance", "ne-sais-pas"] as const;
+export const NIVEAUX = [
+  "debutant",
+  "intermediaire",
+  "avance",
+  "ne-sais-pas",
+] as const;
 const niveauSchema = z.enum(NIVEAUX);
 export type Niveau = z.infer<typeof niveauSchema>;
 
@@ -50,7 +60,11 @@ export const NIVEAU_LABELS: Record<Niveau, string> = {
 // Étape 3 - détails
 export const detailsSchema = z.object({
   niveau: niveauSchema.optional(),
-  dateSouhaitee: z.string().trim().max(100, "100 caractères au maximum").optional(),
+  dateSouhaitee: z
+    .string()
+    .trim()
+    .max(100, "100 caractères au maximum")
+    .optional(),
   personnes: z
     .string()
     .trim()
@@ -105,13 +119,25 @@ export const demandeSchema = z
   })
   .superRefine((demande, ctx) => {
     if (demande.type === "essai" && !demande.cours) {
-      ctx.addIssue({ code: "custom", path: ["cours"], message: "Choisis un cours" });
+      ctx.addIssue({
+        code: "custom",
+        path: ["cours"],
+        message: "Choisis un cours",
+      });
     }
     if (demande.type === "inscription" && !demande.formule) {
-      ctx.addIssue({ code: "custom", path: ["formule"], message: "Choisis une formule" });
+      ctx.addIssue({
+        code: "custom",
+        path: ["formule"],
+        message: "Choisis une formule",
+      });
     }
     if (demande.type === "location" && !demande.salle) {
-      ctx.addIssue({ code: "custom", path: ["salle"], message: "Choisis une salle" });
+      ctx.addIssue({
+        code: "custom",
+        path: ["salle"],
+        message: "Choisis une salle",
+      });
     }
   });
 export type DemandeData = z.infer<typeof demandeSchema>;

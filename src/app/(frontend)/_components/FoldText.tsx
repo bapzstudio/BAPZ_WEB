@@ -37,7 +37,10 @@ export function FoldText({ text }: { text: string }) {
             if (bout === "\n") return <br key={`br-${index}-${i}`} />;
             if (!bout) return null;
             return (
-              <span className="fold-text-whitespace" key={`blanc-${index}-${i}`}>
+              <span
+                className="fold-text-whitespace"
+                key={`blanc-${index}-${i}`}
+              >
                 {bout}
               </span>
             );
@@ -49,7 +52,7 @@ export function FoldText({ text }: { text: string }) {
           </span>
         );
       }),
-    [text]
+    [text],
   );
 
   useIsomorphicLayoutEffect(() => {
@@ -57,12 +60,12 @@ export function FoldText({ text }: { text: string }) {
     if (!root) return undefined;
 
     const pieces = gsap.utils.toArray<HTMLElement>(
-      root.querySelectorAll(".fold-text-piece")
+      root.querySelectorAll(".fold-text-piece"),
     );
     if (!pieces.length) return undefined;
 
     const reduceMotion = window.matchMedia?.(
-      "(prefers-reduced-motion: reduce)"
+      "(prefers-reduced-motion: reduce)",
     ).matches;
 
     // `fromTo` pose l'état plié immédiatement, avant le premier paint.
@@ -83,7 +86,7 @@ export function FoldText({ text }: { text: string }) {
         ease: reduceMotion ? "power1.out" : "power3.out",
         stagger: reduceMotion ? 0.02 : DECALAGE,
         clearProps: "willChange",
-      }
+      },
     );
 
     // GSAP pilote désormais l'opacité : on retire le garde-fou CSS qui masquait

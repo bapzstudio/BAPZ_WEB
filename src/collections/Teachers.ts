@@ -27,7 +27,7 @@ export const Teachers: CollectionConfig = {
     slugField(
       ["name"],
       "Fin de l'adresse de sa page, par exemple lena-bapz pour /profs/lena-bapz. Rempli tout seul à partir du nom ; à ne changer que si la page n'est pas encore en ligne, sinon les liens existants se cassent.",
-      "Adresse de la page"
+      "Adresse de la page",
     ),
     {
       name: "discipline",
@@ -56,7 +56,9 @@ export const Teachers: CollectionConfig = {
         description:
           "Un paragraphe par entrée. Le texte entre ** ** apparaît en blanc et en gras sur le site, ex : **Heels**.",
       },
-      fields: [{ name: "text", type: "textarea", label: "Texte", required: true }],
+      fields: [
+        { name: "text", type: "textarea", label: "Texte", required: true },
+      ],
     },
     {
       name: "order",
@@ -64,7 +66,8 @@ export const Teachers: CollectionConfig = {
       label: "Ordre d'affichage",
       admin: {
         position: "sidebar",
-        description: "Ordre sur la page Profs : les plus petits nombres passent en premier (1, 2, 3…).",
+        description:
+          "Ordre sur la page Profs : les plus petits nombres passent en premier (1, 2, 3…).",
       },
     },
   ],

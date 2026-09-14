@@ -17,7 +17,7 @@ export function BioParagraph({ text }: { text: string }) {
           </strong>
         ) : (
           part
-        )
+        ),
       )}
     </p>
   );

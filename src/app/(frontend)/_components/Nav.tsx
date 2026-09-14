@@ -38,13 +38,21 @@ export function Nav({
     const pastille = pastilleRef.current;
     if (!nav || !pastille) return undefined;
 
-    const reduit = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches ?? false;
+    const reduit =
+      window.matchMedia?.("(prefers-reduced-motion: reduce)").matches ?? false;
 
     const placer = (anime: boolean) => {
-      const lien = nav.querySelector<HTMLElement>(`[data-nav-lien="${pathname}"]`);
+      const lien = nav.querySelector<HTMLElement>(
+        `[data-nav-lien="${pathname}"]`,
+      );
       const duree = anime && !reduit ? 0.35 : 0;
       if (!lien) {
-        gsap.to(pastille, { opacity: 0, duration: duree, ease: "power3.out", overwrite: true });
+        gsap.to(pastille, {
+          opacity: 0,
+          duration: duree,
+          ease: "power3.out",
+          overwrite: true,
+        });
         return;
       }
       // Revenir d'une page sans onglet : la pastille réapparaît sur place au
@@ -154,7 +162,10 @@ export function Nav({
         </nav>
 
         <div className="flex shrink-0 items-center gap-3">
-          <Link href={lienReservation()} className="pill pill-light shrink-0 text-petit">
+          <Link
+            href={lienReservation()}
+            className="pill pill-light shrink-0 text-petit"
+          >
             {/* « Réserver » plutôt que « S'inscrire » (maquette) : le bouton
                 ouvre les quatre types de demande — essai, inscription,
                 location, cours privé — et pas seulement l'inscription. */}

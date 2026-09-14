@@ -1,7 +1,7 @@
 export function Marquee({ items }: { items: string[] }) {
   // Répété largement pour que la boucle -50% reste invisible sur grand écran.
   const sequence = Array.from({ length: 4 }, () =>
-    items.map((item) => item.toUpperCase()).join(" ✦ ")
+    items.map((item) => item.toUpperCase()).join(" ✦ "),
   ).join(" ✦ ");
 
   // `border-t` seul : le marquee est toujours suivi du footer, dont le filet

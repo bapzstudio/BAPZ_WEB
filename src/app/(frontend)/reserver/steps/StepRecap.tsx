@@ -22,8 +22,12 @@ export function StepRecap({
             className="group flex items-baseline justify-between gap-6 rounded-xl border-b border-white/5 px-5 py-4 text-left transition-colors last:border-0 hover:bg-white/5"
           >
             <span className="flex min-w-0 flex-col gap-1 sm:flex-row sm:items-baseline sm:gap-6">
-              <span className={`${LIBELLE} sm:w-28 sm:shrink-0`}>{element.label}</span>
-              <span className="break-words text-courant font-semibold">{element.valeur}</span>
+              <span className={`${LIBELLE} sm:w-28 sm:shrink-0`}>
+                {element.label}
+              </span>
+              <span className="break-words text-courant font-semibold">
+                {element.valeur}
+              </span>
             </span>
             <span className="shrink-0 font-mono text-label uppercase tracking-widest text-tertiary transition-colors group-hover:text-foreground">
               Modifier

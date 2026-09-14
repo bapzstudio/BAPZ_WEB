@@ -72,9 +72,7 @@ export default async function TarifsPage() {
             salles — le même que « titre -> grille de cartes » ailleurs. */}
         {rooms.length > 0 && (
           <section id="locations" className="mt-[var(--vr-152)] scroll-mt-24">
-            <h2 className="titre-page">
-              Locations de salle
-            </h2>
+            <h2 className="titre-page">Locations de salle</h2>
             <Reveal className="mt-[var(--vr-64)] grid gap-11.5 lg:grid-cols-2">
               {rooms.map((room) => (
                 <RoomCard key={room._id} room={room} />

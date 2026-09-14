@@ -34,18 +34,23 @@ export const PricingPlans: CollectionConfig = {
       name: "label",
       type: "text",
       label: "Petit libellé",
-      admin: { description: 'Au-dessus du prix, en petites capitales, ex : "Le + populaire". Facultatif.' },
+      admin: {
+        description:
+          'Au-dessus du prix, en petites capitales, ex : "Le + populaire". Facultatif.',
+      },
     },
     {
       name: "name",
       type: "text",
       label: "Nom de la formule",
       required: true,
-      admin: { description: "Sous le prix, en capitales, ex : Carte 10 cours." },
+      admin: {
+        description: "Sous le prix, en capitales, ex : Carte 10 cours.",
+      },
     },
     slugField(
       ["name"],
-      "Identifiant de la formule dans les liens de réservation, par exemple carte-10-cours. Rempli tout seul à partir du nom ; à ne changer que si la formule n'est pas encore en ligne."
+      "Identifiant de la formule dans les liens de réservation, par exemple carte-10-cours. Rempli tout seul à partir du nom ; à ne changer que si la formule n'est pas encore en ligne.",
     ),
     {
       name: "price",
@@ -58,7 +63,9 @@ export const PricingPlans: CollectionConfig = {
       name: "period",
       type: "text",
       label: "Période",
-      admin: { description: 'Accolé au prix, ex : "/ an". Vide si sans objet.' },
+      admin: {
+        description: 'Accolé au prix, ex : "/ an". Vide si sans objet.',
+      },
     },
     {
       name: "sessionsIncluded",
@@ -74,7 +81,10 @@ export const PricingPlans: CollectionConfig = {
       name: "description",
       type: "textarea",
       label: "Description",
-      admin: { description: "Une ou deux phrases courtes sous le nom, ex : Valable 4 mois, pour tous les cours." },
+      admin: {
+        description:
+          "Une ou deux phrases courtes sous le nom, ex : Valable 4 mois, pour tous les cours.",
+      },
     },
     {
       name: "highlighted",
@@ -92,7 +102,8 @@ export const PricingPlans: CollectionConfig = {
       label: "Ordre d'affichage",
       admin: {
         position: "sidebar",
-        description: "Les plus petits nombres passent en premier (1, 2, 3…), dans chaque section.",
+        description:
+          "Les plus petits nombres passent en premier (1, 2, 3…), dans chaque section.",
       },
     },
   ],

@@ -11,7 +11,13 @@ import Image from "next/image";
  * modifie jamais la mise en page — toujours positionnée en absolu, sauf sur la
  * confirmation où elle remplace le ✓.
  */
-export function Planete({ className = "", sizes }: { className?: string; sizes: string }) {
+export function Planete({
+  className = "",
+  sizes,
+}: {
+  className?: string;
+  sizes: string;
+}) {
   return (
     <Image
       src="/images/marque/planete.png"

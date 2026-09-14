@@ -1,13 +1,19 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { ACompleter, Infos, PageLegale, Section } from "../_components/PageLegale";
+import {
+  ACompleter,
+  Infos,
+  PageLegale,
+  Section,
+} from "../_components/PageLegale";
 import { PageTransition } from "../_components/PageTransition";
 import { getSiteSettings } from "@/lib/queries";
 import { pageMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = pageMetadata({
   title: "Mentions légales",
-  description: "Mentions légales du site de BAPZ Studio, studio de danse à Ars-Laquenexy, près de Metz.",
+  description:
+    "Mentions légales du site de BAPZ Studio, studio de danse à Ars-Laquenexy, près de Metz.",
   path: "/mentions-legales",
 });
 
@@ -27,20 +33,30 @@ export default async function MentionsLegalesPage() {
               { label: "Adresse", valeur: <ACompleter valeur={s.address} /> },
               { label: "Téléphone", valeur: <ACompleter valeur={s.phone} /> },
               { label: "E-mail", valeur: <ACompleter valeur={s.email} /> },
-              { label: "Publication", valeur: <ACompleter valeur={s.publisher} /> },
+              {
+                label: "Publication",
+                valeur: <ACompleter valeur={s.publisher} />,
+              },
             ]}
           />
         </Section>
 
         <Section titre="Hébergement">
-          <Infos lignes={[{ label: "Hébergeur", valeur: <ACompleter valeur={s.host} /> }]} />
+          <Infos
+            lignes={[
+              { label: "Hébergeur", valeur: <ACompleter valeur={s.host} /> },
+            ]}
+          />
         </Section>
 
         <Section titre="Données personnelles">
           <p>
-            Ce que deviennent les informations envoyées par les formulaires du site
-            est détaillé sur la page{" "}
-            <Link href="/confidentialite" className="text-foreground underline underline-offset-4">
+            Ce que deviennent les informations envoyées par les formulaires du
+            site est détaillé sur la page{" "}
+            <Link
+              href="/confidentialite"
+              className="text-foreground underline underline-offset-4"
+            >
               Confidentialité
             </Link>
             .
@@ -50,9 +66,9 @@ export default async function MentionsLegalesPage() {
         <Section titre="Propriété intellectuelle">
           <p>
             Les textes, photos, vidéos et logos de ce site appartiennent à{" "}
-            {s.legalName ?? "BAPZ Studio"} ou sont utilisés avec l&apos;accord de
-            leurs auteurs. Toute reproduction sans autorisation écrite préalable est
-            interdite.
+            {s.legalName ?? "BAPZ Studio"} ou sont utilisés avec l&apos;accord
+            de leurs auteurs. Toute reproduction sans autorisation écrite
+            préalable est interdite.
           </p>
         </Section>
       </PageLegale>

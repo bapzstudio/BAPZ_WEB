@@ -48,7 +48,8 @@ export const SiteSettings: GlobalConfig = {
           type: "text",
           label: "Adresse",
           admin: {
-            description: "Numéro, rue et commune. Affichée sur la page Contact et transmise à Google.",
+            description:
+              "Numéro, rue et commune. Affichée sur la page Contact et transmise à Google.",
           },
         },
         {
@@ -56,7 +57,8 @@ export const SiteSettings: GlobalConfig = {
           type: "text",
           label: "Ville",
           admin: {
-            description: "Affichée dans la bannière et en pied de page, ex : Metz.",
+            description:
+              "Affichée dans la bannière et en pied de page, ex : Metz.",
           },
         },
         {
@@ -132,21 +134,25 @@ export const SiteSettings: GlobalConfig = {
           type: "text",
           label: "Statut juridique",
           admin: {
-            description: "Obligatoire. Ex : Micro-entreprise, SAS au capital de 1 000 €, Association loi 1901.",
+            description:
+              "Obligatoire. Ex : Micro-entreprise, SAS au capital de 1 000 €, Association loi 1901.",
           },
         },
         {
           name: "siret",
           type: "text",
           label: "SIRET",
-          admin: { description: "Obligatoire. 14 chiffres, ex : 123 456 789 00012." },
+          admin: {
+            description: "Obligatoire. 14 chiffres, ex : 123 456 789 00012.",
+          },
         },
         {
           name: "publisher",
           type: "text",
           label: "Responsable de la publication",
           admin: {
-            description: "Obligatoire. Prénom et nom de la personne responsable du contenu du site.",
+            description:
+              "Obligatoire. Prénom et nom de la personne responsable du contenu du site.",
           },
         },
         {
@@ -173,7 +179,9 @@ export const SiteSettings: GlobalConfig = {
             description:
               "Les mots qui défilent en bas de l'accueil. Les deux premiers apparaissent aussi au centre du pied de page : y mettre les disciplines phares.",
           },
-          fields: [{ name: "text", type: "text", label: "Mot", required: true }],
+          fields: [
+            { name: "text", type: "text", label: "Mot", required: true },
+          ],
         },
         {
           name: "logo",

@@ -80,7 +80,10 @@ export async function getSiteSettings(): Promise<SiteSettings> {
     host: (doc.host as string) || undefined,
     openingHours: Array.isArray(doc.openingHours)
       ? doc.openingHours
-          .map((row) => ({ days: String(row?.days ?? ""), hours: String(row?.hours ?? "") }))
+          .map((row) => ({
+            days: String(row?.days ?? ""),
+            hours: String(row?.hours ?? ""),
+          }))
           .filter((row) => row.days && row.hours)
       : [],
     instagramHandle: (doc.instagramHandle as string) || undefined,
@@ -137,13 +140,11 @@ export async function getTeacherSlugs(): Promise<string[]> {
     await payload()
   ).find({ collection: "teachers", limit: 100, depth: 0 });
 
-  return docs
-    .filter(aUneFiche)
-    .map((doc) => String(doc.slug));
+  return docs.filter(aUneFiche).map((doc) => String(doc.slug));
 }
 
 export async function getTeacherBySlug(
-  slug: string
+  slug: string,
 ): Promise<{ teacher: Teacher; courses: Course[] } | null> {
   const client = await payload();
 
@@ -247,7 +248,7 @@ export async function getReservationCatalog(): Promise<CatalogueReservation> {
       .sort(
         (a, b) =>
           ordreJour(a.dayOfWeek) - ordreJour(b.dayOfWeek) ||
-          minutes(a.startTime) - minutes(b.startTime)
+          minutes(a.startTime) - minutes(b.startTime),
       )
       .map((c) => ({
         slug: c.slug as string,
@@ -259,7 +260,8 @@ export async function getReservationCatalog(): Promise<CatalogueReservation> {
         ]
           .filter(Boolean)
           .join(" · "),
-        precision: [c.level, c.teacher?.name].filter(Boolean).join(" · ") || undefined,
+        precision:
+          [c.level, c.teacher?.name].filter(Boolean).join(" · ") || undefined,
       })),
     // Le cours d'essai n'est pas une formule d'inscription : il a son propre
     // type de demande.
@@ -299,33 +301,51 @@ export async function getReservationCatalog(): Promise<CatalogueReservation> {
  * écrit et la fonction renvoie `null`.
  */
 export async function enregistrerDemande(
-  demande: DemandeData
+  demande: DemandeData,
 ): Promise<ResumeDemande | null> {
   const client = await payload();
 
   const slugCours = demande.type === "essai" ? demande.cours : undefined;
-  const slugFormule = demande.type === "inscription" ? demande.formule : undefined;
+  const slugFormule =
+    demande.type === "inscription" ? demande.formule : undefined;
   const slugSalle = demande.type === "location" ? demande.salle : undefined;
 
   const [cours, formule, salle] = await Promise.all([
     slugCours
       ? client
-          .find({ collection: "courses", where: { slug: { equals: slugCours } }, limit: 1, depth: 1 })
+          .find({
+            collection: "courses",
+            where: { slug: { equals: slugCours } },
+            limit: 1,
+            depth: 1,
+          })
           .then((r) => r.docs[0])
       : undefined,
     slugFormule
       ? client
-          .find({ collection: "pricing-plans", where: { slug: { equals: slugFormule } }, limit: 1 })
+          .find({
+            collection: "pricing-plans",
+            where: { slug: { equals: slugFormule } },
+            limit: 1,
+          })
           .then((r) => r.docs[0])
       : undefined,
     slugSalle
       ? client
-          .find({ collection: "rooms", where: { slug: { equals: slugSalle } }, limit: 1 })
+          .find({
+            collection: "rooms",
+            where: { slug: { equals: slugSalle } },
+            limit: 1,
+          })
           .then((r) => r.docs[0])
       : undefined,
   ]);
 
-  if ((slugCours && !cours) || (slugFormule && !formule) || (slugSalle && !salle)) {
+  if (
+    (slugCours && !cours) ||
+    (slugFormule && !formule) ||
+    (slugSalle && !salle)
+  ) {
     return null;
   }
 
@@ -343,7 +363,10 @@ export async function enregistrerDemande(
   }
 
   // Objet du mail : trié d'un coup d'œil dans la boîte de la cliente.
-  const objet = `[${TYPE_LABELS[demande.type].court}] ${[choix?.valeur, demande.prenom]
+  const objet = `[${TYPE_LABELS[demande.type].court}] ${[
+    choix?.valeur,
+    demande.prenom,
+  ]
     .filter(Boolean)
     .join(" - ")}`;
 
@@ -351,14 +374,17 @@ export async function enregistrerDemande(
     { label: "Demande", valeur: TYPE_LABELS[demande.type].label },
   ];
   if (choix) lignes.push(choix);
-  if (demande.niveau) lignes.push({ label: "Niveau", valeur: NIVEAU_LABELS[demande.niveau] });
+  if (demande.niveau)
+    lignes.push({ label: "Niveau", valeur: NIVEAU_LABELS[demande.niveau] });
   if (demande.dateSouhaitee) {
     lignes.push({ label: "Date souhaitée", valeur: demande.dateSouhaitee });
   }
-  if (demande.personnes) lignes.push({ label: "Personnes", valeur: demande.personnes });
+  if (demande.personnes)
+    lignes.push({ label: "Personnes", valeur: demande.personnes });
   lignes.push({ label: "Prénom", valeur: demande.prenom });
   lignes.push({ label: "E-mail", valeur: demande.email });
-  if (demande.telephone) lignes.push({ label: "Téléphone", valeur: demande.telephone });
+  if (demande.telephone)
+    lignes.push({ label: "Téléphone", valeur: demande.telephone });
 
   await client.create({
     collection: "demandes",
@@ -389,13 +415,22 @@ export async function enregistrerDemande(
 }
 
 /** Nombre de demandes envoyées depuis cette adresse sur la période donnée. */
-export async function compterDemandesRecentes(email: string, periodeMs: number): Promise<number> {
-  const { totalDocs } = await (await payload()).count({
+export async function compterDemandesRecentes(
+  email: string,
+  periodeMs: number,
+): Promise<number> {
+  const { totalDocs } = await (
+    await payload()
+  ).count({
     collection: "demandes",
     where: {
       and: [
         { email: { equals: email } },
-        { createdAt: { greater_than: new Date(Date.now() - periodeMs).toISOString() } },
+        {
+          createdAt: {
+            greater_than: new Date(Date.now() - periodeMs).toISOString(),
+          },
+        },
       ],
     },
   });

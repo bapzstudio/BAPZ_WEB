@@ -1,0 +1,11 @@
+# Fichiers générés : les reformater créerait un diff géant à chaque
+# régénération (`pnpm generate:types`, `payload migrate:create`,
+# `pnpm generate:importmap`).
+src/payload-types.ts
+src/migrations/
+src/app/(payload)/
+
+# Sorties de build et dépendances
+.next/
+node_modules/
+pnpm-lock.yaml

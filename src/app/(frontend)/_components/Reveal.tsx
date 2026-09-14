@@ -55,7 +55,7 @@ export function Reveal({
     // n'apporte rien à qui la refuse, et tout ce qui masque du contenu est une
     // occasion de le laisser invisible.
     const reduceMotion = window.matchMedia?.(
-      "(prefers-reduced-motion: reduce)"
+      "(prefers-reduced-motion: reduce)",
     ).matches;
 
     if (!targets.length || reduceMotion) {

@@ -53,7 +53,8 @@ export function useBalayage({
     const auDebut = (event: PointerEvent) => {
       depart = null;
       if (event.pointerType !== "touch") return;
-      if ((event.target as HTMLElement).closest("input, textarea, select")) return;
+      if ((event.target as HTMLElement).closest("input, textarea, select"))
+        return;
       depart = { x: event.clientX, y: event.clientY, temps: event.timeStamp };
     };
 
@@ -65,7 +66,8 @@ export function useBalayage({
       depart = null;
 
       if (duree > DUREE_MAX) return;
-      if (Math.abs(dx) < DISTANCE || Math.abs(dx) < Math.abs(dy) * RAPPORT) return;
+      if (Math.abs(dx) < DISTANCE || Math.abs(dx) < Math.abs(dy) * RAPPORT)
+        return;
 
       if (dx > 0) rappels.current.surRetour();
       else rappels.current.surAvance();

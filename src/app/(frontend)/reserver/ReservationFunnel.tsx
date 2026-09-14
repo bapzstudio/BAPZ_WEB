@@ -12,7 +12,10 @@ import {
 import { envoyerDemande } from "@/lib/reservation/actions";
 import type { Prefill } from "@/lib/reservation/prefill";
 import { NIVEAU_LABELS, TYPE_LABELS } from "@/lib/reservation/schemas";
-import { useReservationStore, type DonneesReservation } from "@/lib/reservation/store";
+import {
+  useReservationStore,
+  type DonneesReservation,
+} from "@/lib/reservation/store";
 import type { CatalogueReservation } from "@/lib/types";
 import { ProgressBar } from "./ProgressBar";
 import { StepChoix } from "./steps/StepChoix";
@@ -23,7 +26,11 @@ import { StepDetails } from "./steps/StepDetails";
 import { StepRecap, type ElementRecap } from "./steps/StepRecap";
 import { LIBELLE } from "./ui";
 import { useBalayage } from "./useBalayage";
-import { Turnstile, TURNSTILE_ACTIF, type TurnstileHandle } from "../_components/Turnstile";
+import {
+  Turnstile,
+  TURNSTILE_ACTIF,
+  type TurnstileHandle,
+} from "../_components/Turnstile";
 
 const useIsomorphicLayoutEffect =
   typeof window !== "undefined" ? useLayoutEffect : useEffect;
@@ -63,7 +70,7 @@ export function ReservationFunnel({
   const hydrate = useSyncExternalStore(
     sAbonnerHydratation,
     estHydrate,
-    jamaisCoteServeur
+    jamaisCoteServeur,
   );
 
   const etape = useReservationStore((s) => s.etape);
@@ -112,7 +119,7 @@ export function ReservationFunnel({
       focusApresRendu.current = true;
       allerA(cible);
     },
-    [etape, allerA]
+    [etape, allerA],
   );
 
   const suivant = useCallback(
@@ -140,7 +147,7 @@ export function ReservationFunnel({
       focusApresRendu.current = true;
       allerA(cible);
     },
-    [etape, type, completer, allerA]
+    [etape, type, completer, allerA],
   );
 
   const precedent = useCallback(() => {
@@ -181,7 +188,9 @@ export function ReservationFunnel({
         return;
       }
       if (etape === 2 || etape === 3) {
-        document.querySelector<HTMLFormElement>("#funnel-form")?.requestSubmit();
+        document
+          .querySelector<HTMLFormElement>("#funnel-form")
+          ?.requestSubmit();
       }
     },
   });
@@ -191,18 +200,35 @@ export function ReservationFunnel({
   const salle = catalogue.salles.find((s) => s.slug === donnees.salle);
 
   const elements: ElementRecap[] = [];
-  if (type) elements.push({ label: "Demande", valeur: TYPE_LABELS[type].label, etape: 0 });
+  if (type)
+    elements.push({
+      label: "Demande",
+      valeur: TYPE_LABELS[type].label,
+      etape: 0,
+    });
   if (type === "essai" && cours) {
-    elements.push({ label: "Cours", valeur: `${cours.titre} · ${cours.detail}`, etape: 1 });
+    elements.push({
+      label: "Cours",
+      valeur: `${cours.titre} · ${cours.detail}`,
+      etape: 1,
+    });
   }
   if (type === "inscription" && formule) {
-    elements.push({ label: "Formule", valeur: `${formule.titre} · ${formule.prix}`, etape: 1 });
+    elements.push({
+      label: "Formule",
+      valeur: `${formule.titre} · ${formule.prix}`,
+      etape: 1,
+    });
   }
   if (type === "location" && salle) {
     elements.push({ label: "Salle", valeur: salle.titre, etape: 1 });
   }
   if (donnees.niveau) {
-    elements.push({ label: "Niveau", valeur: NIVEAU_LABELS[donnees.niveau], etape: 2 });
+    elements.push({
+      label: "Niveau",
+      valeur: NIVEAU_LABELS[donnees.niveau],
+      etape: 2,
+    });
   }
   if (donnees.dateSouhaitee) {
     elements.push({ label: "Date", valeur: donnees.dateSouhaitee, etape: 2 });
@@ -212,11 +238,15 @@ export function ReservationFunnel({
   }
   if (donnees.message) {
     const court =
-      donnees.message.length > 80 ? `${donnees.message.slice(0, 80)}…` : donnees.message;
+      donnees.message.length > 80
+        ? `${donnees.message.slice(0, 80)}…`
+        : donnees.message;
     elements.push({ label: "Message", valeur: court, etape: 2 });
   }
-  if (donnees.prenom) elements.push({ label: "Prénom", valeur: donnees.prenom, etape: 3 });
-  if (donnees.email) elements.push({ label: "E-mail", valeur: donnees.email, etape: 3 });
+  if (donnees.prenom)
+    elements.push({ label: "Prénom", valeur: donnees.prenom, etape: 3 });
+  if (donnees.email)
+    elements.push({ label: "E-mail", valeur: donnees.email, etape: 3 });
   if (donnees.telephone) {
     elements.push({ label: "Téléphone", valeur: donnees.telephone, etape: 3 });
   }
@@ -281,7 +311,9 @@ export function ReservationFunnel({
                   <span className="font-mono text-label uppercase tracking-widest text-tertiary">
                     {element.label}
                   </span>
-                  <span className="truncate text-sm font-semibold">{element.valeur}</span>
+                  <span className="truncate text-sm font-semibold">
+                    {element.valeur}
+                  </span>
                 </button>
               ))}
             <button
@@ -311,7 +343,12 @@ export function ReservationFunnel({
 
               {etape === 0 && <StepDemande valeur={type} onChoix={suivant} />}
               {etape === 1 && (
-                <StepChoix type={type} catalogue={catalogue} donnees={donnees} onChoix={suivant} />
+                <StepChoix
+                  type={type}
+                  catalogue={catalogue}
+                  donnees={donnees}
+                  onChoix={suivant}
+                />
               )}
               {etape === 2 && (
                 <StepDetails
@@ -336,7 +373,9 @@ export function ReservationFunnel({
                   onSubmit={suivant}
                 />
               )}
-              {etape === 4 && <StepRecap elements={elements} onModifier={aller} />}
+              {etape === 4 && (
+                <StepRecap elements={elements} onModifier={aller} />
+              )}
             </div>
 
             {etape === 4 && <Turnstile ref={turnstile} onJeton={setJeton} />}
@@ -351,7 +390,11 @@ export function ReservationFunnel({
                   ← Retour
                 </button>
                 {(etape === 2 || etape === 3) && (
-                  <button type="submit" form="funnel-form" className="pill pill-light">
+                  <button
+                    type="submit"
+                    form="funnel-form"
+                    className="pill pill-light"
+                  >
                     Suivant
                   </button>
                 )}
@@ -373,7 +416,10 @@ export function ReservationFunnel({
             )}
 
             {erreur && (
-              <p role="alert" className="mt-5 text-center text-petit text-secondary">
+              <p
+                role="alert"
+                className="mt-5 text-center text-petit text-secondary"
+              >
                 {erreur}
               </p>
             )}

@@ -3,7 +3,8 @@
 // `app/(frontend)/_components/Turnstile.tsx`.
 import { headers } from "next/headers";
 
-const VERIFICATION = "https://challenges.cloudflare.com/turnstile/v0/siteverify";
+const VERIFICATION =
+  "https://challenges.cloudflare.com/turnstile/v0/siteverify";
 
 /**
  * Vérifie auprès de Cloudflare le jeton produit par le widget.
@@ -34,7 +35,11 @@ export async function verifierHumain(jeton: unknown): Promise<boolean> {
   if (ip) corps.set("remoteip", ip);
 
   try {
-    const reponse = await fetch(VERIFICATION, { method: "POST", body: corps, cache: "no-store" });
+    const reponse = await fetch(VERIFICATION, {
+      method: "POST",
+      body: corps,
+      cache: "no-store",
+    });
     const resultat = (await reponse.json()) as { success?: boolean };
     return resultat.success === true;
   } catch (error) {

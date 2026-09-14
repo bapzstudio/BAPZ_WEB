@@ -1,7 +1,10 @@
 import Link from "next/link";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { coordonneesFormSchema, type CoordonneesData } from "@/lib/reservation/schemas";
+import {
+  coordonneesFormSchema,
+  type CoordonneesData,
+} from "@/lib/reservation/schemas";
 import { Champ, Titre } from "../ui";
 
 export function StepCoordonnees({

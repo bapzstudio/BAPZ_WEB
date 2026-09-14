@@ -1,4 +1,10 @@
-export function ProgressBar({ etape, total }: { etape: number; total: number }) {
+export function ProgressBar({
+  etape,
+  total,
+}: {
+  etape: number;
+  total: number;
+}) {
   const pourcentage = Math.min(((etape + 1) / total) * 100, 100);
 
   return (

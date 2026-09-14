@@ -15,14 +15,18 @@ const svg = fs.readFileSync(SOURCE, "utf8");
 
 const transformations = (svg.match(/transform=/g) || []).length;
 if (transformations > 0) {
-  throw new Error(`${transformations} attribut(s) transform : le script ne les reporte pas.`);
+  throw new Error(
+    `${transformations} attribut(s) transform : le script ne les reporte pas.`,
+  );
 }
 
 const viewBox = svg.match(/viewBox="([^"]+)"/)?.[1];
 const debutPlanete = svg.indexOf('<g id="PLAN');
 const debutMot = svg.indexOf('<g id="bapz"');
 if (!viewBox || debutPlanete < 0 || debutMot < 0) {
-  throw new Error("Structure inattendue : viewBox, groupe PLANÈTE ou groupe bapz introuvable.");
+  throw new Error(
+    "Structure inattendue : viewBox, groupe PLANÈTE ou groupe bapz introuvable.",
+  );
 }
 
 // Seuls les tracés remplis (`cls-2`) se voient ; le fichier contient aussi un
@@ -55,5 +59,5 @@ export const TRACES_MOT: readonly string[] = ${JSON.stringify(mot, null, 2)};
 fs.mkdirSync(path.dirname(SORTIE), { recursive: true });
 fs.writeFileSync(SORTIE, contenu);
 console.log(
-  `viewBox ${viewBox} | planète : ${planete.length} tracés | mot : ${mot.length} tracés | ignorés : ${total - planete.length - mot.length} | ${Math.round(contenu.length / 1024)} Ko écrits dans ${SORTIE}`
+  `viewBox ${viewBox} | planète : ${planete.length} tracés | mot : ${mot.length} tracés | ignorés : ${total - planete.length - mot.length} | ${Math.round(contenu.length / 1024)} Ko écrits dans ${SORTIE}`,
 );

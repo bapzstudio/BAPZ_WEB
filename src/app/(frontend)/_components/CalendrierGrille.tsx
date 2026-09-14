@@ -35,10 +35,10 @@ export function CalendrierGrille() {
     if (!grille) return undefined;
 
     const entetes = Array.from(
-      grille.querySelectorAll<HTMLElement>("[data-grille-jour]")
+      grille.querySelectorAll<HTMLElement>("[data-grille-jour]"),
     );
     const cellules = Array.from(
-      grille.querySelectorAll<HTMLElement>("[data-grille-cellule]")
+      grille.querySelectorAll<HTMLElement>("[data-grille-cellule]"),
     );
 
     const reduit =
@@ -55,21 +55,31 @@ export function CalendrierGrille() {
         Array.from(cellule.children).map((carte) => ({
           carte,
           jour: Number(cellule.dataset.grilleCellule ?? 0),
-        }))
+        })),
       );
 
       gsap.set(titres, { opacity: 0, y: 12 });
       gsap.set(filets, { scaleX: 0, transformOrigin: "0% 50%" });
       gsap.set(
         cartes.map((c) => c.carte),
-        { opacity: 0, y: 12 }
+        { opacity: 0, y: 12 },
       );
       grille.removeAttribute("data-grille-pending");
 
       const entree = gsap
         .timeline({ paused: true })
-        .to(titres, { opacity: 1, y: 0, duration: 0.5, ease: "power3.out", stagger: 0.045 })
-        .to(filets, { scaleX: 1, duration: 0.65, ease: "power3.out", stagger: 0.045 }, "<0.05");
+        .to(titres, {
+          opacity: 1,
+          y: 0,
+          duration: 0.5,
+          ease: "power3.out",
+          stagger: 0.045,
+        })
+        .to(
+          filets,
+          { scaleX: 1, duration: 0.65, ease: "power3.out", stagger: 0.045 },
+          "<0.05",
+        );
 
       // Les cartes suivent leur colonne, et non leur ordre dans le document :
       // une cellule du samedi écrite avant une du lundi entrerait sinon la
@@ -78,7 +88,7 @@ export function CalendrierGrille() {
         entree.to(
           carte,
           { opacity: 1, y: 0, duration: 0.65, ease: "power3.out" },
-          `0.2+=${jour * DECALAGE_COLONNE}`
+          `0.2+=${jour * DECALAGE_COLONNE}`,
         );
       }
 
@@ -97,7 +107,8 @@ export function CalendrierGrille() {
     // --- Colonne éclairée au survol ---------------------------------------
     // Sans curseur il n'y a rien à survoler, et la colonne resterait allumée
     // sur le dernier toucher (même garde-fou que ProximityGlow).
-    const sansCurseur = window.matchMedia?.("(pointer: coarse)").matches ?? false;
+    const sansCurseur =
+      window.matchMedia?.("(pointer: coarse)").matches ?? false;
     if (!sansCurseur && entetes.length > 0) {
       const eteindre = () => {
         for (const entete of entetes) entete.removeAttribute("data-actif");
@@ -105,13 +116,13 @@ export function CalendrierGrille() {
 
       const auSurvol = (event: PointerEvent) => {
         const cellule = (event.target as HTMLElement).closest<HTMLElement>(
-          "[data-grille-cellule]"
+          "[data-grille-cellule]",
         );
         eteindre();
         if (!cellule) return;
         entetes[Number(cellule.dataset.grilleCellule ?? -1)]?.setAttribute(
           "data-actif",
-          ""
+          "",
         );
       };
 

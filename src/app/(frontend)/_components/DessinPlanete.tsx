@@ -25,11 +25,18 @@ export function DessinPlanete() {
   const repere = useRef<HTMLSpanElement>(null);
 
   useIsomorphicLayoutEffect(() => {
-    const svg = repere.current?.parentElement?.querySelector<SVGSVGElement>("svg[data-dessin]");
+    const svg =
+      repere.current?.parentElement?.querySelector<SVGSVGElement>(
+        "svg[data-dessin]",
+      );
     if (!svg) return undefined;
 
-    const lignes = Array.from(svg.querySelectorAll<SVGPathElement>("[data-dessin-planete] path"));
-    const lettres = Array.from(svg.querySelectorAll<SVGPathElement>("[data-dessin-mot] path"));
+    const lignes = Array.from(
+      svg.querySelectorAll<SVGPathElement>("[data-dessin-planete] path"),
+    );
+    const lettres = Array.from(
+      svg.querySelectorAll<SVGPathElement>("[data-dessin-mot] path"),
+    );
 
     // Mouvement réduit : le logo s'affiche tel quel, sans rien masquer.
     if (window.matchMedia?.("(prefers-reduced-motion: reduce)").matches) {
@@ -56,8 +63,16 @@ export function DessinPlanete() {
         ease: "power2.inOut",
         stagger: { each: 0.012, from: "random" },
       })
-      .to(lignes, { fillOpacity: 1, strokeOpacity: 0, duration: 0.5, ease: "power1.out" }, ">-0.25")
-      .to(lettres, { opacity: 1, y: 0, duration: 0.6, ease: "power3.out", stagger: 0.07 }, "<");
+      .to(
+        lignes,
+        { fillOpacity: 1, strokeOpacity: 0, duration: 0.5, ease: "power1.out" },
+        ">-0.25",
+      )
+      .to(
+        lettres,
+        { opacity: 1, y: 0, duration: 0.6, ease: "power3.out", stagger: 0.07 },
+        "<",
+      );
 
     return () => {
       animation.kill();

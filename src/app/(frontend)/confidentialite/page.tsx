@@ -32,53 +32,72 @@ export default async function ConfidentialitePage() {
         <Section titre="Qui est responsable">
           <p>
             <ACompleter valeur={s.legalName} />
-            {s.address ? `, ${s.address}` : ""}, est responsable des informations que
-            tu transmets sur ce site. Pour toute question : <ACompleter valeur={s.email} />.
+            {s.address ? `, ${s.address}` : ""}, est responsable des
+            informations que tu transmets sur ce site. Pour toute question :{" "}
+            <ACompleter valeur={s.email} />.
           </p>
         </Section>
 
         <Section titre="Ce qui est collecté, et pourquoi">
           <p>
-            <strong className="text-foreground">Une demande de réservation</strong>{" "}
-            (cours d&apos;essai, inscription, location, cours privé) : ton prénom,
-            ton e-mail, ton téléphone si tu le donnes, ce que tu as choisi, ton
-            niveau, la date et le nombre de personnes pour une location, et ton
-            message. Ces informations servent à traiter ta demande et à te
-            recontacter. Elles sont nécessaires aux démarches que tu engages avant
-            une inscription ou une location (article 6.1.b du RGPD).
+            <strong className="text-foreground">
+              Une demande de réservation
+            </strong>{" "}
+            (cours d&apos;essai, inscription, location, cours privé) : ton
+            prénom, ton e-mail, ton téléphone si tu le donnes, ce que tu as
+            choisi, ton niveau, la date et le nombre de personnes pour une
+            location, et ton message. Ces informations servent à traiter ta
+            demande et à te recontacter. Elles sont nécessaires aux démarches
+            que tu engages avant une inscription ou une location (article 6.1.b
+            du RGPD).
           </p>
           <p>
-            <strong className="text-foreground">Un message par le formulaire de contact</strong>{" "}
+            <strong className="text-foreground">
+              Un message par le formulaire de contact
+            </strong>{" "}
             : ton nom, ton e-mail et ton message, qui servent uniquement à te
             répondre (intérêt légitime du studio à répondre aux messages reçus,
             article 6.1.f). Ce message est transmis par e-mail et n&apos;est pas
             enregistré sur le site.
           </p>
           <p>
-            <strong className="text-foreground">Au moment d&apos;envoyer un formulaire</strong>
+            <strong className="text-foreground">
+              Au moment d&apos;envoyer un formulaire
+            </strong>
             , une vérification anti-robot (Cloudflare Turnstile) examine des
-            informations techniques : ton adresse IP et des caractéristiques de ton
-            navigateur. Elles servent uniquement à bloquer les envois automatisés
-            (intérêt légitime du studio à protéger ses formulaires, article 6.1.f).
+            informations techniques : ton adresse IP et des caractéristiques de
+            ton navigateur. Elles servent uniquement à bloquer les envois
+            automatisés (intérêt légitime du studio à protéger ses formulaires,
+            article 6.1.f).
           </p>
           <p>
-            Rien d&apos;autre : pas de compte visiteur, pas de mesure d&apos;audience,
-            pas de publicité.
+            Rien d&apos;autre : pas de compte visiteur, pas de mesure
+            d&apos;audience, pas de publicité.
           </p>
         </Section>
 
         <Section titre="Qui y a accès">
           <p>
-            Seul le studio. Tes informations ne sont jamais vendues ni cédées. Pour
-            fonctionner, le site s&apos;appuie sur des prestataires qui les traitent
-            pour le compte du studio, sans pouvoir s&apos;en servir pour eux-mêmes :
+            Seul le studio. Tes informations ne sont jamais vendues ni cédées.
+            Pour fonctionner, le site s&apos;appuie sur des prestataires qui les
+            traitent pour le compte du studio, sans pouvoir s&apos;en servir
+            pour eux-mêmes :
           </p>
           <ul className="flex list-disc flex-col gap-1.5 pl-5">
-            <li>Neon, pour la base de données où sont enregistrées les demandes, hébergée dans l&apos;Union européenne (Francfort) ;</li>
+            <li>
+              Neon, pour la base de données où sont enregistrées les demandes,
+              hébergée dans l&apos;Union européenne (Francfort) ;
+            </li>
             <li>Resend, pour l&apos;envoi des e-mails ;</li>
-            <li>Cloudflare, pour la vérification anti-robot des formulaires ;</li>
-            <li>l&apos;hébergeur du site, indiqué dans les{" "}
-              <Link href="/mentions-legales" className={lien}>mentions légales</Link>.
+            <li>
+              Cloudflare, pour la vérification anti-robot des formulaires ;
+            </li>
+            <li>
+              l&apos;hébergeur du site, indiqué dans les{" "}
+              <Link href="/mentions-legales" className={lien}>
+                mentions légales
+              </Link>
+              .
             </li>
           </ul>
           <p>
@@ -97,33 +116,39 @@ export default async function ConfidentialitePage() {
 
         <Section titre="Cookies">
           <p>
-            Le site ne dépose aucun cookie sur ton navigateur. Pendant une demande
-            de réservation, ta saisie est gardée dans l&apos;onglet pour que tu ne
-            perdes rien d&apos;une étape à l&apos;autre : elle s&apos;efface à
-            l&apos;envoi ou à la fermeture de l&apos;onglet. Les liens vers Instagram
-            et Google Maps mènent à des sites tiers, qui appliquent leurs propres
-            règles.
+            Le site ne dépose aucun cookie sur ton navigateur. Pendant une
+            demande de réservation, ta saisie est gardée dans l&apos;onglet pour
+            que tu ne perdes rien d&apos;une étape à l&apos;autre : elle
+            s&apos;efface à l&apos;envoi ou à la fermeture de l&apos;onglet. Les
+            liens vers Instagram et Google Maps mènent à des sites tiers, qui
+            appliquent leurs propres règles.
           </p>
         </Section>
 
         <Section titre="Cours enfants">
           <p>
-            Pour un cours destiné à un enfant, la demande est à faire par un parent
-            ou la personne qui en a la responsabilité.
+            Pour un cours destiné à un enfant, la demande est à faire par un
+            parent ou la personne qui en a la responsabilité.
           </p>
         </Section>
 
         <Section titre="Tes droits">
           <p>
-            Tu peux demander à consulter, corriger ou supprimer tes informations,
-            t&apos;opposer à leur utilisation, en limiter l&apos;usage ou les
-            récupérer, en écrivant à <ACompleter valeur={s.email} />. Une réponse
-            t&apos;est apportée dans le mois.
+            Tu peux demander à consulter, corriger ou supprimer tes
+            informations, t&apos;opposer à leur utilisation, en limiter
+            l&apos;usage ou les récupérer, en écrivant à{" "}
+            <ACompleter valeur={s.email} />. Une réponse t&apos;est apportée
+            dans le mois.
           </p>
           <p>
-            Si tu estimes que tes droits ne sont pas respectés, tu peux adresser une
-            réclamation à la CNIL :{" "}
-            <a href="https://www.cnil.fr" target="_blank" rel="noopener noreferrer" className={lien}>
+            Si tu estimes que tes droits ne sont pas respectés, tu peux adresser
+            une réclamation à la CNIL :{" "}
+            <a
+              href="https://www.cnil.fr"
+              target="_blank"
+              rel="noopener noreferrer"
+              className={lien}
+            >
               cnil.fr
             </a>
             .

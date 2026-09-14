@@ -13,8 +13,8 @@ export function StepConfirmation({ prenom }: { prenom: string }) {
           la cliente répond à la main. Le dire évite qu'un visiteur se présente
           au cours en croyant sa place acquise. */}
       <p className="max-w-md text-courant leading-snug text-secondary">
-        Merci{prenom ? ` ${prenom}` : ""}. Ce n&apos;est pas encore une réservation : on
-        revient vers toi très vite pour la confirmer.
+        Merci{prenom ? ` ${prenom}` : ""}. Ce n&apos;est pas encore une
+        réservation : on revient vers toi très vite pour la confirmer.
       </p>
       <div className="flex flex-wrap justify-center gap-4">
         <Link href="/" className="pill pill-light">

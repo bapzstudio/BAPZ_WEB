@@ -21,7 +21,9 @@ export default async function ContactPage() {
   // Légende du bloc « Où nous trouver » : la commune (fin de l'adresse) et la
   // ville de référence, sans doublon si ce sont les mêmes.
   const commune = settings.address?.split(",").pop()?.trim();
-  const lieu = [...new Set([commune, settings.city].filter(Boolean))].join(" · ");
+  const lieu = [...new Set([commune, settings.city].filter(Boolean))].join(
+    " · ",
+  );
   const itineraire = settings.address
     ? `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(`${settings.address}, France`)}`
     : undefined;
@@ -103,7 +105,10 @@ export default async function ContactPage() {
                 modérée pour que la page tienne dans l'écran. */}
             {itineraire && (
               <div className="flex flex-1 items-center gap-6 py-4 sm:gap-8">
-                <div aria-hidden className="relative size-28 shrink-0 sm:size-36 lg:size-44">
+                <div
+                  aria-hidden
+                  className="relative size-28 shrink-0 sm:size-36 lg:size-44"
+                >
                   <Planete sizes="176px" className="size-full opacity-40" />
                   <span className="point-studio absolute top-[38%] left-[57%]" />
                 </div>
