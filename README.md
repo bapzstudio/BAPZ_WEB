@@ -149,3 +149,5 @@ entre dans ce cadre.
   conflit entre deux sources, pas un manque. Détail dans `content/cours.md`.
 - **Statut légal et SIRET**, pour les mentions légales.
 - **Cours privés** : poste du devis qui n'apparaît sur aucune maquette reçue.
+
+Commit from owner to deploy : 1
