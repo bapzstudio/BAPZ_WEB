@@ -15,7 +15,7 @@ const useIsomorphicLayoutEffect =
 const DECALAGE_COLONNE = 0.06;
 
 /**
- * Anime la grille hebdomadaire du calendrier (à partir de 1280 px) :
+ * Anime la grille hebdomadaire du calendrier (à partir de 1440 px) :
  *
  * - entrée au défilement : les noms des jours montent en cascade, leur filet
  *   se trace de gauche à droite, puis les cartes montent colonne par colonne ;
@@ -25,7 +25,7 @@ const DECALAGE_COLONNE = 0.06;
  *
  * Ne rend rien : le balisage vient de WeekSchedule (composant serveur), repéré
  * par ses attributs `data-grille…`. Pendant du composant CalendrierAnimations,
- * qui anime la liste par jour affichée en dessous de 1280 px.
+ * qui anime la liste par jour affichée en dessous de 1440 px.
  */
 export function CalendrierGrille() {
   const repere = useRef<HTMLSpanElement>(null);

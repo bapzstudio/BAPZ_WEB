@@ -41,20 +41,32 @@ function CalendarCard({ course }: { course: Course }) {
       href={lienReservation({ type: "essai", cours: course.slug })}
       className="group block h-full rounded-[15px]"
     >
+      {/* Dans la grille (à partir de 1440 px, seule largeur où une carte
+          s'affiche en colonne), la marge intérieure et le titre suivent la
+          fenêtre : valeurs de la maquette à 1920, réduites en dessous. À taille
+          fixe, les titres en capitales sortaient des cartes à toute largeur
+          sous 1920 (« CONTEMPORAIN » de 38 px à 1440). La césure française
+          (`hyphens-auto`, le document étant en `lang="fr"`) sert de filet. Sous
+          1440 px, la carte est dans la liste et garde ses valeurs fixes. */}
       <div
         data-glow-card
-        className="cal-card cal-glow relative flex h-full flex-col p-5"
+        className="cal-card cal-glow relative flex h-full flex-col p-5 min-[1440px]:p-[clamp(14px,1.04vw,20px)]"
       >
-        <div className="flex items-baseline justify-between gap-2 font-mono text-label text-discret">
+        {/* Horaire et salle ne se coupent jamais : quand la colonne est trop
+            étroite, la salle passe sous l'horaire au lieu que chacun se casse
+            sur deux lignes. */}
+        <div className="flex flex-wrap items-baseline justify-between gap-x-2 gap-y-0.5 font-mono text-label text-discret">
           {/* Même format d'heure que le reste du site (« 19h00 »), en capitales
             comme sur la maquette : la salle, elle, garde sa casse. */}
-          <span className="uppercase">
+          <span className="whitespace-nowrap uppercase">
             {formaterHeure(course.startTime)} - {formaterHeure(course.endTime)}
           </span>
-          {course.room && <span>{course.room}</span>}
+          {course.room && (
+            <span className="whitespace-nowrap">{course.room}</span>
+          )}
         </div>
 
-        <div className="mt-5 text-lg font-black uppercase leading-tight">
+        <div className="mt-5 text-lg font-black uppercase leading-tight hyphens-auto min-[1440px]:text-[clamp(14px,0.94vw,18px)]">
           {course.title}
         </div>
 
@@ -143,10 +155,17 @@ export function WeekSchedule({ courses }: { courses: Course[] }) {
 
   return (
     <ProximityGlow>
-      {/* Grille hebdomadaire complète, à partir de xl seulement. Les attributs
+      {/* Grille hebdomadaire complète, à partir de 1440 px seulement : en
+          dessous, sept colonnes ne laissent pas la place aux titres des cours
+          (mesuré : ils sortaient des cartes de 60 px à 1280). Les attributs
           `data-grille…` servent à CalendrierGrille : entrée au défilement et
-          colonne éclairée au survol. */}
-      <div data-grille="" data-grille-pending="" className="hidden xl:block">
+          colonne éclairée au survol. Seuil repris dans CalendrierAnimations,
+          à changer ensemble. */}
+      <div
+        data-grille=""
+        data-grille-pending=""
+        className="hidden min-[1440px]:block"
+      >
         <div className="grid grid-cols-7 gap-x-7.5">
           {JOURS.map((day, index) => (
             <div key={day} data-grille-jour={index} className="text-center">
@@ -187,12 +206,12 @@ export function WeekSchedule({ courses }: { courses: Course[] }) {
         <CalendrierGrille />
       </div>
 
-      {/* En dessous de xl : une liste par jour, la grille 7 colonnes étant
-          illisible sur écran étroit. Sur 2,5 écrans de téléphone, une barre
-          des jours reste collée sous la nav (67 px) pour s'y retrouver et
-          sauter à un jour ; CalendrierAnimations y fait glisser la pastille
+      {/* En dessous de 1440 px : une liste par jour, la grille 7 colonnes
+          étant illisible sur écran étroit. Sur 2,5 écrans de téléphone, une
+          barre des jours reste collée sous la nav (67 px) pour s'y retrouver
+          et sauter à un jour ; CalendrierAnimations y fait glisser la pastille
           et anime l'entrée de chaque jour. */}
-      <div className="xl:hidden">
+      <div className="min-[1440px]:hidden">
         <nav
           aria-label="Jours de la semaine"
           data-jours-barre=""

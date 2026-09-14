@@ -12,7 +12,7 @@ const useIsomorphicLayoutEffect =
   typeof window !== "undefined" ? useLayoutEffect : useEffect;
 
 /**
- * Anime la liste par jour du calendrier (sous 1280 px) :
+ * Anime la liste par jour du calendrier (sous 1440 px) :
  *
  * - entrée au défilement : le nom du jour apparaît, son filet se trace de
  *   gauche à droite, puis ses cartes montent l'une après l'autre ; mêmes
@@ -42,8 +42,9 @@ export function CalendrierAnimations() {
 
     const reduit =
       window.matchMedia?.("(prefers-reduced-motion: reduce)").matches ?? false;
-    // Au-delà de 1280 px la liste est masquée au profit de la grille.
-    const grille = window.matchMedia?.("(min-width: 1280px)").matches ?? false;
+    // Au-delà de 1440 px la liste est masquée au profit de la grille. Même
+    // seuil que `min-[1440px]` dans WeekSchedule : à changer ensemble.
+    const grille = window.matchMedia?.("(min-width: 1440px)").matches ?? false;
     const nettoyages: Array<() => void> = [];
 
     // --- Entrée au défilement --------------------------------------------
