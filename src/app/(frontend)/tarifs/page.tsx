@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { FoldText } from "../_components/FoldText";
 import { PageTransition } from "../_components/PageTransition";
 import { ProximityGlow } from "../_components/ProximityGlow";
 import { PricingCard } from "../_components/PricingCard";
@@ -30,7 +31,7 @@ export default async function TarifsPage() {
           rangée à l'autre. */}
       <ProximityGlow className="container-page pt-[var(--vr-104)] pb-8.5">
         <h1 className="titre-page">
-          Tarifs
+          <FoldText text="Tarifs" />
         </h1>
         <p className="eyebrow mt-6">
           SANS ENGAGEMENT OU À L&apos;ANNÉE - À TOI DE VOIR

@@ -118,6 +118,25 @@ chaque jour entre au défilement (nom, filet qui se trace, cartes décalées) :
 attributs `data-jour…`. Sans JavaScript ou en mouvement réduit, liste entière
 et ancres simples.
 
+La grille hebdomadaire (à partir de 1280 px) a son pendant, `CalendrierGrille` :
+mêmes réglages, mais les cartes entrent **par colonne** (décalage de 0,06 s par
+jour) et non dans l'ordre du document, sans quoi une cellule du samedi écrite
+avant une du lundi partirait la première. Survoler une carte allume l'en-tête de
+son jour, pour la rattacher à sa colonne dans une grille de sept : un seul
+écouteur sur la grille, un attribut `data-actif` sur l'en-tête, et le reste en
+CSS.
+
+**Tous les titres de page se déplient** mot par mot au chargement (`FoldText`,
+écrit pour le hero). Seule exception, le `h2` « Locations de salle » de
+`/tarifs` : `FoldText` joue au chargement et non au défilement, donc un titre
+situé au milieu d'une page serait déjà déplié quand on l'atteint.
+
+**Tout garde-fou `data-*-pending` vit dans `@media (scripting: enabled)`** de
+`globals.css`. Ces règles masquent du contenu en attendant que GSAP prenne la
+main ; sans JavaScript, rien ne retire jamais l'attribut, et ce qu'elles
+masquent resterait invisible. C'était le cas du titre du hero, corrigé au
+passage.
+
 Sur ordinateur, la pastille de la page courante de la nav glisse de la même
 façon d'un onglet à l'autre (`Nav.tsx`). Tant que JavaScript n'a pas placé la
 pastille, l'onglet actif garde son propre fond, sans quoi il apparaîtrait nu

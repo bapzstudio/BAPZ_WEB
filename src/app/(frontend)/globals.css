@@ -383,6 +383,34 @@ body {
   [data-jour-pending] [data-jour-filet] {
     transform: scaleX(0);
   }
+  /* Et pour la grille hebdomadaire (cf. CalendrierGrille). */
+  [data-grille-pending] [data-jour-titre],
+  [data-grille-pending] [data-grille-cellule] > * {
+    opacity: 0;
+  }
+  [data-grille-pending] [data-jour-filet] {
+    transform: scaleX(0);
+  }
+}
+
+/* Colonne éclairée : survoler une carte du calendrier allume l'en-tête de son
+   jour, pour la rattacher à sa colonne dans une grille de sept (l'attribut est
+   posé par CalendrierGrille). Le nom prend le blanc des titres et le filet le
+   gris des contours : aucune couleur nouvelle. */
+[data-grille-jour] [data-jour-titre] {
+  transition: color 0.25s ease;
+}
+
+[data-grille-jour] [data-jour-filet] {
+  transition: background-color 0.25s ease;
+}
+
+[data-grille-jour][data-actif] [data-jour-titre] {
+  color: var(--foreground);
+}
+
+[data-grille-jour][data-actif] [data-jour-filet] {
+  background-color: var(--rule);
 }
 
 /* Carte du calendrier et des profs.
@@ -486,9 +514,13 @@ body {
 }
 
 /* Garde-fou entre le rendu serveur et l'hydratation : évite que le titre
-   s'affiche en entier avant que GSAP ne le replie. */
-.fold-text[data-fold-pending] .fold-text-piece {
-  opacity: 0;
+   s'affiche en entier avant que GSAP ne le replie. Sous `scripting: enabled`
+   comme les autres : sans JavaScript, rien ne retire jamais l'attribut, et le
+   titre resterait invisible — sur les neuf pages qui déplient le leur. */
+@media (scripting: enabled) {
+  .fold-text[data-fold-pending] .fold-text-piece {
+    opacity: 0;
+  }
 }
 
 .fold-text-sr-only {

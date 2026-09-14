@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { FoldText } from "./_components/FoldText";
 import { Planete } from "./_components/Planete";
 import { SITE_NAME } from "@/lib/seo";
 
@@ -24,7 +25,9 @@ export default function NotFound() {
         className="planete-derive absolute right-10 top-[var(--vr-104)] -z-10 hidden w-[min(34vw,420px)] opacity-[0.14] md:block"
       />
       <p className="eyebrow">ERREUR 404</p>
-      <h1 className="mt-6 titre-page">Page introuvable</h1>
+      <h1 className="mt-6 titre-page">
+        <FoldText text="Page introuvable" />
+      </h1>
       <p className="mt-6 max-w-160 text-base leading-[1.3] text-secondary">
         Cette page n&apos;existe pas, ou plus. Le planning et les tarifs, eux,
         sont toujours là.

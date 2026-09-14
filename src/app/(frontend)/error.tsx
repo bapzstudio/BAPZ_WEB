@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useEffect } from "react";
+import { FoldText } from "./_components/FoldText";
 
 /**
  * Erreur pendant le rendu d'une page (base injoignable, par exemple). La nav
@@ -25,7 +26,7 @@ export default function Erreur({
     <div className="container-page pt-[var(--vr-104)] pb-8.5">
       <p className="eyebrow">ERREUR</p>
       <h1 className="mt-6 titre-page">
-        Un souci technique
+        <FoldText text="Un souci technique" />
       </h1>
       <p className="mt-6 max-w-160 text-base leading-[1.3] text-secondary">
         La page n&apos;a pas pu s&apos;afficher. Réessaie dans un instant ; si

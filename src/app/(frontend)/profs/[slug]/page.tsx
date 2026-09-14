@@ -4,6 +4,7 @@ import Link from "next/link";
 import { notFound } from "next/navigation";
 import { BioParagraph } from "../../_components/BioText";
 import { CourseCard } from "../../_components/CourseCard";
+import { FoldText } from "../../_components/FoldText";
 import { PageTransition } from "../../_components/PageTransition";
 import { ProximityGlow } from "../../_components/ProximityGlow";
 import { getTeacherBySlug, getTeacherSlugs } from "@/lib/queries";
@@ -73,7 +74,7 @@ export default async function ProfPage({ params }: Props) {
           <div>
             <div className="flex items-baseline justify-between gap-4">
               <h1 className="titre-page">
-                {teacher.name}
+                <FoldText text={teacher.name} />
               </h1>
               {teacher.discipline && (
                 <span className="eyebrow shrink-0">{teacher.discipline}</span>

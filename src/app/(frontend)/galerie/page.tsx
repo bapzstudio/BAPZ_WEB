@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { FoldText } from "../_components/FoldText";
 import { Gallery } from "../_components/Gallery";
 import { PageTransition } from "../_components/PageTransition";
 import { Planete } from "../_components/Planete";
@@ -37,7 +38,7 @@ export default async function GaleriePage() {
           />
         )}
         <h1 className="titre-page">
-          Galerie
+          <FoldText text="Galerie" />
         </h1>
 
         {items.length > 0 ? (

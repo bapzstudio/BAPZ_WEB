@@ -3,6 +3,7 @@ import { formaterHeure, JOURS, minutes } from "@/lib/reservation/format";
 import { lienReservation } from "@/lib/reservation/liens";
 import type { Course } from "@/lib/types";
 import { CalendrierAnimations } from "./CalendrierAnimations";
+import { CalendrierGrille } from "./CalendrierGrille";
 import { ProximityGlow } from "./ProximityGlow";
 
 // Modèle déduit de la maquette : les cartes ne sont pas proportionnelles à la
@@ -73,8 +74,9 @@ function CalendarCard({ course }: { course: Course }) {
 }
 
 function DayHeader({ day }: { day: string }) {
-  // Les attributs `data-jour-…` servent aux animations de la liste
-  // (CalendrierAnimations) ; ils sont sans effet dans la grille.
+  // Les attributs `data-jour-…` repèrent le nom et le filet pour les deux
+  // affichages : CalendrierAnimations pour la liste, CalendrierGrille pour la
+  // grille.
   return (
     <>
       <div data-jour-titre="" className="font-mono text-base uppercase tracking-widest text-discret">
@@ -138,11 +140,13 @@ export function WeekSchedule({ courses }: { courses: Course[] }) {
 
   return (
     <ProximityGlow>
-      {/* Grille hebdomadaire complète, à partir de xl seulement */}
-      <div className="hidden xl:block">
+      {/* Grille hebdomadaire complète, à partir de xl seulement. Les attributs
+          `data-grille…` servent à CalendrierGrille : entrée au défilement et
+          colonne éclairée au survol. */}
+      <div data-grille="" data-grille-pending="" className="hidden xl:block">
         <div className="grid grid-cols-7 gap-x-7.5">
-          {JOURS.map((day) => (
-            <div key={day} className="text-center">
+          {JOURS.map((day, index) => (
+            <div key={day} data-grille-jour={index} className="text-center">
               <DayHeader day={day} />
             </div>
           ))}
@@ -158,6 +162,7 @@ export function WeekSchedule({ courses }: { courses: Course[] }) {
             {[...cells.values()].map((cell) => (
               <div
                 key={`${cell.day}-${cell.startBand}`}
+                data-grille-cellule={cell.day}
                 className="flex flex-col gap-4.5"
                 style={{
                   gridColumn: cell.day + 1,
@@ -175,6 +180,8 @@ export function WeekSchedule({ courses }: { courses: Course[] }) {
         )}
 
         <div className="mt-5 h-px bg-rule-faint" />
+
+        <CalendrierGrille />
       </div>
 
       {/* En dessous de xl : une liste par jour, la grille 7 colonnes étant

@@ -1,4 +1,5 @@
 import type { ReactNode } from "react";
+import { FoldText } from "./FoldText";
 
 /**
  * Gabarit des pages légales. Pas de maquette : titre, écarts et petits libellés
@@ -16,7 +17,7 @@ export function PageLegale({
   return (
     <div className="container-page pt-[var(--vr-104)] pb-8.5">
       <h1 className="titre-page">
-        {titre}
+        <FoldText text={titre} />
       </h1>
       <p className="eyebrow mt-6">MISE À JOUR : {miseAJour.toUpperCase()}</p>
       <div className="mt-[var(--vr-64)] flex max-w-190 flex-col gap-10">{children}</div>

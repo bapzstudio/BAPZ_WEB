@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { ContactForm } from "../_components/ContactForm";
+import { FoldText } from "../_components/FoldText";
 import { PageTransition } from "../_components/PageTransition";
 import { Planete } from "../_components/Planete";
 import { lienInstagram } from "@/lib/instagram";
@@ -30,7 +31,7 @@ export default async function ContactPage() {
       <div className="container-page pt-[var(--vr-104)] pb-8.5">
         {/* Même titre et même écart titre -> cartes que les autres pages. */}
         <h1 className="titre-page">
-          Contact
+          <FoldText text="Contact" />
         </h1>
         <div className="mt-[var(--vr-64)] grid gap-5 lg:grid-cols-2">
           <div className="flex flex-col gap-4">

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { FoldText } from "../_components/FoldText";
 import { PageTransition } from "../_components/PageTransition";
 import { WeekSchedule } from "../_components/WeekSchedule";
 import { getCourses } from "@/lib/queries";
@@ -18,7 +19,7 @@ export default async function CoursPage() {
     <PageTransition>
       <div className="container-page pt-[var(--vr-104)] pb-8.5">
         <h1 className="titre-page">
-          Calendrier
+          <FoldText text="Calendrier" />
         </h1>
         <p className="eyebrow mt-6">
           SEMAINE TYPE - CLIQUE SUR UN COURS POUR RÉSERVER
