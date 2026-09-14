@@ -237,6 +237,12 @@ export const rooms: Room[] = [
   {
     _id: "salle-a",
     name: "Salle A",
+    // Tarifs transmis par la cliente le 2026-09-14 : « grande salle », 45 €/h.
+    // Elle annonce aussi un forfait (550 € les 5 h), pas affiché : à 5 h le
+    // tarif horaire donne 225 €, donc le forfait demande une explication
+    // qu'une carte ne peut pas porter. À clarifier avec elle.
+    price: "45 €",
+    period: "/ heure",
     capacity: 50,
     area: 120,
     equipment: [
@@ -249,6 +255,11 @@ export const rooms: Room[] = [
   {
     _id: "salle-b",
     name: "Salle B",
+    // « Petite/moyenne salle » : 28 €/h (forfait annoncé 350 € les 5 h, non
+    // affiché, même réserve que pour la salle A). La carte reste non
+    // réservable tant que l'année d'ouverture est renseignée.
+    price: "28 €",
+    period: "/ heure",
     capacity: 17,
     area: 43,
     availableFrom: "2027",
