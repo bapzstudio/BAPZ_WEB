@@ -37,6 +37,9 @@ export function MobileMenu({
   const [openedFor, setOpenedFor] = useState<string | null>(null);
   const pathname = usePathname();
   const open = openedFor === pathname;
+  // Reste vrai une fois le menu ouvert : ce qui décore le panneau n'est chargé
+  // qu'à ce moment-là, et ne disparaît pas à la fermeture.
+  const [dejaOuvert, setDejaOuvert] = useState(false);
 
   const panelRef = useRef<HTMLDivElement>(null);
   const layersRef = useRef<HTMLDivElement>(null);
@@ -177,7 +180,10 @@ export function MobileMenu({
       <button
         ref={buttonRef}
         type="button"
-        onClick={() => setOpenedFor(open ? null : pathname)}
+        onClick={() => {
+          if (!open) setDejaOuvert(true);
+          setOpenedFor(open ? null : pathname);
+        }}
         aria-expanded={open}
         aria-controls="menu-mobile"
         aria-label={open ? "Fermer le menu" : "Ouvrir le menu"}
@@ -208,13 +214,19 @@ export function MobileMenu({
         {/* La planète du logo en filigrane, au bas du panneau. Rognée par son
             cadre : sans lui, son débordement ajouterait une barre de
             défilement au panneau. `-z-10` la garde derrière les liens, le
-            panneau formant son propre contexte d'empilement. */}
-        <div className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
-          <Planete
-            sizes="320px"
-            className="absolute -right-24 -bottom-24 w-80 opacity-[0.12]"
-          />
-        </div>
+            panneau formant son propre contexte d'empilement.
+            Rendue seulement après la première ouverture : le panneau est fermé
+            par une transformation, donc le navigateur la considérait visible et
+            la téléchargeait sur chaque page (111 Ko relevés par Lighthouse) pour
+            une décoration que personne n'avait encore demandée. */}
+        {dejaOuvert && (
+          <div className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
+            <Planete
+              sizes="320px"
+              className="absolute -right-24 -bottom-24 w-80 opacity-[0.12]"
+            />
+          </div>
+        )}
         <nav aria-label="Navigation principale">
           <ul className="menu-list">
             {items.map((item) => (

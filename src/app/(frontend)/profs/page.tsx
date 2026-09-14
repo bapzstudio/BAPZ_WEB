@@ -35,8 +35,12 @@ export default async function ProfsPage() {
             sur la grille. */}
         <ProximityGlow>
           <Reveal className="mt-[var(--vr-64)] grid gap-8.5 md:grid-cols-2 xl:grid-cols-3">
-            {profiles.map((teacher) => (
-              <TeacherCard key={teacher._id} teacher={teacher} />
+            {profiles.map((teacher, index) => (
+              <TeacherCard
+                key={teacher._id}
+                teacher={teacher}
+                prioritaire={index === 0}
+              />
             ))}
           </Reveal>
         </ProximityGlow>

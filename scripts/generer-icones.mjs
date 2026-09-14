@@ -59,7 +59,9 @@ for (const [taille, fichier, carre] of [
 ]) {
   await sharp(planete({ carre }))
     .resize(taille, taille, { kernel: "lanczos3" })
-    .png({ compressionLevel: 9 })
+    // Palette : le dessin n'a que deux teintes et leurs dégradés d'anticrénelage.
+    // En couleurs vraies l'icône pesait 39 Ko, récupérés sur chaque page.
+    .png({ palette: true, colors: 16, compressionLevel: 9, effort: 10 })
     .toFile(fichier);
   console.log(
     `${fichier} — ${taille}x${taille}${carre ? "" : ", coins transparents"}`,

@@ -504,21 +504,35 @@ traits (plusieurs variantes essayées, toutes illisibles). Le mot du logo, lui,
 restait lisible : c'était l'icône précédente. Choix à montrer à la cliente,
 puisqu'il simplifie et retourne son logo.
 
-**Mesures.** Lighthouse 12, mobile, build de production local, le 2026-09-10 :
+**Mesures.** Lighthouse 12, mobile, build de production local, le 2026-09-14 :
 
 | Page | Perf | Accessibilité | Bonnes pratiques | SEO |
 |---|---|---|---|---|
-| Accueil | 85 | 100 | 100 | 100 |
-| Tarifs | 89 | 100 | 100 | 100 |
-| Réserver | 80 | 100 | 96 | 100 |
-| Calendrier | 89 | 96 | 100 | 100 |
-| Contact | 93 | 100 | 100 | 100 |
+| Accueil | 87 | 100 | 100 | 100 |
+| Profs | 87 | 100 | 100 | 100 |
+| Calendrier | 83 | 100 | 100 | 100 |
+| Tarifs | 90 | 100 | 100 | 100 |
+| Contact | 89 | 100 | 100 | 100 |
+| Réserver | 89 | 100 | 96 | 100 |
 
 Restent signalés, et ce sont des choix de design, pas des oublis :
 
 - Textes de 11 px en Space Mono : 45 % du texte de `/reserver`.
-- LCP autour de 3 s en 4G simulée, sur un texte : la page est prête plus tôt
-  (FCP 0,9 s).
+- LCP autour de 3,5 s en 4G simulée, sur un texte : la page est prête plus tôt
+  (FCP autour d'une seconde).
+- Lighthouse compte ~600 ms de « redirections » sur chaque page : c'est un
+  artefact de sa navigation initiale, aucune redirection réelle (vérifié au
+  `curl`). Les mesures locales sont donc pessimistes d'autant.
+
+**Deux réglages tirés de ces mesures, à ne pas défaire :**
+
+- la planète du menu mobile n'est rendue **qu'après la première ouverture** du
+  menu. Le panneau est fermé par une transformation, donc le navigateur la
+  considérait visible et la téléchargeait sur chaque page : 111 Ko pour une
+  décoration que personne n'avait demandée ;
+- le **premier portrait** de `/profs` porte `priority` (`TeacherCard`,
+  `prioritaire`). C'est lui qui s'affiche en premier sur téléphone ; en
+  chargement différé, il arrivait à 4,6 s.
 
 ## Pages légales
 

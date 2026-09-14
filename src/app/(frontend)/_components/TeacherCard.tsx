@@ -5,7 +5,15 @@ import type { Teacher } from "@/lib/types";
 
 /* Le rendu des paragraphes vit dans BioText, partagé avec la page d'un prof. */
 
-export function TeacherCard({ teacher }: { teacher: Teacher }) {
+export function TeacherCard({
+  teacher,
+  prioritaire = false,
+}: {
+  teacher: Teacher;
+  /** Premier portrait de la grille : chargé sans attendre, c'est lui qui
+      s'affiche en premier sur téléphone (LCP relevé à 4,6s en différé). */
+  prioritaire?: boolean;
+}) {
   return (
     <Link
       href={`/profs/${teacher.slug}`}
@@ -28,6 +36,7 @@ export function TeacherCard({ teacher }: { teacher: Teacher }) {
             // 90 plutôt que le défaut 75 : la source a déjà été compressée à
             // l'extraction depuis la maquette, un ré-encodage agressif la ternit.
             quality={90}
+            priority={prioritaire}
           />
         )}
 
