@@ -90,9 +90,10 @@ pnpm payload migrate:status         # état des migrations
 ## Médias
 
 Les images uploadées depuis `/admin` partent chez **UploadThing** (palier
-gratuit, 2 Go). Payload continue de les servir derrière `/api/media/file/...`
-et se charge du relais ; l'URL UploadThing directe
-(`xthjbjqeai.ufs.sh/f/<clé>`) n'apparaît pas dans les pages.
+gratuit, 2 Go) et sont lues directement sur son CDN, à l'adresse propre à
+l'application (`<appId>.ufs.sh/f/<clé>`) : Payload ne les relaie plus, et la
+route `/api/media/file/...` n'existe plus. Le détail, et la règle de sécurité
+qui va avec, sont dans `CLAUDE.md` (« Base de données et médias »).
 
 Il n'y a donc pas de dossier `public/uploads` : l'adaptateur désactive le
 stockage local. Les images qui servent au seed sont dans `src/seed/assets/`,

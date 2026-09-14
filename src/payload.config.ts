@@ -112,8 +112,19 @@ export default buildConfig({
     // Les fichiers uploadés depuis /admin partent chez UploadThing. Le
     // stockage local est désactivé par l'adaptateur : `Media` n'a donc pas
     // de `staticDir`.
+    //
+    // `disablePayloadAccessControl` : l'adresse d'un média pointe directement
+    // sur le CDN d'UploadThing au lieu de `/api/media/file/...`. Le relais par
+    // Payload coûtait 0,8 à 1,5 s par image, sans en-tête de cache, contre
+    // ~0,35 s en direct (mesuré le 2026-09-14). Aucun contrôle d'accès n'est
+    // perdu : les fichiers sont publics (`acl: "public-read"`) et le site les
+    // affiche à tous. `lib/queries.ts` réécrit ensuite le domaine partagé
+    // `utfs.io` vers celui de l'application (cf. `lib/uploadthing.ts`).
+    // Conséquence voulue : la route `/api/media/file/...` disparaît, le
+    // plugin ne l'enregistre plus. Rien ne doit y renvoyer ; l'API et l'admin
+    // donnent déjà l'adresse du CDN.
     uploadthingStorage({
-      collections: { media: true },
+      collections: { media: { disablePayloadAccessControl: true } },
       options: {
         token: process.env.UPLOADTHING_TOKEN,
         acl: "public-read",

@@ -2,9 +2,12 @@ import { withPayload } from '@payloadcms/next/withPayload'
 import type { NextConfig } from 'next'
 import path from 'path'
 import { fileURLToPath } from 'url'
+import { domaineUploadThing } from './src/lib/uploadthing'
 
 const __filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(__filename)
+
+const domaineMedias = domaineUploadThing()
 
 const nextConfig: NextConfig = {
   images: {
@@ -12,17 +15,21 @@ const nextConfig: NextConfig = {
     // la valeur autorisée la plus proche. 90 pour les portraits des profs, qui
     // ont déjà subi une compression à l'extraction depuis la maquette.
     qualities: [75, 90],
-    // Seule source d'images du site : Payload, qui sert les fichiers
-    // UploadThing derrière `/api/media/file/...`.
-    //
-    // Pas de `remotePatterns`. Il en existait un pour `**.ufs.sh`, jamais
-    // utilisé : il laissait n'importe qui faire traiter par notre optimiseur
-    // une image hébergée sur son propre compte UploadThing — donc exposer à
-    // Internet les failles de la bibliothèque d'images (sharp / libvips).
+    // Les médias sont lus directement sur le CDN d'UploadThing (cf.
+    // `payload.config.ts`), sur le seul domaine de NOTRE application :
+    // `<appId>.ufs.sh`, déduit du jeton. Surtout pas `**.ufs.sh` ni
+    // `utfs.io`, partagés par tous les comptes UploadThing : n'importe qui
+    // pourrait faire traiter par notre optimiseur une image de son propre
+    // compte, et donc exposer à Internet les failles de la bibliothèque
+    // d'images (sharp / libvips). Un tel motif avait été retiré à l'audit du
+    // 2026-09-11.
+    remotePatterns: domaineMedias
+      ? [{ protocol: 'https', hostname: domaineMedias, pathname: '/f/**' }]
+      : [],
+    // Plus de `/api/media/file/**` : cette route n'existe plus depuis le
+    // passage en direct (le plugin ne l'enregistre pas quand
+    // `disablePayloadAccessControl` est actif) et répondrait en erreur.
     localPatterns: [
-      {
-        pathname: '/api/media/file/**',
-      },
       // Éléments d'identité du studio (planète, mot du logo), fixes et hors
       // de l'admin.
       {

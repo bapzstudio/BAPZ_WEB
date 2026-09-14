@@ -135,14 +135,25 @@ du bureau (1 549px de haut à 390px, 901 après) :
 - pied de page sur deux lignes, sans les disciplines que le bandeau affiche
   déjà.
 
-Le calendrier en liste (sous 1280 px) a une barre des jours collante sous la
+Le calendrier en liste (sous 1440 px) a une barre des jours collante sous la
 nav, dont la pastille suit le jour affiché et qui fait défiler au toucher, et
 chaque jour entre au défilement (nom, filet qui se trace, cartes décalées) :
 `CalendrierAnimations`, qui anime le balisage serveur de `WeekSchedule` par ses
 attributs `data-jour…`. Sans JavaScript ou en mouvement réduit, liste entière
 et ancres simples.
 
-La grille hebdomadaire (à partir de 1280 px) a son pendant, `CalendrierGrille` :
+**Seuil de la grille : 1440 px, pas 1280.** Sept colonnes à 1280 ne laissent
+pas la place aux titres des cours en capitales : un mot insécable comme
+« CONTEMPORAIN » sortait des cartes de 60 px (mesuré le 2026-09-14, et encore
+de 3 px à 1680). Sous 1440 on garde la liste. Au-dessus, la carte est fluide
+entre 1440 et 1920 : titre `clamp(14px, 0.94vw, 18px)`, marge intérieure
+`clamp(14px, 1.04vw, 20px)`, valeurs de la maquette atteintes à 1920 ;
+l'horaire et la salle ne se coupent jamais, la salle passe dessous ; césure
+française en filet de sécurité. Le seuil est écrit deux fois — `min-[1440px]`
+dans `WeekSchedule`, `matchMedia` dans `CalendrierAnimations` — à changer
+ensemble.
+
+La grille hebdomadaire (à partir de 1440 px) a son pendant, `CalendrierGrille` :
 mêmes réglages, mais les cartes entrent **par colonne** (décalage de 0,06 s par
 jour) et non dans l'ordre du document, sans quoi une cellule du samedi écrite
 avant une du lundi partirait la première. Survoler une carte allume l'en-tête de
@@ -243,17 +254,29 @@ IPv6.
 Les images uploadées vont chez UploadThing (`@payloadcms/storage-uploadthing`,
 palier gratuit 2 Go). L'adaptateur désactive le stockage local : la collection
 `Media` n'a donc pas de `staticDir` et il n'y a pas de `public/uploads`.
-Payload sert les fichiers derrière `/api/media/file/...` et relaie vers
-UploadThing, ce qui est couvert par `images.localPatterns` dans
-`next.config.ts`.
 
-**Correctif d'en-tête dans `Media.ts`** (`upload.modifyResponseHeaders`) :
-l'adaptateur prend la taille du fichier dans une requête HEAD à UploadThing, qui
-n'annonce jamais de `content-length`. Il répondait donc « longueur 0 » et le
-navigateur recevait une image vide sur tout accès direct à `/api/media/file`
-(vignettes de l'admin notamment) ; les pages, servies par l'optimiseur de Next,
-n'étaient pas touchées. Le correctif retire cet en-tête nul. À retirer si une
-version de l'adaptateur corrige le problème.
+**Les médias sont lus directement sur le CDN d'UploadThing** depuis le
+2026-09-14 (`disablePayloadAccessControl` dans `payload.config.ts`). Avant,
+Payload relayait chaque fichier derrière `/api/media/file/...` : 0,8 à 1,5 s
+par image, sans en-tête de cache. En direct, l'optimiseur de Next obtient
+l'image à froid en ~0,35 s, puis la sert depuis son cache en quelques ms.
+Trois conséquences :
+
+- **La route `/api/media/file/...` n'existe plus** (le plugin ne l'enregistre
+  pas dans ce mode) et répond en erreur. Rien ne doit y renvoyer : l'API et
+  l'admin donnent l'adresse du CDN.
+- L'adaptateur produit des adresses `utfs.io/f/<clé>`, domaine partagé par
+  toutes les applications UploadThing. `toImage` (`lib/queries.ts`) les
+  réécrit vers `<appId>.ufs.sh/f/<clé>`, le domaine de NOTRE application,
+  seul autorisé dans `images.remotePatterns` (cf. « Sécurité »). L'identifiant
+  est lu dans `UPLOADTHING_TOKEN` par `lib/uploadthing.ts`, partagé avec
+  `next.config.ts` pour que les deux désignent le même domaine.
+- `generateFileURL` ne sert pas à cette réécriture : il ne reçoit pas la clé
+  du fichier, seulement son nom.
+
+L'ancien correctif d'en-tête de `Media.ts` (`modifyResponseHeaders`, qui
+retirait un `content-length: 0` renvoyé par le relais) a disparu avec le
+relais.
 
 `next.config.ts` déclare aussi `images.qualities = [75, 90]`, obligatoire
 depuis Next 16 pour les portraits rendus en qualité 90.
@@ -388,8 +411,8 @@ quelques degrés, faisait pencher le mot BAPZ ; elle est réservée à la planè
 seule. Ne pas partir d'une vectorisation automatique du PNG : un seul tracé en
 escalier, impossible à dessiner ligne par ligne.
 
-Le logo de la nav est le média des Réglages (variante V2, carrée) ; l'icône
-d'onglet est le mot seul (`app/icon.png`), l'icône Apple la V2. L'image de
+Le logo de la nav est le média des Réglages (variante V2, carrée) ; les icônes
+d'onglet et Apple sont la planète redessinée (cf. « Icônes »). L'image de
 partage (`public/partage.jpg`) pose la V2 sur la photo `shoot-2`.
 
 Aucune maquette pour ces emplacements : la planète reste discrète (opacité
@@ -431,10 +454,13 @@ Mesures posées après l'audit du 2026-09-11, chacune vérifiée sur le serveur 
   local, les clés de test de Cloudflare (dans `.env.example`) ; en production,
   celles d'un widget créé sur le domaine du site. **Sans clé secrète, tout envoi
   est refusé en production** — volontairement, pour qu'un oubli se voie.
-- **Images** : pas de `remotePatterns`. Il en existait un pour `**.ufs.sh` ; il
-  permettait à n'importe qui de faire traiter par notre optimiseur une image
-  hébergée ailleurs, et donc d'exposer les failles de `sharp`. Ne pas le
-  remettre : Payload sert toutes nos images par `/api/media/file/...`.
+- **Images** : un seul `remotePatterns`, le domaine de notre application
+  UploadThing (`<appId>.ufs.sh/f/**`, déduit du jeton). **Jamais `**.ufs.sh`
+  ni `utfs.io`** : partagés par tous les comptes UploadThing, ils permettraient
+  à n'importe qui de faire traiter par notre optimiseur une image de son propre
+  compte, et donc d'exposer les failles de `sharp`. Un motif `**.ufs.sh` avait
+  été retiré à l'audit pour cette raison ; le motif restreint est revenu avec
+  la lecture directe des médias (cf. « Base de données et médias »).
 - **En-têtes** (`next.config.ts`) : `nosniff`, `Referrer-Policy`, interdiction
   d'affichage dans un cadre tiers, `Permissions-Policy`. HSTS est posé par
   l'hébergeur.
@@ -555,6 +581,16 @@ est à relire au déploiement.
 `content/` contient les notes reçues de la cliente et le logo vectoriel. Les
 exports Figma et les fichiers sources lourds (photos brutes du shooting, `.ai`)
 restent hors du repo, dans `../BAPZ/maquette` et `../BAPZ/content`.
+
+## Documents
+
+- `docs/guide-administration.md` — l'utilisation de l'admin, écrit pour la
+  cliente, à tenir à jour avec l'admin ;
+- `docs/questions-cliente.md` — ce qui manque encore de son côté (planning
+  réel, informations légales, salles, galerie) et les écarts avec les maquettes
+  à lui faire valider ;
+- `docs/mise-en-ligne.md` — le déroulé de la séance de déploiement :
+  variables d'environnement, Turnstile, Resend, migrations, vérifications.
 
 ## État
 

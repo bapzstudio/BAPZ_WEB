@@ -22,6 +22,7 @@ import {
   TYPE_LABELS,
   type DemandeData,
 } from "./reservation/schemas";
+import { adresseUploadThing } from "./uploadthing";
 
 const payload = async () => getPayload({ config });
 
@@ -36,7 +37,9 @@ type PayloadUpload = {
 const toImage = (media: unknown) => {
   const m = media as PayloadUpload | null;
   if (!m?.url || !m.width || !m.height) return undefined;
-  return { src: m.url, width: m.width, height: m.height };
+  // Domaine de l'application plutôt que `utfs.io` : seul autorisé par
+  // l'optimiseur d'images (cf. `lib/uploadthing.ts`).
+  return { src: adresseUploadThing(m.url), width: m.width, height: m.height };
 };
 
 /** Payload renvoie les listes imbriquées sous forme d'objets : on aplatit. */
