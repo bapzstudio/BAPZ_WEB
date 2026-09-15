@@ -27,7 +27,9 @@ function equipements(items: string[]) {
  * Salle à louer, sur la page Tarifs (section ajoutée par la maquette TARIFS du
  * 2026-09-10) et sur /location.
  *
- * Même vocabulaire que `PricingCard` : libellé mono, prix, ligne en capitales,
+ * Reste une carte quand les formules passent en lignes (`LigneTarif`) : une
+ * salle a une photo et des équipements à montrer. Libellé mono, prix, ligne en
+ * capitales,
  * description, bouton aligné en bas. Les mesures propres à la maquette sont
  * l'image (750 x 281, rayon 20) et ses écarts : 26 sous le libellé, 34 au-dessus
  * du prix.

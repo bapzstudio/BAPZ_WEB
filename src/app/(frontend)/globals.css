@@ -739,35 +739,38 @@ body {
   animation: invite-defiler 2.4s ease-in-out infinite;
 }
 
-/* Bande des questions fréquentes (cf. QuestionFluide) : cachée sous sa ligne
-   dès le CSS, sans quoi elle couvrirait les questions le temps que GSAP la
-   place. Masquée en mouvement réduit, où elle n'est jamais animée. */
-.faq-bande {
+/* Bande claire des lignes animées au survol (cf. BandeFluide : questions
+   fréquentes, formules de la page Tarifs) : cachée sous sa ligne dès le CSS,
+   sans quoi elle couvrirait la ligne le temps que GSAP la place. Masquée en
+   mouvement réduit, où elle n'est jamais animée. */
+.bande-fluide {
   transform: translate3d(0, 101%, 0);
 }
 
-/* Le texte défilant s'efface à droite avant le « + » (5,5 rem de zone libre,
-   le « + » étant décalé de 1,5 rem du bord, puis 2 rem de fondu) et entre en
-   fondu à gauche. Le masque porte sur le texte, pas sur le fond de la bande. */
-.faq-bande-masque {
+/* Le texte défilant s'efface à droite avant ce qui reste lisible au-dessus de
+   la bande (zone libre `--bande-reserve`, puis 2 rem de fondu) et entre en
+   fondu à gauche. Par défaut, la zone du « + » de la FAQ : 5,5 rem, le « + »
+   étant décalé de 1,5 rem du bord. Une ligne de tarif la mesure sur son prix.
+   Le masque porte sur le texte, pas sur le fond de la bande. */
+.bande-fluide-masque {
   -webkit-mask-image: linear-gradient(
     to right,
     transparent 0,
     #000 1.5rem,
-    #000 calc(100% - 7.5rem),
-    transparent calc(100% - 5.5rem)
+    #000 calc(100% - var(--bande-reserve, 5.5rem) - 2rem),
+    transparent calc(100% - var(--bande-reserve, 5.5rem))
   );
   mask-image: linear-gradient(
     to right,
     transparent 0,
     #000 1.5rem,
-    #000 calc(100% - 7.5rem),
-    transparent calc(100% - 5.5rem)
+    #000 calc(100% - var(--bande-reserve, 5.5rem) - 2rem),
+    transparent calc(100% - var(--bande-reserve, 5.5rem))
   );
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .faq-bande {
+  .bande-fluide {
     display: none;
   }
 }

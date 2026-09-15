@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 import { FoldText } from "../_components/FoldText";
+import { LigneTarif } from "../_components/LigneTarif";
 import { PageTransition } from "../_components/PageTransition";
 import { ProximityGlow } from "../_components/ProximityGlow";
-import { PricingCard } from "../_components/PricingCard";
 import { Reveal } from "../_components/Reveal";
 import { RoomCard } from "../_components/RoomCard";
 import { TrialBanner } from "../_components/TrialBanner";
@@ -27,8 +27,8 @@ export default async function TarifsPage() {
 
   return (
     <PageTransition>
-      {/* Un seul écouteur pour toute la page : le halo réagit donc aussi d'une
-          rangée à l'autre. */}
+      {/* Un seul écouteur pour toute la page : le halo des cartes (bandeau
+          d'essai, salles) réagit donc d'une section à l'autre. */}
       <ProximityGlow className="container-page pt-[var(--vr-104)] pb-8.5">
         <h1 className="titre-page">
           <FoldText text="Tarifs" />
@@ -45,30 +45,30 @@ export default async function TarifsPage() {
           </Reveal>
         )}
 
+        {/* Les formules en lignes (cf. LigneTarif), écart avec la maquette qui
+            les montrait en cartes : neuf cartes identiques alourdissaient la
+            page. Le bandeau d'essai et les salles, qui ont chacun davantage à
+            montrer, restent en cartes. */}
         <section className="mt-[var(--vr-80)]">
           <h2 className="eyebrow">À LA CARTE</h2>
-          {/* Deux formules depuis que l'essai est en bandeau : deux colonnes,
-              plutôt qu'une grille de trois dont la dernière resterait vide. */}
-          <Reveal className="mt-7 grid gap-11.5 sm:grid-cols-2">
+          <Reveal as="ul" className="mt-7 border-t border-rule-faint">
             {aLaCarte.map((plan) => (
-              <PricingCard key={plan._id} plan={plan} />
+              <LigneTarif key={plan._id} plan={plan} />
             ))}
           </Reveal>
         </section>
 
-        {/* La maquette prévoyait une seule carte d'abonnement mensuel ; l'offre
-            réelle en compte quatre, à l'année, d'où une rangée dédiée. */}
         <section className="mt-[var(--vr-80)]">
           <h2 className="eyebrow">ABONNEMENTS À L&apos;ANNÉE</h2>
-          <Reveal className="mt-7 grid gap-11.5 sm:grid-cols-2 xl:grid-cols-4">
+          <Reveal as="ul" className="mt-7 border-t border-rule-faint">
             {abonnements.map((plan) => (
-              <PricingCard key={plan._id} plan={plan} />
+              <LigneTarif key={plan._id} plan={plan} />
             ))}
           </Reveal>
         </section>
 
         {/* Section ajoutée par la maquette TARIFS du 2026-09-10, titrée comme
-            la page. Écarts relevés : 153 des cartes au titre, 64 du titre aux
+            la page. Écarts relevés : 153 des formules au titre, 64 du titre aux
             salles — le même que « titre -> grille de cartes » ailleurs. */}
         {rooms.length > 0 && (
           <section id="locations" className="mt-[var(--vr-152)] scroll-mt-24">

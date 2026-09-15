@@ -1,38 +1,19 @@
 "use client";
 
-import { useEffect, useRef, type MouseEvent, type PointerEvent } from "react";
+import { useEffect, useRef, type MouseEvent } from "react";
 import { gsap } from "gsap";
+import { BandeFluide, useBandeFluide } from "./BandeFluide";
 import { BioParagraph } from "./BioText";
-
-/** Durée de l'entrée et de la sortie de la bande (réglage de FlowingMenu). */
-const DUREE_BANDE = 0.6;
-/** Vitesse du défilement dans la bande, en pixels par seconde. */
-const VITESSE = 70;
-/**
- * Répétitions de la question dans la bande. Une question fait 400 à 550 px en
- * capitales : huit copies couvrent le conteneur de 1700 px avec de la marge
- * pour la boucle, sans mesure préalable.
- */
-const REPETITIONS = 8;
 
 /**
  * Une question fréquente, animée au survol et à l'ouverture.
  *
- * Survol — inspiré de FlowingMenu (reactbits.dev) : une bande claire glisse
- * depuis le bord le plus proche du curseur (haut ou bas) et la question y
- * défile en boucle. Adapté au site :
- *
- * - le `<details>` natif reste la structure : ouverture au clic et au clavier,
- *   réponse présente dans la page pour Google. La bande ne couvre que la ligne
- *   de la question ;
- * - couleurs du site (`--light`, texte `--background`), séparateur ✦ du bandeau
- *   défilant à la place des images de l'original ;
- * - le « + » passe au-dessus de la bande, en sombre, et le texte défilant
- *   s'efface avant lui : on voit toujours que la ligne s'ouvre ;
- * - le défilement ne tourne que pendant le survol (l'original anime toutes les
- *   lignes en permanence) ;
- * - souris uniquement : rien au tactile, rien en mouvement réduit — la bande y
- *   est même masquée en CSS (`.faq-bande`).
+ * Survol — la bande de `BandeFluide` (inspirée de FlowingMenu) glisse sur la
+ * ligne de la question, qui y défile. Le `<details>` natif reste la
+ * structure : ouverture au clic et au clavier, réponse présente dans la page
+ * pour Google, bande limitée à la ligne de la question. Le « + » passe
+ * au-dessus de la bande, en sombre, et le texte défilant s'efface avant lui :
+ * on voit toujours que la ligne s'ouvre.
  *
  * Ouverture — la réponse se déplie en hauteur, son filet se trace de haut en
  * bas (comme les filets du calendrier) et ses paragraphes glissent depuis la
@@ -52,13 +33,10 @@ export function QuestionFluide({
   answer: string;
 }) {
   const detailsRef = useRef<HTMLDetailsElement>(null);
-  const bandeRef = useRef<HTMLDivElement>(null);
-  const pisteRef = useRef<HTMLDivElement>(null);
   const reponseRef = useRef<HTMLDivElement>(null);
   const filetRef = useRef<HTMLSpanElement>(null);
   const texteRef = useRef<HTMLDivElement>(null);
-  const defilement = useRef<gsap.core.Tween | null>(null);
-  const survole = useRef(false);
+  const { bandeRef, pisteRef, entrer, sortir } = useBandeFluide(detailsRef);
 
   const paragraphes = answer
     .split(/\n\s*\n/)
@@ -67,10 +45,7 @@ export function QuestionFluide({
 
   useEffect(
     () => () => {
-      defilement.current?.kill();
       const cibles = [
-        bandeRef.current,
-        pisteRef.current,
         reponseRef.current,
         filetRef.current,
         ...(texteRef.current ? Array.from(texteRef.current.children) : []),
@@ -80,86 +55,6 @@ export function QuestionFluide({
     [],
   );
 
-  const mouvementReduit = () =>
-    window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-
-  const animable = (event: PointerEvent<HTMLElement>) =>
-    event.pointerType === "mouse" && !mouvementReduit();
-
-  /** Bord le plus proche du curseur : au-dessus ou en dessous du milieu. */
-  const parLeHaut = (event: PointerEvent<HTMLElement>) => {
-    const boite = event.currentTarget.getBoundingClientRect();
-    return event.clientY - boite.top < boite.height / 2;
-  };
-
-  const entrer = (event: PointerEvent<HTMLElement>) => {
-    const bande = bandeRef.current;
-    const piste = pisteRef.current;
-    if (!bande || !piste || !animable(event)) return;
-    survole.current = true;
-    detailsRef.current?.setAttribute("data-survol", "");
-
-    // La boucle parcourt exactement une copie : la suivante prend sa place.
-    if (!defilement.current) {
-      const copie = piste.firstElementChild as HTMLElement | null;
-      const largeur = copie?.offsetWidth ?? 0;
-      if (largeur > 0) {
-        defilement.current = gsap.fromTo(
-          piste,
-          { x: 0 },
-          {
-            x: -largeur,
-            duration: largeur / VITESSE,
-            ease: "none",
-            repeat: -1,
-          },
-        );
-      }
-    } else {
-      defilement.current.play();
-    }
-
-    const haut = parLeHaut(event);
-    // `y: 0` : la position de départ est posée en CSS (`.faq-bande`), que GSAP
-    // lirait sinon en pixels et ajouterait au pourcentage.
-    gsap
-      .timeline({
-        defaults: {
-          duration: DUREE_BANDE,
-          ease: "expo.out",
-          overwrite: "auto",
-        },
-      })
-      .set(bande, { y: 0, yPercent: haut ? -101 : 101 }, 0)
-      .set(piste, { y: 0, yPercent: haut ? 101 : -101 }, 0)
-      .to([bande, piste], { yPercent: 0 }, 0);
-  };
-
-  const sortir = (event: PointerEvent<HTMLElement>) => {
-    const bande = bandeRef.current;
-    const piste = pisteRef.current;
-    if (!bande || !piste || !survole.current) return;
-    survole.current = false;
-    detailsRef.current?.removeAttribute("data-survol");
-
-    const haut = parLeHaut(event);
-    gsap
-      .timeline({
-        defaults: {
-          duration: DUREE_BANDE,
-          ease: "expo.out",
-          overwrite: "auto",
-        },
-        // Le défilement s'arrête une fois la bande sortie, sauf si le curseur
-        // est revenu entre-temps.
-        onComplete: () => {
-          if (!survole.current) defilement.current?.pause();
-        },
-      })
-      .to(bande, { yPercent: haut ? -101 : 101 }, 0)
-      .to(piste, { yPercent: haut ? 101 : -101 }, 0);
-  };
-
   // Clic sur la question (Entrée ou Espace au clavier produisent le même
   // clic) : on reprend la main sur l'ouverture pour l'animer.
   const basculer = (event: MouseEvent<HTMLElement>) => {
@@ -167,7 +62,15 @@ export function QuestionFluide({
     const reponse = reponseRef.current;
     const filet = filetRef.current;
     const texte = texteRef.current;
-    if (!details || !reponse || !filet || !texte || mouvementReduit()) return;
+    if (
+      !details ||
+      !reponse ||
+      !filet ||
+      !texte ||
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches
+    ) {
+      return;
+    }
     event.preventDefault();
     const blocs = Array.from(texte.children);
     gsap.killTweensOf([reponse, filet, ...blocs]);
@@ -263,30 +166,7 @@ export function QuestionFluide({
           +
         </span>
 
-        {/* Bande décorative : la question reste lue une fois, dans le h3. */}
-        <div
-          ref={bandeRef}
-          aria-hidden
-          className="faq-bande pointer-events-none absolute inset-0 z-10 overflow-hidden bg-light"
-        >
-          {/* Masque en dégradé sur le texte seul (le fond de la bande reste
-              plein) : le défilement s'efface avant la zone du « + ». Sans lui,
-              les capitales passaient sous l'icône et la rendaient illisible.
-              Léger fondu à gauche pour que le texte n'arrive pas coupé net. */}
-          <div className="faq-bande-masque h-full">
-            <div ref={pisteRef} className="flex h-full w-max items-center">
-              {Array.from({ length: REPETITIONS }, (_, index) => (
-                <span
-                  key={index}
-                  className="flex shrink-0 items-center gap-6 pr-6 text-base font-black uppercase leading-none whitespace-nowrap text-background sm:text-lg"
-                >
-                  {question}
-                  <span className="opacity-40">✦</span>
-                </span>
-              ))}
-            </div>
-          </div>
-        </div>
+        <BandeFluide texte={question} bandeRef={bandeRef} pisteRef={pisteRef} />
       </summary>
 
       {/* Cadre de la hauteur animée. La réponse est décalée derrière un filet

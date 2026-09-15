@@ -123,8 +123,8 @@ la barre des jours du calendrier est encore dans le flux tant qu'on n'a pas
 défilé, et le jour visé s'arrêtait 220px trop bas.
 
 Deux pages débordent encore à 1080, et c'est du contenu, pas de l'espacement :
-`/tarifs` (l'offre réelle compte quatre abonnements là où la maquette en
-montrait un, d'où une seconde rangée) et `/profs` d'une trentaine de pixels,
+`/tarifs` (six formules en lignes puis les salles : l'offre réelle compte
+quatre abonnements là où la maquette en montrait un) et `/profs` d'une trentaine de pixels,
 les bios se répartissant sur plus de lignes qu'au rendu Figma.
 
 **Téléphone.** Les maquettes sont au format bureau ; en dessous de `sm`
@@ -206,6 +206,18 @@ allume la bordure selon la proximité du curseur, et au survol toutes portent le
 même `0 0 22px rgba(255,255,255,0.16)`. Une carte cliquable = un lien parent (ou
 un lien étiré si elle contient déjà un bouton), `data-glow-card`, `cal-glow`,
 `relative`, et une grille enveloppée dans `ProximityGlow`.
+
+**Les formules de `/tarifs` sont des lignes, pas des cartes** (`LigneTarif`,
+depuis le 2026-09-15). Neuf cartes identiques rendaient la page lourde : tout
+pesait pareil, et les abonnements, qui ne diffèrent que par un chiffre,
+laissaient chacun 300 px de vide. Chaque ligne est un lien entier vers le
+parcours de réservation. Au survol, la bande de la FAQ (`BandeFluide`) glisse
+dessus ; le prix et la flèche restent au-dessus, en sombre, et le texte
+défilant s'arrête avant le prix, mesuré à chaque entrée (`--bande-reserve`).
+Le bandeau d'essai et les salles restent des cartes : ils ont davantage à
+montrer. **Écart avec la maquette TARIFS, à montrer à la cliente.** Mesuré :
+3 560 → 2 351 px de haut à 390 px ; à 1920 la hauteur ne change pas
+(2 169 px), c'est la densité qui baisse.
 
 **Les libellés de l'admin sont en français**, y compris les `label`,
 `description` et `labels` des collections : c'est la cliente qui les lit.
@@ -483,16 +495,17 @@ Studio » seul, 88 mots, un seul h2, h1 lu deux fois. Depuis :
   cliente veut un jour choisir elle-même le texte d'appel, il faudra un champ
   dédié dans Profs.
 - **FAQ en `FAQPage`**, injectée par la page d'accueil seule.
-- **FAQ animée au survol** (`QuestionFluide`), inspirée de FlowingMenu
+- **FAQ animée au survol** (`QuestionFluide`, bande dans `BandeFluide`,
+  partagée avec les formules de /tarifs), inspirée de FlowingMenu
   (reactbits.dev) : une bande `--light` glisse depuis le bord le plus proche du
   curseur et la question y défile, séparée par des ✦ comme le bandeau. Écarts
   voulus avec l'original : le `<details>` natif reste la structure (clavier,
   réponse lisible par Google, bande limitée à la ligne de la question), le
   « + » passe au-dessus de la bande et le texte défilant s'efface avant lui
-  (`.faq-bande-masque`, dégradé sur le texte seul : sans lui, les capitales
+  (`.bande-fluide-masque`, dégradé sur le texte seul : sans lui, les capitales
   passaient sous l'icône), le défilement ne tourne que pendant le
   survol, et rien ne se passe au tactile ni en mouvement réduit. La bande est
-  cachée dès le CSS (`.faq-bande`) pour ne jamais couvrir une question avant
+  cachée dès le CSS (`.bande-fluide`) pour ne jamais couvrir une question avant
   que GSAP ne la place.
 - **Réponse animée à l'ouverture** (même composant) : le clic est repris en
   main (`preventDefault`), la réponse se déplie en hauteur, un filet clair se
@@ -508,7 +521,8 @@ Studio » seul, 88 mots, un seul h2, h1 lu deux fois. Depuis :
   une ligne vide et `**mot**` en blanc et gras via `BioParagraph`, comme les
   bios. `faqStructuredData` retire les `**` du texte transmis à Google.
 - **« + » décollé du bord** : `pr-4 sm:pr-6` sur la question ; le masque de la
-  bande (`.faq-bande-masque`) a été élargi d'autant. À changer ensemble.
+  bande (`--bande-reserve`, 5,5 rem par défaut dans `.bande-fluide-masque`) a
+  été élargi d'autant. À changer ensemble.
 - **Titres dépliés lus une fois** : `FoldText` ne double plus le texte (cf.
   « Tous les titres de page se déplient »).
 
@@ -666,7 +680,7 @@ restent hors du repo, dans `../BAPZ/maquette` et `../BAPZ/content`.
 | Page | État |
 |---|---|
 | Accueil, Calendrier (`/cours`), Profs | Conformes aux maquettes |
-| Tarifs | Tarifs de la cliente ; section « Locations de salle » d'après la maquette TARIFS du 2026-09-10 |
+| Tarifs | Tarifs de la cliente ; formules en lignes (écart avec la maquette du 2026-09-15, à valider) ; section « Locations de salle » d'après la maquette TARIFS du 2026-09-10 |
 | Location (`/location`) | Redirigée vers `/tarifs#locations`, où sont les salles |
 | Contact | Formulaire branché ; téléphone et horaires éditables, encore vides |
 | Galerie | Branchée sur la rubrique Galerie ; vide, elle renvoie vers Instagram |
