@@ -72,7 +72,19 @@ export async function getSiteSettings(): Promise<SiteSettings> {
   return {
     heroTitle: String(doc.heroTitle ?? ""),
     heroSubtitle: String(doc.heroSubtitle ?? ""),
+    introTitle: (doc.introTitle as string) || undefined,
+    introText: (doc.introText as string) || undefined,
+    teamIntro: (doc.teamIntro as string) || undefined,
+    faq: Array.isArray(doc.faq)
+      ? doc.faq
+          .map((row) => ({
+            question: String(row?.question ?? "").trim(),
+            answer: String(row?.answer ?? "").trim(),
+          }))
+          .filter((row) => row.question && row.answer)
+      : [],
     address: String(doc.address ?? ""),
+    postalCode: (doc.postalCode as string) || undefined,
     city: (doc.city as string) || undefined,
     phone: (doc.phone as string) || undefined,
     email: (doc.email as string) || undefined,

@@ -176,7 +176,12 @@ const seed = async () => {
     data: {
       heroTitle: siteSettings.heroTitle,
       heroSubtitle: siteSettings.heroSubtitle,
+      introTitle: siteSettings.introTitle,
+      introText: siteSettings.introText,
+      teamIntro: siteSettings.teamIntro,
+      faq: siteSettings.faq,
       address: siteSettings.address,
+      postalCode: siteSettings.postalCode,
       city: siteSettings.city,
       instagramHandle: siteSettings.instagramHandle,
       marqueeItems: siteSettings.marqueeItems?.map((text) => ({ text })),

@@ -97,8 +97,12 @@ comprimées deux fois plus vite en dessous.
 **L'accueil fait exception depuis le 2026-09-14** : il s'ouvre sur une landing
 qui occupe l'écran entier (`100svh` moins les 67px de la nav) — l'œil-de-bœuf,
 le titre qui se déplie, le sous-titre, le logo qui se dessine et une invite à
-défiler — et le reste (boutons et « Prochains cours ») vient au défilement, sur
-un deuxième écran d'une fenêtre au moins, pour que le geste tombe juste. Sur la
+défiler — et le reste vient au défilement : boutons et « Prochains cours »
+(`#decouvrir`, cible de la flèche à toutes les largeurs), puis un extrait de
+chaque page (cf. « SEO »), puis le bandeau. La flèche descendait jusqu'en bas
+de page sur ordinateur tant que la suite tenait en un écran ; depuis les
+sections de contenu, elle aurait sauté tout ce contenu. `Hero` ne pose plus le
+bandeau : c'est `page.tsx`, après les sections. Sur la
 landing, le sous-titre suit la fenêtre au-delà de ~1400px
 (`clamp(17px,1.45vw,24px)`) : à la taille de la maquette, 16px, il paraissait
 perdu à côté d'un titre de 158px. Écart assumé, limité à la landing. La
@@ -165,6 +169,12 @@ CSS.
 écrit pour le hero). Seule exception, le `h2` « Locations de salle » de
 `/tarifs` : `FoldText` joue au chargement et non au défilement, donc un titre
 situé au milieu d'une page serait déjà déplié quand on l'atteint.
+
+**Le texte d'un titre déplié n'est présent qu'une fois.** Les mots découpés
+restent du texte ordinaire, lu par les lecteurs d'écran comme par Google.
+Jusqu'au 2026-09-15, `FoldText` ajoutait une copie masquée pour les lecteurs
+d'écran et marquait la copie animée `aria-hidden` : Google lisait « CALENDRIER
+CALENDRIER » dans chaque titre de page. Ne pas réintroduire de copie.
 
 **`main` est une colonne flex et chaque page en occupe toute la hauteur.**
 Quand une page est plus courte que l'écran, l'espace restant doit tomber dans
@@ -443,6 +453,63 @@ saisis, donc elle suit ce que la cliente modifie. **Les champs absents ne sont
 pas inventés** : horaires d'ouverture et téléphone apparaîtront dès qu'ils
 seront fournis et ajoutés à `SiteSettings`.
 
+**L'adresse y est découpée** (`decouperAdresse`) : la rue, puis la commune
+réelle — ce qui suit la dernière virgule du champ Adresse, Ars-Laquenexy —, le
+code postal, et la grande ville voisine (`city`, Metz) en `areaServed`. La
+commune y était « Metz » jusqu'au 2026-09-15 alors que la rue est à
+Ars-Laquenexy : une adresse incohérente avec la fiche Google Business dessert
+le référencement local. Toute sortie JSON-LD passe par `serialiserJsonLd`, qui
+échappe `<`.
+
+**Référencement de l'accueil (2026-09-15).** Mesuré avant : titre « BAPZ
+Studio » seul, 88 mots, un seul h2, h1 lu deux fois. Depuis :
+
+- **Titre écrit pour Google**, utilisé tel quel : `pageMetadata` n'ajoute pas
+  le suffixe « - BAPZ Studio » quand `path === "/"`.
+- **Un extrait de chaque page** sous « Prochains cours » (`_sections/Accueil*`)
+  : présentation, disciplines, équipe, tarifs, studio, questions fréquentes.
+  Chaque section montre un aperçu et renvoie vers la page complète, qui garde
+  son intérêt : pas d'horaires (restent sur /cours), seulement l'accroche de
+  chaque bio (la suite reste sur les fiches), seulement les points d'entrée
+  des tarifs. Tout vient de l'admin ; seuls la présentation, le mot sur
+  l'équipe et la FAQ sont des textes libres (Réglages), et leur aide interdit
+  d'y recopier prix, horaires ou adresse. Résultat mesuré avant l'ajout des
+  accroches : 327 mots, 7 h2, 12 liens internes.
+- **Accroche des profs** : `accrocheBio` (`BioText.tsx`) prend les premières
+  phrases du premier paragraphe de la bio jusqu'à ~90 caractères, sans couper
+  un passage en gras. Rien à saisir en plus : l'accroche suit la bio. Si la
+  cliente veut un jour choisir elle-même le texte d'appel, il faudra un champ
+  dédié dans Profs.
+- **FAQ en `FAQPage`**, injectée par la page d'accueil seule.
+- **FAQ animée au survol** (`QuestionFluide`), inspirée de FlowingMenu
+  (reactbits.dev) : une bande `--light` glisse depuis le bord le plus proche du
+  curseur et la question y défile, séparée par des ✦ comme le bandeau. Écarts
+  voulus avec l'original : le `<details>` natif reste la structure (clavier,
+  réponse lisible par Google, bande limitée à la ligne de la question), le
+  « + » passe au-dessus de la bande et le texte défilant s'efface avant lui
+  (`.faq-bande-masque`, dégradé sur le texte seul : sans lui, les capitales
+  passaient sous l'icône), le défilement ne tourne que pendant le
+  survol, et rien ne se passe au tactile ni en mouvement réduit. La bande est
+  cachée dès le CSS (`.faq-bande`) pour ne jamais couvrir une question avant
+  que GSAP ne la place.
+- **Réponse animée à l'ouverture** (même composant) : le clic est repris en
+  main (`preventDefault`), la réponse se déplie en hauteur, un filet clair se
+  trace à sa gauche de haut en bas et ses paragraphes glissent depuis la
+  gauche (0,65 s, `power3.out`, 16 px, décalés de 0,08 s) ; à la fermeture le
+  texte s'efface, le filet se rétracte, la hauteur se replie et `open` n'est
+  retiré qu'à la fin. Le « + » suit `[open]:not([data-fermeture])` pour
+  revenir dès le clic. Clavier (Entrée, Espace) compris ; en mouvement réduit
+  le clic reste natif, instantané. Aucune maquette : demandé le 2026-09-15,
+  la réponse « collée tristement sous la question ».
+- **Mise en forme de la réponse** : décalée derrière son filet, en 16 à 18 px
+  (le 15 px d'avant se confondait avec les libellés), paragraphes séparés par
+  une ligne vide et `**mot**` en blanc et gras via `BioParagraph`, comme les
+  bios. `faqStructuredData` retire les `**` du texte transmis à Google.
+- **« + » décollé du bord** : `pr-4 sm:pr-6` sur la question ; le masque de la
+  bande (`.faq-bande-masque`) a été élargi d'autant. À changer ensemble.
+- **Titres dépliés lus une fois** : `FoldText` ne double plus le texte (cf.
+  « Tous les titres de page se déplient »).
+
 ## Sécurité
 
 Mesures posées après l'audit du 2026-09-11, chacune vérifiée sur le serveur :
@@ -631,3 +698,8 @@ entre dans ce cadre et n'est donc plus un point ouvert.
   plus après le dernier échange. Aucune suppression automatique : c'est une
   opération manuelle, décrite dans le guide.
 - « Cours privés » : poste du devis absent de toutes les maquettes reçues.
+- Photo de la présentation de l'accueil : emplacement provisoire à droite du
+  texte (`.photo-attente`, rayures et libellé « [ photo — le studio ] »),
+  demandé le 2026-09-15. Aucun champ dans l'admin pour l'instant : à la
+  réception de la photo, ajouter un média aux Réglages (migration) et
+  remplacer l'emplacement par l'image.

@@ -3,11 +3,15 @@ import { lienReservation } from "@/lib/reservation/liens";
 import type { Course, PricingPlan, SiteSettings } from "@/lib/types";
 import { CourseCard } from "../_components/CourseCard";
 import { FoldText } from "../_components/FoldText";
-import { Marquee } from "../_components/Marquee";
 import { PlaneteDessinee } from "../_components/PlaneteDessinee";
 import { ProximityGlow } from "../_components/ProximityGlow";
 import { Reveal } from "../_components/Reveal";
 
+/**
+ * Haut de l'accueil : la landing (premier écran) et le deuxième écran
+ * (boutons, prochains cours). Les sections de contenu et le bandeau défilant
+ * qui suivent sont posés par `page.tsx`.
+ */
 export function Hero({
   settings,
   courses,
@@ -22,10 +26,7 @@ export function Hero({
   const city = settings.city?.toUpperCase() ?? "METZ";
 
   return (
-    // flex-col + `mt-auto` sur le bandeau : quand la page est plus courte que
-    // l'écran, le vide se place avant le bandeau, qui reste collé au pied de
-    // page au lieu de paraître deux fois plus haut.
-    <div className="flex flex-1 flex-col">
+    <>
       {/* Premier écran : le titre qui se déplie et le logo qui se dessine, et
           rien d'autre. Le reste de l'accueil vient au défilement.
           C'est un écart assumé avec la maquette, qui fait tenir tout l'accueil
@@ -79,26 +80,29 @@ export function Hero({
         {/* Invite à défiler : un lien d'ancre, donc utilisable au clavier et
             sans JavaScript. Aucun code pour le masquer — elle sort du champ
             d'elle-même dès qu'on défile.
-            Deux cibles selon la largeur, faute de pouvoir en changer en CSS :
-            sur ordinateur le reste de l'accueil (contenu, bandeau et pied de
-            page) tient dans un écran, donc la flèche descend jusqu'en bas ;
-            sur téléphone elle s'arrête en haut du deuxième écran, qui est
-            plus long que la fenêtre. */}
+            Une seule cible à toutes les largeurs : le deuxième écran. La
+            flèche descendait jusqu'en bas de page sur ordinateur tant que le
+            reste de l'accueil tenait en un écran ; avec les sections de
+            contenu ajoutées ensuite, elle aurait sauté tout ce contenu. */}
         <div className="container-page relative z-10 flex justify-center pb-8">
-          <FlecheDefiler cible="#decouvrir" className="lg:hidden" />
-          <FlecheDefiler cible="#fin" className="hidden lg:flex" />
+          <a
+            href="#decouvrir"
+            aria-label="Voir la suite"
+            className="invite-defiler flex size-11 items-center justify-center rounded-full border border-rule text-tertiary transition-colors hover:text-foreground"
+          >
+            <span aria-hidden className="text-lg leading-none">
+              ↓
+            </span>
+          </a>
         </div>
       </section>
 
-      {/* Deuxième écran. Il fait une fenêtre au moins tant que la flèche y
-          mène (sous `lg`), pour que le geste arrive sur un écran entier et non
-          sur la fin du hero suivie du contenu ; `scroll-mt` l'arrête sous la
-          nav collante. À partir de `lg` la flèche descend jusqu'au pied de
-          page : le bloc reprend la hauteur de son contenu, sinon il gardait
-          280px de vide sous les cartes. */}
+      {/* Deuxième écran : boutons et prochains cours. `scroll-mt` arrête
+          l'ancre de la flèche sous la nav collante. Il n'a plus besoin de
+          faire une fenêtre de haut : les sections de contenu le suivent. */}
       <div
         id="decouvrir"
-        className="container-page flex min-h-[calc(100svh-67px)] scroll-mt-[67px] flex-col justify-center py-[var(--vr-64)] lg:min-h-0 lg:justify-start"
+        className="container-page scroll-mt-[67px] pt-[var(--vr-64)]"
       >
         {/* Sur téléphone : pleine largeur, rapprochés, et l'essai — le bouton
             principal — en premier. L'ordre et l'écart de la maquette
@@ -145,35 +149,6 @@ export function Hero({
           </Reveal>
         </ProximityGlow>
       </div>
-
-      <div className="mt-auto">
-        <Marquee items={settings.marqueeItems ?? [city, handle]} />
-      </div>
-
-      {/* Cible de la flèche sur ordinateur : la fin de la page, donc le pied de
-          page entier une fois le geste terminé. */}
-      <span id="fin" aria-hidden />
-    </div>
-  );
-}
-
-/** Flèche « défiler », posée au bas du premier écran. */
-function FlecheDefiler({
-  cible,
-  className,
-}: {
-  cible: string;
-  className: string;
-}) {
-  return (
-    <a
-      href={cible}
-      aria-label="Voir la suite"
-      className={`invite-defiler flex size-11 items-center justify-center rounded-full border border-rule text-tertiary transition-colors hover:text-foreground ${className}`}
-    >
-      <span aria-hidden className="text-lg leading-none">
-        ↓
-      </span>
-    </a>
+    </>
   );
 }

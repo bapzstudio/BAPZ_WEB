@@ -8,9 +8,9 @@ import { gsap } from "gsap";
 const useIsomorphicLayoutEffect =
   typeof window !== "undefined" ? useLayoutEffect : useEffect;
 
-// Réglages du titre du hero, seul usage : mot par mot, charnière en haut, joué
-// au chargement. Le composant d'origine (reactbits) proposait d'autres
-// découpes, charnières et déclencheurs, jamais utilisés ici.
+// Réglages du titre du hero, repris par tous les titres de page : mot par mot,
+// charnière en haut, joué au chargement. Le composant d'origine (reactbits)
+// proposait d'autres découpes, charnières et déclencheurs, jamais utilisés ici.
 const DUREE = 0.65;
 const DECALAGE = 0.045;
 const PLI = 0.55;
@@ -18,9 +18,12 @@ const PLI = 0.55;
 /**
  * Titre qui se déplie mot par mot, comme une page rabattue.
  *
- * Le texte complet reste lisible par les lecteurs d'écran ; la version
- * découpée est décorative. Un retour à la ligne dans `text` coupe le titre au
- * même endroit.
+ * Le texte n'est présent qu'UNE fois dans la page : découpé en mots, il reste
+ * du texte ordinaire, lu normalement par un lecteur d'écran comme par un moteur
+ * de recherche. Une version précédente le doublait — une copie masquée pour les
+ * lecteurs d'écran, une copie animée marquée `aria-hidden` —, si bien que
+ * Google lisait « CALENDRIER CALENDRIER » dans chaque titre de page (relevé le
+ * 2026-09-15). Un retour à la ligne dans `text` coupe le titre au même endroit.
  */
 export function FoldText({ text }: { text: string }) {
   const rootRef = useRef<HTMLSpanElement>(null);
@@ -69,6 +72,8 @@ export function FoldText({ text }: { text: string }) {
     ).matches;
 
     // `fromTo` pose l'état plié immédiatement, avant le premier paint.
+    // L'opacité à 0 ne retire rien de l'arbre d'accessibilité : le titre reste
+    // lisible pendant l'animation.
     const tween = gsap.fromTo(
       pieces,
       {
@@ -100,10 +105,7 @@ export function FoldText({ text }: { text: string }) {
 
   return (
     <span ref={rootRef} data-fold-pending="" className="fold-text">
-      <span className="fold-text-sr-only">{text}</span>
-      <span className="fold-text-visual" aria-hidden="true">
-        {segments}
-      </span>
+      <span className="fold-text-visual">{segments}</span>
     </span>
   );
 }

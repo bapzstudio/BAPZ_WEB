@@ -11,7 +11,7 @@ export const SiteSettings: GlobalConfig = {
   admin: {
     group: "Réglages",
     description:
-      "Textes et coordonnées communs à tout le site : bannière d'accueil, adresse, horaires, Instagram, logo.",
+      "Textes et coordonnées communs à tout le site : bannière d'accueil, présentation et questions fréquentes, adresse, horaires, Instagram, logo.",
   },
   fields: [
     {
@@ -34,8 +34,67 @@ export const SiteSettings: GlobalConfig = {
           label: "Sous-titre de la bannière",
           admin: {
             description:
-              "Le texte sous le titre. Les retours à la ligne sont conservés. Il sert aussi de description du studio pour Google.",
+              "Le texte sous le titre. Les retours à la ligne sont conservés.",
           },
+        },
+      ],
+    },
+    {
+      // Contenu rédigé de l'accueil. Il existe pour le référencement : sans
+      // lui, l'accueil n'offrait à Google qu'une centaine de mots.
+      type: "collapsible",
+      label: "Accueil : présentation et questions fréquentes",
+      fields: [
+        {
+          name: "introTitle",
+          type: "text",
+          label: "Titre de la présentation",
+          admin: {
+            description:
+              "Titre de la présentation du studio, sur l'accueil. Il compte pour Google : y mettre ce que les gens cherchent, ex : Un studio de danse à côté de Metz. Laisser vide : la présentation n'apparaît pas.",
+          },
+        },
+        {
+          name: "introText",
+          type: "textarea",
+          label: "Texte de présentation",
+          admin: {
+            description:
+              "Quelques phrases sur le studio, de 80 à 150 mots. Une ligne vide sépare deux paragraphes. Sert aussi de description du studio pour Google.",
+          },
+        },
+        {
+          name: "teamIntro",
+          type: "textarea",
+          label: "Mot sur l'équipe",
+          admin: {
+            description:
+              "Deux ou trois phrases au-dessus des profs, sur l'accueil. Sous chaque prof s'affiche ensuite le début de sa bio : pas besoin de les présenter ici une par une. Laisser vide : les profs s'affichent sans texte au-dessus.",
+          },
+        },
+        {
+          name: "faq",
+          type: "array",
+          label: "Questions fréquentes",
+          labels: { singular: "Question", plural: "Questions" },
+          admin: {
+            description:
+              "Affichées en bas de l'accueil et transmises à Google. Deux ou trois phrases par réponse. Pour mettre quelques mots en valeur (en blanc et en gras), les entourer de deux astérisques : **tous les niveaux**. Ne pas y recopier de prix, d'horaires ni d'adresse : ils sont déjà affichés ailleurs sur le site et deviendraient faux ici au premier changement.",
+          },
+          fields: [
+            {
+              name: "question",
+              type: "text",
+              label: "Question",
+              required: true,
+            },
+            {
+              name: "answer",
+              type: "textarea",
+              label: "Réponse",
+              required: true,
+            },
+          ],
         },
       ],
     },
@@ -49,16 +108,25 @@ export const SiteSettings: GlobalConfig = {
           label: "Adresse",
           admin: {
             description:
-              "Numéro, rue et commune. Affichée sur la page Contact et transmise à Google.",
+              "Numéro et rue, puis la commune après une virgule : 2A rue du Jardin d'Écosse, Ars-Laquenexy. Le texte après la dernière virgule est lu comme la commune. Affichée sur l'accueil et la page Contact, et transmise à Google.",
+          },
+        },
+        {
+          name: "postalCode",
+          type: "text",
+          label: "Code postal",
+          admin: {
+            description:
+              "Ex : 57530. Transmis à Google avec l'adresse : une adresse complète, identique à celle de la fiche Google Business, améliore le référencement local.",
           },
         },
         {
           name: "city",
           type: "text",
-          label: "Ville",
+          label: "Ville de référence",
           admin: {
             description:
-              "Affichée dans la bannière et en pied de page, ex : Metz.",
+              "La grande ville la plus proche, ex : Metz. Affichée dans la bannière et en pied de page, et indiquée à Google comme zone desservie.",
           },
         },
         {
@@ -111,7 +179,7 @@ export const SiteSettings: GlobalConfig = {
           label: "Compte Instagram",
           admin: {
             description:
-              "Avec le @, ex : @bapz.studio. Affiché dans la bannière, en pied de page et sur la page Contact, où il renvoie vers le compte.",
+              "Avec le @, ex : @bapz.studio. Affiché dans la bannière, en pied de page, sur l'accueil et sur la page Contact, où il renvoie vers le compte.",
           },
         },
       ],

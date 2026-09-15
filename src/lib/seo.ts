@@ -45,13 +45,17 @@ export function pageMetadata({
   description,
   path,
 }: {
-  /** Sans le suffixe « - BAPZ Studio », ajouté ici. */
+  /**
+   * Sans le suffixe « - BAPZ Studio », ajouté ici. Sauf pour l'accueil, dont le
+   * titre est utilisé tel quel : c'est le premier résultat que montre Google,
+   * et « BAPZ Studio » seul ne contenait aucun des mots que les gens cherchent.
+   */
   title: string;
   description: string;
   /** Chemin absolu depuis la racine, par exemple `/profs`. */
   path: string;
 }): Metadata {
-  const titreComplet = path === "/" ? SITE_NAME : `${title} - ${SITE_NAME}`;
+  const titreComplet = path === "/" ? title : `${title} - ${SITE_NAME}`;
   const url = `${SITE_URL}${path === "/" ? "" : path}`;
 
   return {
@@ -77,6 +81,28 @@ export function pageMetadata({
 }
 
 /**
+ * « 2A rue du Jardin d'Écosse, Ars-Laquenexy » -> rue et commune.
+ *
+ * La commune est ce qui suit la dernière virgule : c'est la règle affichée
+ * sous le champ Adresse de l'admin, et celle que suit déjà la page Contact.
+ */
+export function decouperAdresse(adresse: string): {
+  rue: string;
+  commune?: string;
+} {
+  const virgule = adresse.lastIndexOf(",");
+  if (virgule === -1) return { rue: adresse.trim() };
+  return {
+    rue: adresse.slice(0, virgule).trim(),
+    commune: adresse.slice(virgule + 1).trim() || undefined,
+  };
+}
+
+/** Texte libre ramené sur une ligne : les retours à la ligne calent la mise en page du site, pas une donnée structurée. */
+const surUneLigne = (texte?: string) =>
+  texte?.replace(/\s+/g, " ").trim() || undefined;
+
+/**
  * Données structurées de l'établissement, au format schema.org.
  *
  * C'est ce qui alimente le bloc local de Google — le plus rentable pour un
@@ -85,23 +111,33 @@ export function pageMetadata({
  * dès qu'ils seront saisis dans `/admin`.
  */
 export function structuredData(settings: SiteSettings, priceRange?: string) {
+  const { rue, commune } = decouperAdresse(settings.address ?? "");
+
   return {
     "@context": "https://schema.org",
     "@type": "DanceSchool",
     name: SITE_NAME,
     url: SITE_URL,
-    // Le sous-titre porte un retour à la ligne qui cale la coupe sur le site ;
-    // il n'a rien à faire dans une donnée structurée.
     description:
-      settings.heroSubtitle?.replace(/\s+/g, " ").trim() || undefined,
+      surUneLigne(settings.introText) || surUneLigne(settings.heroSubtitle),
     ...(settings.address && {
       address: {
         "@type": "PostalAddress",
-        streetAddress: settings.address,
-        addressLocality: settings.city || undefined,
+        streetAddress: rue,
+        // La commune réelle du studio. « Metz » y figurait jusqu'ici, alors que
+        // la rue est à Ars-Laquenexy : une adresse incohérente avec la fiche
+        // Google Business dessert le référencement local.
+        addressLocality: commune || settings.city || undefined,
+        postalCode: settings.postalCode || undefined,
         addressCountry: "FR",
       },
     }),
+    // La grande ville voisine, là où les gens cherchent : indiquée comme zone
+    // desservie plutôt que comme adresse.
+    ...(settings.city &&
+      settings.city !== commune && {
+        areaServed: { "@type": "City", name: settings.city },
+      }),
     ...(settings.phone && { telephone: settings.phone }),
     ...(settings.email && { email: settings.email }),
     // Les horaires restent hors des données structurées : saisis en texte
@@ -113,3 +149,36 @@ export function structuredData(settings: SiteSettings, priceRange?: string) {
     ...(priceRange && { priceRange }),
   };
 }
+
+/**
+ * Questions fréquentes de l'accueil au format schema.org `FAQPage`.
+ *
+ * Google n'en fait plus un résultat enrichi que pour une minorité de sites :
+ * l'intérêt principal est que les questions et réponses soient lues comme telles.
+ */
+export function faqStructuredData(faq: SiteSettings["faq"]) {
+  if (!faq?.length) return null;
+  return {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: faq.map(({ question, answer }) => ({
+      "@type": "Question",
+      name: question,
+      // Les `**` de mise en valeur (cf. BioParagraph) n'ont rien à faire
+      // dans le texte transmis à Google.
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: surUneLigne(answer.replace(/\*\*/g, "")),
+      },
+    })),
+  };
+}
+
+/**
+ * Sérialise une donnée structurée pour une balise `<script>`.
+ *
+ * `<` est échappé : `JSON.stringify` le laisse tel quel, et un `</script>`
+ * saisi dans l'admin fermerait la balise pour injecter du HTML dans la page.
+ */
+export const serialiserJsonLd = (donnee: object) =>
+  JSON.stringify(donnee).replace(/</g, "\\u003c");

@@ -117,7 +117,18 @@ export interface SiteSettings {
   /** Peut contenir des retours à la ligne (\n) pour caler la coupe du titre. */
   heroTitle: string;
   heroSubtitle: string;
+  /** Présentation du studio sur l'accueil : titre (h2) et texte. */
+  introTitle?: string;
+  /** Paragraphes séparés par une ligne vide. */
+  introText?: string;
+  /** Texte au-dessus des profs, dans la section Équipe de l'accueil. */
+  teamIntro?: string;
+  /** Questions fréquentes de l'accueil, reprises dans les données structurées. */
+  faq?: { question: string; answer: string }[];
+  /** « 2A rue du Jardin d'Écosse, Ars-Laquenexy » : la commune suit la dernière virgule. */
   address: string;
+  postalCode?: string;
+  /** Grande ville de référence (Metz) : bannière, pied de page, zone desservie. */
   city?: string;
   phone?: string;
   /** Adresse publique du studio (page Contact, pages légales). */

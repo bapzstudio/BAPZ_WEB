@@ -271,7 +271,50 @@ export const siteSettings: SiteSettings = {
   heroTitle: "Heels, Hip-Hop\nCommercial",
   heroSubtitle:
     "Des cours qui font transpirer, des profs qui font progresser.\nTous niveaux, toutes énergies, pas besoin d'expérience, juste l'envie",
+  // Présentation et questions de l'accueil, rédigées le 2026-09-15 pour le
+  // référencement à partir des seules informations déjà fournies (adresse,
+  // disciplines, bios, formules). Aucun prix ni horaire : ils sont affichés
+  // ailleurs et deviendraient faux ici au premier changement. À faire valider
+  // par la cliente (docs/questions-cliente.md, partie 7).
+  introTitle: "Un studio de danse à Ars-Laquenexy, à côté de Metz",
+  introText:
+    "BAPZ Studio est un studio de danse installé à Ars-Laquenexy, à quelques minutes de Metz. On y danse le heels, le hip-hop et le commercial, à tous les niveaux : pas besoin d'expérience, juste l'envie de progresser.\n\nPour commencer, un premier cours d'essai permet de découvrir le studio avant de choisir une formule. Le studio loue aussi sa salle à l'heure, pour tes répétitions ou tes projets.",
+  // Mot sur l'équipe, au-dessus des profs de l'accueil. Il reprend la phrase
+  // qui figurait dans la présentation : chaque texte a sa section, et rien
+  // n'est dit deux fois. Sous chaque prof, l'accroche est tirée de sa bio.
+  teamIntro:
+    "Les cours sont donnés par une équipe passée par la scène, les compagnies, le conservatoire et les studios de Paris, Strasbourg ou Los Angeles, qui transmet autant la technique que l'attitude et la confiance en soi.",
+  faq: [
+    {
+      question: "Faut-il avoir déjà dansé pour venir ?",
+      // Les passages entre ** sont mis en valeur, comme dans les bios.
+      answer:
+        "Non. Plusieurs cours sont ouverts à **tous les niveaux**, et le niveau de chaque cours est indiqué sur le calendrier. Le plus simple pour te lancer est de réserver **un cours d'essai**.",
+    },
+    {
+      question: "Comment se passe un cours d'essai ?",
+      answer:
+        "Tu choisis le cours qui te tente depuis le bouton « Cours d'essai », tu laisses tes coordonnées, et **le studio te recontacte** pour confirmer ta venue. C'est l'occasion de découvrir le cours avant de choisir une formule.",
+    },
+    {
+      question: "Y a-t-il des cours pour les enfants ?",
+      answer:
+        "Oui : un cours de **street dance** est réservé aux enfants. Le jour et la tranche d'âge sont indiqués sur le calendrier.",
+    },
+    {
+      question: "Quelles formules sont proposées ?",
+      answer:
+        "Tu peux venir **au cours à l'unité**, prendre **une carte de plusieurs cours** ou **un abonnement à l'année**, jusqu'à l'accès illimité. Le détail et les prix sont sur la page Tarifs.",
+    },
+    {
+      question: "Peut-on louer une salle du studio ?",
+      answer:
+        "Oui, **la salle se loue à l'heure** pour des répétitions, des cours ou des projets. Sa surface et son tarif sont indiqués sur la page Tarifs, et la demande se fait en ligne.",
+    },
+  ],
   address: "2A rue du Jardin d'Écosse, Ars-Laquenexy",
+  // Code postal d'Ars-Laquenexy, à confirmer avec la cliente.
+  postalCode: "57530",
   city: "Metz",
   // Compte confirmé le 2026-09-10 : instagram.com/bapz.studio (avec un point).
   instagramHandle: "@bapz.studio",

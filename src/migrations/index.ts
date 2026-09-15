@@ -6,6 +6,8 @@ import * as migration_20260910_090517_salles_photo_tarif from './20260910_090517
 import * as migration_20260910_104950_reglages_telephone_horaires from './20260910_104950_reglages_telephone_horaires';
 import * as migration_20260910_130815_reglages_informations_legales from './20260910_130815_reglages_informations_legales';
 import * as migration_20260911_074738_retrait_bouton_essai from './20260911_074738_retrait_bouton_essai';
+import * as migration_20260915_065627_reglages_accueil_seo from './20260915_065627_reglages_accueil_seo';
+import * as migration_20260915_072855_reglages_accueil_equipe from './20260915_072855_reglages_accueil_equipe';
 
 export const migrations = [
   {
@@ -46,6 +48,16 @@ export const migrations = [
   {
     up: migration_20260911_074738_retrait_bouton_essai.up,
     down: migration_20260911_074738_retrait_bouton_essai.down,
-    name: '20260911_074738_retrait_bouton_essai'
+    name: '20260911_074738_retrait_bouton_essai',
+  },
+  {
+    up: migration_20260915_065627_reglages_accueil_seo.up,
+    down: migration_20260915_065627_reglages_accueil_seo.down,
+    name: '20260915_065627_reglages_accueil_seo',
+  },
+  {
+    up: migration_20260915_072855_reglages_accueil_equipe.up,
+    down: migration_20260915_072855_reglages_accueil_equipe.down,
+    name: '20260915_072855_reglages_accueil_equipe'
   },
 ];
