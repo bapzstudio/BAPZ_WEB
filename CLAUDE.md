@@ -112,7 +112,9 @@ basse : au milieu, le mot BAPZ du logo passait sous la fin du titre. Le bord
 droit de la planète tombe sur la ligne du conteneur comme tout le reste du site
 (`right-0` porterait sur la boîte du conteneur, gouttière comprise, et la
 planète toucherait le bord de la fenêtre) ; sur téléphone elle est centrée et
-entière sous le titre.
+entière sous le titre, **dans l'espace qui reste sous le sous-titre** : posée
+en bas de l'écran, elle remontait derrière le texte sur les petits téléphones
+(440x680, corrigé le 2026-09-15).
 
 **Les liens d'ancre glissent** (`scroll-behavior: smooth` sur `html`, sous
 `prefers-reduced-motion: no-preference`). Un défilement calé à la main doit donc

@@ -72,12 +72,14 @@ export default async function ProfPage({ params }: Props) {
           )}
 
           <div>
-            <div className="flex items-baseline justify-between gap-4">
+            {/* `flex-wrap` : comme sur la carte, une discipline longue passe
+                sous le nom plutôt que de sortir de l'écran sur téléphone. */}
+            <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-2">
               <h1 className="titre-page">
                 <FoldText text={teacher.name} />
               </h1>
               {teacher.discipline && (
-                <span className="eyebrow shrink-0">{teacher.discipline}</span>
+                <span className="eyebrow">{teacher.discipline}</span>
               )}
             </div>
 

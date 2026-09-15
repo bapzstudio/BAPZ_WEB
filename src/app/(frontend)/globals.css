@@ -291,8 +291,10 @@ body {
     pointer-events: none;
   }
 
-  /* Bouton bascule : deux traits en croix, qui pivotent d'un quart de tour et
-   deviennent une croix à l'ouverture. */
+  /* Bouton bascule : trois traits, qui deviennent une croix à l'ouverture.
+   Le « + » d'avant (deux traits en croix tournant de 225°) se lisait comme
+   « ajouter » et non comme un menu : retiré le 2026-09-15. Le geste en garde
+   la courbe et le tour complet. */
   .menu-toggle {
     display: inline-flex;
     align-items: center;
@@ -308,15 +310,14 @@ body {
 
   .menu-toggle-icon {
     position: relative;
-    width: 14px;
-    height: 14px;
-    transition: transform 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+    width: 16px;
+    height: 12px;
   }
 
-  .menu-toggle[data-open] .menu-toggle-icon {
-    transform: rotate(225deg);
-  }
-
+  /* Fermeture : les traits se redressent d'abord, puis s'écartent et le trait
+     du milieu revient. La transition déclarée ici est celle qui joue quand
+     `data-open` disparaît. `translate`, `rotate` et `scale` sont des propriétés
+     distinctes : chacune a sa propre durée et son propre départ. */
   .menu-toggle-icon > span {
     position: absolute;
     top: 50%;
@@ -326,14 +327,51 @@ body {
     margin-top: -1px;
     border-radius: 2px;
     background: var(--foreground);
+    transition:
+      rotate 0.22s cubic-bezier(0.7, 0, 0.84, 0),
+      translate 0.4s cubic-bezier(0.16, 1, 0.3, 1) 0.2s,
+      scale 0.4s cubic-bezier(0.16, 1, 0.3, 1) 0.2s,
+      opacity 0.2s ease 0.2s;
   }
 
-  .menu-toggle-icon > span:last-child {
-    transform: rotate(90deg);
+  .menu-toggle-icon > span:nth-child(1) {
+    translate: 0 -5px;
+  }
+
+  .menu-toggle-icon > span:nth-child(3) {
+    translate: 0 5px;
+  }
+
+  /* Ouverture : les traits se rejoignent au centre, celui du milieu s'efface,
+     puis les deux autres pivotent en croix avec la courbe de l'ancien bouton.
+     225° et 135° dessinent la même croix que 45° et -45°, avec le tour en
+     plus. */
+  .menu-toggle[data-open] .menu-toggle-icon > span {
+    transition:
+      translate 0.18s cubic-bezier(0.7, 0, 0.84, 0),
+      scale 0.18s cubic-bezier(0.7, 0, 0.84, 0),
+      opacity 0.12s ease,
+      rotate 0.45s cubic-bezier(0.16, 1, 0.3, 1) 0.16s;
+  }
+
+  .menu-toggle[data-open] .menu-toggle-icon > span:nth-child(1) {
+    translate: 0 0;
+    rotate: 225deg;
+  }
+
+  .menu-toggle[data-open] .menu-toggle-icon > span:nth-child(2) {
+    scale: 0 1;
+    opacity: 0;
+  }
+
+  .menu-toggle[data-open] .menu-toggle-icon > span:nth-child(3) {
+    translate: 0 0;
+    rotate: 135deg;
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .menu-toggle-icon {
+    .menu-toggle-icon > span,
+    .menu-toggle[data-open] .menu-toggle-icon > span {
       transition: none;
     }
   }

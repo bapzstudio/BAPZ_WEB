@@ -40,19 +40,6 @@ export function Hero({
         {/* Titre haut, planète basse : sur écran large les deux se croisaient,
             le mot BAPZ du logo passant sous la fin du titre. */}
         <div className="container-page relative z-10 flex flex-1 flex-col justify-start pt-[min(12vh,88px)] pb-8 sm:pt-[min(10vh,96px)]">
-          {/* Le logo du studio se dessine ligne par ligne pendant que le titre
-              se déplie, en filigrane sous le titre.
-              Son bord droit tombe sur la ligne du conteneur, comme tout le
-              reste du site : `right-0` porte sur la boîte du conteneur,
-              gouttière comprise, donc la planète touchait le bord de la fenêtre
-              dès qu'elle faisait moins de 1780px. D'où `right-6 lg:right-10`,
-              les deux valeurs de gouttière.
-              Sur téléphone, centrée et entière sous le titre : décalée à
-              droite, elle sortait de l'écran et se lisait comme un accident.
-              Fixe une fois dessiné : la dérive (`planete-derive`) faisait
-              pencher le mot BAPZ, elle reste réservée à la planète seule. */}
-          <PlaneteDessinee className="absolute bottom-14 left-1/2 -z-10 aspect-square h-[min(76vw,33vh)] -translate-x-1/2 opacity-[0.13] sm:right-6 sm:bottom-2 sm:left-auto sm:h-[min(44vw,56vh)] sm:translate-x-0 sm:opacity-[0.16] lg:right-10" />
-
           <p className="eyebrow">
             [ {city} - {handle} ]
           </p>
@@ -75,6 +62,26 @@ export function Hero({
           <p className="mt-6 max-w-160 text-base leading-[1.35] text-secondary sm:mt-9 sm:max-w-[min(52vw,720px)] sm:text-[clamp(17px,1.45vw,24px)] sm:whitespace-pre-line">
             {settings.heroSubtitle}
           </p>
+
+          {/* Le logo du studio se dessine ligne par ligne pendant que le titre
+              se déplie, en filigrane.
+              Sur téléphone, centré dans l'espace qui reste sous le sous-titre
+              (`flex-1`), à sa taille au plus : posé en bas de l'écran, il
+              remontait derrière le texte sur les petits téléphones (440x680).
+              `min-h-20` lui garde une taille visible quand le texte prend
+              presque tout l'écran, sans pousser la flèche hors de l'écran
+              (`min-h-40` allongeait la landing de 78px à 360x640).
+              À partir de `sm`, l'enveloppe devient `static` et la planète se
+              place sur le conteneur : son bord droit tombe sur la ligne du
+              conteneur, comme tout le reste du site. `right-0` porterait sur la
+              boîte du conteneur, gouttière comprise, et la planète toucherait le
+              bord de la fenêtre dès 1780px ; d'où `right-6 lg:right-10`, les
+              deux valeurs de gouttière.
+              Fixe une fois dessiné : la dérive (`planete-derive`) faisait
+              pencher le mot BAPZ, elle reste réservée à la planète seule. */}
+          <div className="relative mt-6 min-h-20 flex-1 sm:static sm:mt-0 sm:min-h-0 sm:flex-none">
+            <PlaneteDessinee className="absolute top-1/2 left-1/2 -z-10 aspect-square h-[min(76vw,100%)] -translate-x-1/2 -translate-y-1/2 opacity-[0.13] sm:top-auto sm:right-6 sm:bottom-2 sm:left-auto sm:h-[min(44vw,56vh)] sm:translate-x-0 sm:translate-y-0 sm:opacity-[0.16] lg:right-10" />
+          </div>
         </div>
 
         {/* Invite à défiler : un lien d'ancre, donc utilisable au clavier et

@@ -190,7 +190,10 @@ export function MobileMenu({
         data-open={open || undefined}
         className="menu-toggle lg:hidden"
       >
+        {/* Trois traits, le signe du menu que tout le monde reconnaît : le « + »
+            d'avant se lisait comme « ajouter ». */}
         <span className="menu-toggle-icon" aria-hidden>
+          <span />
           <span />
           <span />
         </span>

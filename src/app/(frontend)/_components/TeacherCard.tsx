@@ -41,12 +41,16 @@ export function TeacherCard({
         )}
 
         <div className="flex flex-1 flex-col bg-[#222] p-7.5">
-          <div className="flex items-baseline justify-between gap-4">
+          {/* `flex-wrap` : une discipline longue (« Contemporain Lyrical »)
+              passe sous le nom quand la carte est étroite, au lieu de sortir
+              de la carte sur les petits téléphones. Là où tout tient sur une
+              ligne, le rendu de la maquette ne change pas. */}
+          <div className="flex flex-wrap items-baseline justify-between gap-x-4 gap-y-2">
             <h2 className="text-[28px] font-black uppercase leading-none">
               {teacher.name}
             </h2>
             {teacher.discipline && (
-              <span className="shrink-0 font-mono text-base uppercase tracking-widest text-discret">
+              <span className="font-mono text-base uppercase tracking-widest text-discret">
                 {teacher.discipline}
               </span>
             )}
