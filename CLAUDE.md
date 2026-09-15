@@ -41,7 +41,7 @@ src/
 ├── payload.config.ts        collections, adaptateur Postgres, UploadThing, admin FR
 ├── payload-types.ts         GÉNÉRÉ — ne pas éditer à la main
 ├── collections/             un fichier par collection
-├── globals/SiteSettings.ts  réglages éditables du site (hero, adresse, marquee)
+├── globals/SiteSettings.ts  réglages éditables du site (hero, présentation, FAQ, adresse, bandeau)
 ├── migrations/              GÉNÉRÉ par `payload migrate:create`, à versionner
 ├── lib/
 │   ├── types.ts             les formes que consomment les composants
@@ -53,7 +53,7 @@ src/
 └── app/
     ├── (frontend)/          le site public
     │   ├── _components/     composants réutilisables
-    │   ├── _sections/       blocs de page (Hero)
+    │   ├── _sections/       blocs de page (hero, sections de l'accueil)
     │   └── globals.css      tout le design
     └── (payload)/           /admin et l'API — GÉNÉRÉ, ne pas modifier
 ```
@@ -700,6 +700,10 @@ puisqu'il simplifie et retourne son logo.
 | Contact | 89 | 100 | 100 | 100 |
 | Réserver | 89 | 100 | 96 | 100 |
 
+Remesuré le 2026-09-15 (médiane de trois passages) : accueil **57** avec le
+dégradé animé du hero, 81 sans (cf. « Dégradé animé du hero »), `/tarifs` 92.
+Les autres pages n'ont pas été remesurées.
+
 Restent signalés, et ce sont des choix de design, pas des oublis :
 
 - Textes de 11 px en Space Mono : 45 % du texte de `/reserver`.
@@ -755,7 +759,8 @@ restent hors du repo, dans `../BAPZ/maquette` et `../BAPZ/content`.
 
 | Page | État |
 |---|---|
-| Accueil, Calendrier (`/cours`), Profs | Conformes aux maquettes |
+| Accueil | Maquette pour le deuxième écran ; landing plein écran, sections de contenu, grain, halos et dégradé animé du hero en écarts assumés (à valider, cf. `docs/questions-cliente.md`) |
+| Calendrier (`/cours`), Profs | Conformes aux maquettes |
 | Tarifs | Tarifs de la cliente ; formules en lignes (écart avec la maquette du 2026-09-15, à valider) ; section « Locations de salle » d'après la maquette TARIFS du 2026-09-10 |
 | Location (`/location`) | Redirigée vers `/tarifs#locations`, où sont les salles |
 | Contact | Formulaire branché ; téléphone et horaires éditables, encore vides |

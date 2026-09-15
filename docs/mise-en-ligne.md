@@ -42,7 +42,7 @@ avec des mentions « À compléter ».
 | Variable | Valeur |
 |---|---|
 | `PAYLOAD_SECRET` | nouveau secret, `node -e "console.log(crypto.randomUUID())"` |
-| `DATABASE_URL` | Neon, branche **production**, hôte en `-pooler` |
+| `DATABASE_URL` | Neon, branche **production**, hôte en `-pooler`, avec `sslmode=verify-full` au lieu du `sslmode=require` fourni (même comportement, sans l'avertissement « SECURITY WARNING » du pilote) |
 | `UPLOADTHING_TOKEN` | jeton de l'application UploadThing |
 | `RESEND_API_KEY` | clé API Resend |
 | `CONTACT_TO_EMAIL` | boîte qui reçoit les messages |
