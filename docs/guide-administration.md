@@ -231,7 +231,7 @@ Les salles à louer s'affichent en bas de la page **Tarifs**.
 
 ## 9. Réglages du site
 
-Une seule page, rangée en trois blocs.
+Une seule page, rangée en cinq blocs.
 
 ### Bannière d'accueil
 
@@ -242,10 +242,45 @@ Une seule page, rangée en trois blocs.
 Le bouton blanc « Cours d'essai » reprend tout seul le prix du tarif d'essai
 (voir partie 7).
 
+### Accueil : présentation et questions fréquentes
+
+Sous les prochains cours, l'accueil présente un aperçu de chaque page du site.
+Les cours, les profs, les tarifs et l'adresse s'y affichent tout seuls, à
+partir de ce que tu saisis ailleurs. Seuls deux textes s'écrivent ici :
+
+- **Titre** et **Texte de présentation** : quelques phrases sur le studio,
+  de 80 à 150 mots. Laisse une ligne vide entre deux paragraphes. C'est le
+  principal texte que Google lit sur l'accueil : décris le studio avec les mots
+  que les gens tapent pour te trouver (danse, heels, Metz…). Si le titre ou le
+  texte est vide, la présentation n'apparaît pas.
+- **Mot sur l'équipe** : deux ou trois phrases affichées au-dessus des profs.
+  Sous chaque prof, l'accueil montre ensuite **le début de sa bio** (ses
+  premières phrases), pris automatiquement : soigne l'ouverture de chaque bio,
+  c'est elle qui donne envie d'ouvrir la fiche.
+- **Questions fréquentes** : une question et sa réponse par ligne, en deux ou
+  trois phrases. Pour mettre quelques mots en valeur dans une réponse (en blanc
+  et en gras), entoure-les de deux astérisques, comme dans les bios :
+  `**tous les niveaux**`.
+
+**N'écris ni prix, ni horaires, ni adresse dans ces textes.** Ils sont déjà
+affichés ailleurs sur le site, et ceux que tu écrirais ici ne se mettraient pas
+à jour : au premier changement de tarif, la présentation deviendrait fausse.
+Renvoie plutôt vers la page concernée (« le détail est sur la page Tarifs »).
+
 ### Coordonnées
 
-- **Adresse**, **Ville**, **Téléphone** : affichés sur la page Contact et
-  transmis à Google (fiche du studio dans les résultats de recherche).
+- **Adresse** : le numéro et la rue, **puis la commune après une virgule**
+  (`2A rue du Jardin d'Écosse, Ars-Laquenexy`). Le site lit ce qui suit la
+  dernière virgule comme la commune.
+- **Code postal** : transmis à Google avec l'adresse.
+- **Ville de référence** : la grande ville la plus proche (`Metz`), là où les
+  gens cherchent. Affichée dans la bannière et en pied de page.
+- **Téléphone** : affiché sur la page Contact.
+
+L'adresse, le code postal, la ville et le téléphone sont aussi transmis à
+Google (fiche du studio dans les résultats de recherche). Garde-les
+**identiques à ceux de ta fiche Google Business** : une adresse écrite de deux
+façons différentes dessert le référencement local.
 - **Horaires** : un créneau par ligne, avec les **Jours**
   (`Lundi - Vendredi`) et les **Heures** (`17h - 22h`). Tant qu'aucun créneau
   n'est saisi, la rubrique Horaires n'apparaît pas sur le site.

@@ -219,6 +219,82 @@ montrer. **Écart avec la maquette TARIFS, à montrer à la cliente.** Mesuré :
 3 560 → 2 351 px de haut à 390 px ; à 1920 la hauteur ne change pas
 (2 169 px), c'est la densité qui baisse.
 
+**Fond : grain et halos de page** (`globals.css`, depuis le 2026-09-15). Le
+noir plat de la maquette paraissait trop sobre. **Écart avec les maquettes, à
+valider par la cliente.** Réglages en tête de `globals.css` : `--grain-opacite`
+(0,05), `--halo-haut-intensite` (12 %, le halo du hero culmine à 22 %),
+`--halo-bas-intensite` (7 %).
+
+- **Grain** : `body::after`, fixe et **au-dessus de tout** (`z-index: 90`, sous
+  le lien d'évitement), sans capter de clic. Posé derrière le contenu, il
+  s'arrêtait net sous la nav et sous la barre des jours du calendrier, toutes
+  deux opaques. Bruit fractal en SVG inline, sans requête. **Pas de
+  `mix-blend-mode`** : un mélange sur une couche plein écran se recalcule à
+  chaque image au défilement.
+- **Halos** : un seul `main::before` à deux couches de fond (haut à gauche, bas
+  à droite), en `z-index: -1` sur `main` rendu `relative`. Pas d'`isolate` : le
+  fond du `body` est peint sur le canevas, le halo reste donc visible, et aucun
+  contexte d'empilement nouveau n'empêche un élément de la page de passer
+  au-dessus de la nav. Chaque couche est plafonnée à la hauteur de `main` :
+  aucune page ne s'allonge (15 hauteurs relevées identiques avant et après).
+- **Une seule teinte, `--glow`** : aucune couleur n'est inventée hors maquette.
+- **Accueil** : `main:has(.hero-glow)` retire le halo du haut, le hero ayant le
+  sien, animé.
+- **Contraste renforcé et impression** : grain et halos retirés.
+- **Mesuré** : au pic du halo du haut, sur le bloc de 8 px le plus clair, les
+  petits textes `#8a8a8a` tiennent 4,63:1 avec le grain (4,92 sans). Le seuil
+  de 4,5 est tenu de peu : **ne pas monter `--halo-haut-intensite` ni
+  `--grain-opacite` sans remesurer.** Lighthouse mobile, build de production,
+  médiane de trois passages : accueil 81 → 81, `/tarifs` 92 → 90 (passages
+  88/92/92 puis 93/90/87, dans le bruit de mesure).
+
+**Dégradé animé du hero** (`DegradeHero`, depuis le 2026-09-15). Shader repris
+de Grainient (reactbits.dev), **WebGL 2 écrit à la main, sans dépendance** (cf.
+« Coût »).
+**Écart avec la maquette, à valider par la cliente.** Deux essais écartés avant
+lui : les fibres de GhostFibers (jugées trop chargées, sous-titre à 3,2:1) et
+les vagues de GradientWaves.
+
+- **Palette tirée de `--glow`** : base `#080808`, accent x 0,25, clair x 0,4.
+  Contraste du shader à 1 (à 1,5, ces bleus sombres tombaient au noir) ; grain
+  du shader à 0, le site a le sien.
+- **Coût** : démarré après `load`, au premier moment libre ; shader compilé en
+  parallèle (`KHR_parallel_shader_compile`), son état interrogé sans bloquer, et
+  rien n'est dessiné avant la fin ; rendu à mi-résolution (invisible sur un
+  dégradé lisse) ; 30 images par seconde (30,3 mesurées) ; pause hors écran et
+  onglet masqué.
+- **Pas d'`ogl`** : la version de React Bits passe par cette bibliothèque
+  (131 Ko), qui n'apportait ici qu'un triangle plein écran. Le rendu est écrit
+  directement en WebGL 2.
+- **Mouvement réduit** : une image fixe, sans boucle.
+- **Repli** : sans WebGL 2, shader non lié ou sans JavaScript, rien n'est ajouté
+  et les halos CSS de `.hero-glow` restent.
+- **Pas de dégradé en rendu logiciel** (SwiftShader, llvmpipe, pilote de base) :
+  sans processeur graphique, chaque image passerait par le processeur et
+  bloquerait la page. `failIfMajorPerformanceCaveat` ne suffit pas (Chrome
+  accorde encore le contexte avec SwiftShader, vérifié) : le nom du moteur de
+  rendu tranche. Ce garde-fou ne change rien sous Lighthouse, dont le Chrome
+  rend le dégradé avec le processeur graphique (vu sur sa capture finale). Une fois le dégradé prêt,
+  `data-degrade` efface ces halos : leur couche du dessus, peinte au-dessus du
+  canvas, faisait tomber le surtitre à 3,9:1.
+- Le dégradé est opaque : le bas du hero s'efface par un masque CSS
+  (`.degrade-hero`).
+- **Mesuré** : contraste le plus faible relevé sur trois images, surtitre et
+  sous-titre 5,08:1, titre 8,48:1. **Ne pas éclaircir `color1` sans
+  remesurer.**
+- **Lighthouse** (mobile, build de production, médiane de trois passages) :
+  **accueil 81 -> 57**, `/tarifs` inchangé (92). Choix assumé par Matthias le
+  2026-09-15. Ce n'est pas le code du composant qui bloque : dans le Chrome de
+  Lighthouse (processeur graphique réel), compilation, liaison et dessin sont
+  mesurés à 0-1 ms, la compilation parallèle se termine en 152 ms. La tâche
+  longue (~3 s) est attribuée au script d'évaluation de Lighthouse et
+  n'apparaît qu'avec le canvas animé ; LCP et CLS ne bougent pas. Cause la plus
+  probable, non démontrée : les captures d'écran de la mesure sur un canvas qui
+  s'anime. Google classe sur les données réelles (Core Web Vitals) : **les
+  vérifier dans la Search Console après la mise en ligne.** Si elles se
+  dégradent, deux pistes écartées pour l'instant : démarrer le dégradé au
+  premier geste du visiteur, ou le remplacer par une version CSS.
+
 **Les libellés de l'admin sont en français**, y compris les `label`,
 `description` et `labels` des collections : c'est la cliente qui les lit.
 

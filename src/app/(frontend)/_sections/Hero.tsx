@@ -2,6 +2,7 @@ import Link from "next/link";
 import { lienReservation } from "@/lib/reservation/liens";
 import type { Course, PricingPlan, SiteSettings } from "@/lib/types";
 import { CourseCard } from "../_components/CourseCard";
+import { DegradeHero } from "../_components/DegradeHero";
 import { FoldText } from "../_components/FoldText";
 import { PlaneteDessinee } from "../_components/PlaneteDessinee";
 import { ProximityGlow } from "../_components/ProximityGlow";
@@ -35,6 +36,10 @@ export function Hero({
           rétractée, donc l'invite à défiler tombait sous l'écran. Moins les
           67px de la nav (66 + son filet), qui est collante. */}
       <section className="hero-glow flex min-h-[calc(100svh-67px)] flex-col">
+        {/* Dégradé animé en WebGL (cf. DegradeHero), sous le contenu.
+            Chargé après la page ; sans WebGL 2 ou sans JavaScript, les halos
+            CSS de `.hero-glow` restent seuls. */}
+        <DegradeHero className="absolute inset-0" />
         {/* relative z-10 : les halos sont des pseudo-éléments positionnés, le
             contenu doit passer au-dessus. */}
         {/* Titre haut, planète basse : sur écran large les deux se croisaient,
@@ -83,7 +88,6 @@ export function Hero({
             <PlaneteDessinee className="absolute top-1/2 left-1/2 -z-10 aspect-square h-[min(76vw,100%)] -translate-x-1/2 -translate-y-1/2 opacity-[0.13] sm:top-auto sm:right-6 sm:bottom-2 sm:left-auto sm:h-[min(44vw,56vh)] sm:translate-x-0 sm:translate-y-0 sm:opacity-[0.16] lg:right-10" />
           </div>
         </div>
-
         {/* Invite à défiler : un lien d'ancre, donc utilisable au clavier et
             sans JavaScript. Aucun code pour le masquer — elle sort du champ
             d'elle-même dès qu'on défile.

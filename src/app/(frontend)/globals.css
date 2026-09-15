@@ -23,6 +23,15 @@
   /* Mêmes composantes que --glow, en canaux séparés : permet d'en moduler
      l'opacité par calcul dans un dégradé. À garder synchronisé. */
   --glow-rgb: 143 180 255;
+
+  /* Fond du site (cf. « Grain et halos de page » plus bas). Aucune maquette :
+     réglages choisis au navigateur le 2026-09-15, à ajuster ici. */
+  --grain-opacite: 0.05;
+  --halo-haut-intensite: 12%; /* le halo du hero culmine à 22 % */
+  --halo-bas-intensite: 7%;
+  /* Bruit fractal en SVG, tuile de 200 px : blanc dont l'opacité suit le
+     bruit. Inline, donc sans requête réseau. */
+  --grain: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='g'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 1 0 0 0 0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23g)'/%3E%3C/svg%3E");
 }
 
 /* Focus clavier. Le contour par défaut du navigateur prend la couleur du texte :
@@ -111,6 +120,83 @@
 body {
   background: var(--background);
   color: var(--foreground);
+}
+
+/* ---- Grain et halos de page ----
+   Le noir plat de la maquette paraissait trop sobre : un grain de pellicule
+   sur tout le site, et un halo doux en haut et en bas de chaque page. Écart
+   avec la maquette, à valider par la cliente.
+
+   Grain : couche fixe AU-DESSUS de tout (nav à 50, menu mobile à 60, lien
+   d'évitement à 100). Posée derrière le contenu, elle s'arrêtait net sous la
+   nav et la barre des jours du calendrier, toutes deux opaques. Ne capte aucun
+   clic. Pas de `mix-blend-mode` : un mélange sur une couche plein écran se
+   recalcule à chaque image au défilement. */
+body::after {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  pointer-events: none;
+  background-image: var(--grain);
+  background-size: 200px 200px;
+  opacity: var(--grain-opacite);
+}
+
+/* Halos : accrochés à la page, pas à la fenêtre, dans un seul pseudo-élément
+   de `main` (`relative`) à deux couches de fond. `z-index: -1` le place sous
+   le contenu ; le fond du `body` étant peint sur le canevas, il reste visible.
+   Chaque couche est plafonnée à la hauteur de `main` : rien ne déborde, et une
+   page courte ne s'allonge pas.
+   - en haut : forme et position de la couche principale du halo du hero
+     (ellipse 670 x 615, à 17 % de la largeur), plus discret et statique ;
+   - en bas à droite : même teinte, encore plus discret, éteint avant le filet
+     du pied de page.
+   Une seule teinte, `--glow` : aucune couleur n'est inventée hors maquette. */
+main::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-image:
+    radial-gradient(
+      ellipse 670px 615px at 17% 200px,
+      color-mix(in srgb, var(--glow) var(--halo-haut-intensite), transparent) 0%,
+      transparent 70%
+    ),
+    radial-gradient(
+      ellipse 760px 520px at 82% calc(100% - 405px),
+      color-mix(in srgb, var(--glow) var(--halo-bas-intensite), transparent) 0%,
+      transparent 70%
+    );
+  background-position:
+    top left,
+    bottom left;
+  background-size:
+    100% min(1100px, 100%),
+    100% min(900px, 100%);
+  background-repeat: no-repeat;
+}
+
+/* Accueil : le hero a déjà son halo, animé ; celui de la page ne s'y ajoute
+   pas. Seul le halo du bas reste. */
+main:has(.hero-glow)::before {
+  background-image:
+    none,
+    radial-gradient(
+      ellipse 760px 520px at 82% calc(100% - 405px),
+      color-mix(in srgb, var(--glow) var(--halo-bas-intensite), transparent) 0%,
+      transparent 70%
+    );
+}
+
+/* Contraste renforcé demandé et impression : fond plat, comme la maquette. */
+@media (prefers-contrast: more), print {
+  body::after,
+  main::before {
+    display: none;
+  }
 }
 
 /* Les liens d'ancre glissent au lieu de sauter : l'invite à défiler de
@@ -837,7 +923,37 @@ body {
   );
   animation: glow-drift-b 27s ease-in-out infinite;
 }
+/* Dégradé animé du hero (cf. DegradeHero). Opaque : le bas s'efface pour
+   rejoindre le noir du site sans bande. Invisible jusqu'à sa première image
+   (`data-pret`), puis en fondu. */
+.degrade-hero {
+  pointer-events: none;
+  overflow: hidden;
+  opacity: 0;
+  transition: opacity 1.4s ease;
+  -webkit-mask-image: linear-gradient(
+    to bottom,
+    #000 0%,
+    #000 70%,
+    transparent 100%
+  );
+  mask-image: linear-gradient(to bottom, #000 0%, #000 70%, transparent 100%);
+}
+.degrade-hero[data-pret] {
+  opacity: 1;
+}
 
+/* Le dégradé remplace les halos CSS du hero : ils s'effacent pendant qu'il
+   apparaît. Leur couche du dessus, peinte au-dessus du canvas, éclaircissait
+   le fond derrière le surtitre (3,9:1 mesuré). Sans dégradé, ils restent. */
+.hero-glow::before,
+.hero-glow::after {
+  transition: opacity 1.4s ease;
+}
+.hero-glow[data-degrade]::before,
+.hero-glow[data-degrade]::after {
+  opacity: 0;
+}
 @keyframes glow-drift-a {
   0%,
   100% {

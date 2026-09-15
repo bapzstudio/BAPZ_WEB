@@ -79,11 +79,13 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
             l'espace restant quand le contenu est plus court que l'écran tombe
             DANS la page et non après elle. Sans quoi il s'ajoutait sous le
             bandeau défilant de l'accueil, qui paraissait alors deux fois plus
-            haut (86px mesurés à 545x934). */}
+            haut (86px mesurés à 545x934).
+            relative : repère des halos de page (`main::before`, cf.
+            globals.css), plafonnés à sa hauteur. */}
         <main
           id="contenu"
           tabIndex={-1}
-          className="flex flex-1 flex-col overflow-x-clip outline-none"
+          className="relative flex flex-1 flex-col overflow-x-clip outline-none"
         >
           {children}
         </main>

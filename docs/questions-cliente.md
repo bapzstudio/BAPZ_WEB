@@ -95,10 +95,10 @@ propose aujourd'hui. À confirmer.
 
 ---
 
-## 5. Trois écarts avec les maquettes, à valider
+## 5. Six écarts avec les maquettes, à valider
 
 Ta graphiste a livré des maquettes fixes ; un site vivant demande quelques
-ajustements. Trois méritent ton accord.
+ajustements. Six méritent ton accord.
 
 1. **L'accueil s'ouvre sur un écran plein** — le titre et le logo qui se
    dessine — et le reste (boutons, prochains cours) apparaît quand on fait
@@ -109,6 +109,22 @@ ajustements. Trois méritent ton accord.
    ta planète, mais simplifiée et inversée : disque blanc, traits noirs. Ton
    logo d'origine, tout en traits fins blancs, devient une tache noire à cette
    taille — c'est une contrainte technique, pas un choix esthétique.
+4. **Sur la page Tarifs, les formules sont présentées en lignes** plutôt qu'en
+   cartes : le nom, la description et le prix sur une ligne, comme une carte de
+   menu. La maquette montrait des cartes, mais ton offre réelle compte six
+   formules, et six cartes presque identiques rendaient la page lourde, surtout
+   sur téléphone (une fois et demie plus longue à faire défiler). Le cours d'essai et
+   les salles, eux, restent en cartes.
+5. **Le fond n'est plus un noir uni.** Un grain très fin, comme celui d'une
+   pellicule photo, couvre tout le site, et un halo bleu très doux éclaire le
+   haut et le bas de chaque page, dans le bleu du halo de l'accueil. D'une page
+   à l'autre, le noir de la maquette paraissait trop plat. Les textes restent
+   aussi lisibles ; si tu préfères le noir uni, c'est un réglage à retirer.
+6. **Le haut de l'accueil s'anime.** Derrière le grand titre, une nappe de
+   bleu sombre ondule lentement, dans les couleurs du site, à la place du halo
+   fixe de la maquette. Elle s'arrête dès qu'elle sort de l'écran, et les
+   personnes qui ont réglé leur appareil pour limiter les animations voient une
+   image fixe. Les textes restent bien lisibles par-dessus.
 
 ---
 
@@ -116,6 +132,34 @@ ajustements. Trois méritent ton accord.
 
 À choisir, puis à acheter à ton nom. Le site est prêt à le recevoir ; en
 attendant, il fonctionnera sur une adresse temporaire fournie par l'hébergeur.
+
+---
+
+## 7. Les textes de l'accueil — à relire
+
+Pour que Google trouve de quoi référencer l'accueil, il présente maintenant un
+aperçu de chaque page (cours, profs, tarifs, adresse), un court texte sur le
+studio et des questions fréquentes. J'ai rédigé ces deux derniers **à partir
+des seules informations que tu m'as déjà données**, sans aucun prix ni horaire
+(ils sont affichés ailleurs et ne doivent être écrits qu'une fois). Tu pourras
+tout modifier toi-même dans l'administration (Réglages du site → Accueil).
+
+**À vérifier en particulier :**
+
+- **« à quelques minutes de Metz »** et **« à côté de Metz »** : la formulation
+  te convient-elle pour situer le studio ?
+- **Le code postal 57530** pour Ars-Laquenexy, envoyé à Google avec l'adresse.
+- **Le mot sur l'équipe** — « une équipe passée par la scène, les compagnies,
+  le conservatoire et les studios de Paris, Strasbourg ou Los Angeles » — :
+  résumé des bios de Léna, Lara et Alessia.
+- **Le début de chaque bio**, désormais affiché sous chaque prof sur l'accueil
+  pour donner envie d'ouvrir sa fiche. Il est pris automatiquement : ce sont
+  les premières phrases de la bio qui comptent le plus.
+- **Les réponses aux questions**, en particulier celle sur le cours enfants et
+  celle sur la location de salle.
+- **Les questions elles-mêmes** : ce sont celles qu'on imagine le plus
+  souvent. Si on te pose régulièrement d'autres questions, ce sont elles qu'il
+  faut mettre.
 
 ---
 
