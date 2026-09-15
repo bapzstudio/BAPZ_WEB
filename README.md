@@ -150,4 +150,4 @@ entre dans ce cadre.
 - **Statut légal et SIRET**, pour les mentions légales.
 - **Cours privés** : poste du devis qui n'apparaît sur aucune maquette reçue.
 
-Commit from owner to deploy : 2
+Commit from owner to deploy : 3
