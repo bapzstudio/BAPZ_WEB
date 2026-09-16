@@ -95,10 +95,10 @@ propose aujourd'hui. À confirmer.
 
 ---
 
-## 5. Six écarts avec les maquettes, à valider
+## 5. Sept écarts avec les maquettes, à valider
 
 Ta graphiste a livré des maquettes fixes ; un site vivant demande quelques
-ajustements. Six méritent ton accord.
+ajustements. Sept méritent ton accord.
 
 1. **L'accueil s'ouvre sur un écran plein** — le titre et le logo qui se
    dessine — et le reste (boutons, prochains cours) apparaît quand on fait
@@ -125,6 +125,10 @@ ajustements. Six méritent ton accord.
    fixe de la maquette. Elle s'arrête dès qu'elle sort de l'écran, et les
    personnes qui ont réglé leur appareil pour limiter les animations voient une
    image fixe. Les textes restent bien lisibles par-dessus.
+7. **Les portraits de Léna et Lara sont cadrés un peu plus haut** que sur la
+   maquette : elles y paraissaient basses à côté d'Alessia, avec beaucoup de
+   vide au-dessus de la tête. Les photos elles-mêmes sont inchangées, seul le
+   cadrage se resserre par le haut.
 
 ---
 
