@@ -5,7 +5,14 @@ import {
   coordonneesFormSchema,
   type CoordonneesData,
 } from "@/lib/reservation/schemas";
-import { Champ, Titre } from "../ui";
+import { Champ, ResumeErreurs, Titre, type ErreurChamp } from "../ui";
+
+/** Ordre d'affichage, donc ordre du récapitulatif des erreurs. */
+const CHAMPS = [
+  { id: "prenom", label: "Prénom" },
+  { id: "email", label: "E-mail" },
+  { id: "telephone", label: "Téléphone" },
+] as const;
 
 export function StepCoordonnees({
   defaultValues,
@@ -17,10 +24,26 @@ export function StepCoordonnees({
   const {
     register,
     handleSubmit,
+    getValues,
     formState: { errors },
   } = useForm<CoordonneesData>({
     resolver: zodResolver(coordonneesFormSchema),
     defaultValues,
+  });
+
+  // Après un envoi refusé, react-hook-form revalide à chaque frappe : la liste
+  // se vide au fur et à mesure que les champs sont remplis.
+  const valeurs = getValues();
+  const erreurs: ErreurChamp[] = CHAMPS.flatMap((champ) => {
+    const message = errors[champ.id]?.message;
+    if (!message) return [];
+    return [
+      {
+        ...champ,
+        message,
+        vide: !(valeurs[champ.id] ?? "").trim(),
+      },
+    ];
   });
 
   return (
@@ -34,6 +57,8 @@ export function StepCoordonnees({
     >
       <Titre>Comment te répondre ?</Titre>
 
+      <ResumeErreurs erreurs={erreurs} />
+
       {/* Champ leurre : hors flux et hors tabulation, rempli par les robots. */}
       <div className="absolute left-[-9999px]" aria-hidden="true">
         <label>
@@ -45,6 +70,7 @@ export function StepCoordonnees({
       <Champ label="Prénom" erreur={errors.prenom?.message}>
         <input
           {...register("prenom")}
+          id="prenom"
           autoComplete="given-name"
           aria-invalid={errors.prenom ? true : undefined}
           className="champ"
@@ -53,6 +79,7 @@ export function StepCoordonnees({
       <Champ label="E-mail" erreur={errors.email?.message}>
         <input
           {...register("email")}
+          id="email"
           type="email"
           autoComplete="email"
           aria-invalid={errors.email ? true : undefined}
@@ -62,6 +89,7 @@ export function StepCoordonnees({
       <Champ label="Téléphone (facultatif)" erreur={errors.telephone?.message}>
         <input
           {...register("telephone")}
+          id="telephone"
           type="tel"
           autoComplete="tel"
           aria-invalid={errors.telephone ? true : undefined}

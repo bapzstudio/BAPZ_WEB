@@ -20,6 +20,13 @@
   --light: #d9d9d9; /* pastilles et boutons pleins */
   --outline-fill: #2d2d2d; /* fond du bouton à contour */
   --glow: #8fb4ff; /* halo bleu du fond */
+  /* Erreurs de saisie. Aucune maquette : le rouge le plus sombre qui tienne le
+     seuil de contraste sur le fond (#ff6b6b, 7,3:1) et sur les cartes
+     (6,1:1 sur #1d1d1d). Réservé aux formulaires — un champ à corriger doit se
+     repérer sans lire. */
+  --erreur: #ff6b6b;
+  /* Mêmes composantes, en canaux séparés, pour les fonds et bordures translucides. */
+  --erreur-rgb: 255 107 107;
   /* Mêmes composantes que --glow, en canaux séparés : permet d'en moduler
      l'opacité par calcul dans un dégradé. À garder synchronisé. */
   --glow-rgb: 143 180 255;
@@ -107,6 +114,7 @@
   --color-rule-faint: var(--rule-faint);
   --color-light: var(--light);
   --color-glow: var(--glow);
+  --color-erreur: var(--erreur);
   --font-sans: var(--font-archivo);
   --font-mono: var(--font-space-mono);
   /* Échelle des petits textes, en plus de celle de Tailwind (xs, sm, base…) :
@@ -488,6 +496,22 @@ main:has(.hero-glow)::before {
   }
   .champ::placeholder {
     color: var(--text-tertiary);
+  }
+  /* Champ à corriger : la bordure et le fond passent au rouge, pour qu'on voie
+     ce qui manque sans avoir à lire chaque libellé. `aria-invalid` porte donc
+     l'apparence en plus de l'annonce aux lecteurs d'écran : une seule source. */
+  .champ[aria-invalid="true"] {
+    border-color: var(--erreur);
+    background: rgb(var(--erreur-rgb) / 0.07);
+  }
+
+  /* Récapitulatif des champs à corriger, en tête d'étape du parcours. */
+  .bloc-erreur {
+    border: 1px solid rgb(var(--erreur-rgb) / 0.5);
+    border-radius: 15px;
+    background: rgb(var(--erreur-rgb) / 0.07);
+    padding: 14px 16px;
+    color: var(--erreur);
   }
 
   /* Bouton « Choisir » des cartes de tarif et de salle. C'est un lien étiré :

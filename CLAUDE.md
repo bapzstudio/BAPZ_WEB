@@ -19,6 +19,7 @@ pnpm install
 pnpm dev                  # site + admin sur http://localhost:3000
 pnpm build                # seul contrôle de types couvrant tout le projet
 pnpm seed confirmer       # VIDE puis remplit la base depuis src/seed/content.ts
+pnpm seed:portraits       # remplace les seuls portraits des profs, sans rien effacer
 pnpm generate:types       # après un changement de collection
 pnpm generate:importmap   # après tout ajout de composant admin personnalisé
 pnpm payload migrate      # applique les migrations en attente
@@ -78,8 +79,13 @@ relevées au pixel sur les exports Figma, qui vivent hors du repo dans
   qui passe partout. `#707070` (`--rule`) reste aux filets et contours
 - Tailles nommées des petits textes : `text-label` 11 px, `text-petit` 13 px,
   `text-courant` 15 px — pas de valeur libre à côté
-- Messages d'erreur en gris secondaire ; rayon 15 px pour tout ce qui est carte
-  ou image de carte
+- Erreurs de saisie en rouge `--erreur` (`#ff6b6b`, `text-erreur`), depuis le
+  2026-09-16 : en gris secondaire, un champ oublié ne se distinguait pas du
+  reste de la page. Aucune maquette ne donne de rouge ; celui-ci est le plus
+  sombre qui tienne le contraste (mesuré au rendu : 6,1:1 dans le bloc
+  d'erreur, 6,9:1 sous un champ). Réservé aux formulaires. Le message d'échec
+  d'envoi du formulaire de contact reste en gris, faute d'y avoir touché
+- Rayon 15 px pour tout ce qui est carte ou image de carte
 - Cartes d'accueil : `#1d1d1d` sur bordure `#3c3c3c` (`.card`)
 - Cartes calendrier / profs / tarifs : bordure en dégradé + halo, rayon 15 (`.cal-card`)
 - Polices : Archivo (texte), Space Mono (libellés, horaires)
@@ -443,6 +449,20 @@ Règles :
 - `useReservationStore.persist` n'existe pas côté serveur : zustand n'attache
   son API que si le stockage est disponible. Y accéder sans garde fait
   répondre la page en 500.
+- **Une validation refusée se voit en tête d'étape** (`ResumeErreurs` dans
+  `ui.tsx`, depuis le 2026-09-16). Le bouton « Suivant » est hors du
+  formulaire, en bas de la colonne : sans ce bloc, il ne se passait
+  visiblement rien, et les messages sous les champs étaient du même gris que
+  le reste. Le bloc liste les champs à reprendre, chacun cliquable pour y
+  amener le focus, et le champ concerné passe au rouge par
+  `aria-invalid` — une seule source pour l'apparence et pour les lecteurs
+  d'écran. C'est lui qui porte le `role="alert"`, une fois pour tous les
+  champs : les messages sous les champs vivent dans leur `<label>`, donc déjà
+  lus avec le nom du champ. Titre selon le cas : « Il manque N informations »
+  si les champs sont vides, « N informations sont à corriger » sinon.
+- **Un champ vide ne dit jamais « invalide ».** `min(1)` passe avant `email()`
+  dans `schemas.ts`, sans quoi une adresse non saisie s'annonçait « semble
+  invalide ».
 
 Écart avec chuttt : les transitions d'étape passent par une animation CSS
 plutôt que framer-motion, pour garder une seule bibliothèque d'animation.
@@ -483,9 +503,33 @@ choisi sur mesure de netteté (variance du laplacien) : en qualité 88 le
 portrait de Léna passait *sous* l'ancienne extraction, sa réduction étant de
 4,1x contre 1,7x et 2,2x pour les autres.
 
-**Après tout changement de ces fichiers, relancer `pnpm seed confirmer`** : le
-site sert les portraits depuis Payload/UploadThing, pas depuis ce dossier. Les
-images du seed vivent hors de `public/` pour ne pas être publiées avec le site.
+**Léna et Lara ont été remontées le 2026-09-16**, demandées « trop basses à
+côté d'Alessia ». Mesuré : le sujet commençait à 20,7 % de la hauteur chez
+Alessia, 32,5 % chez Léna et 29,2 % chez Lara. Les deux sont recadrées à 26 %,
+Alessia inchangée — son cadrage part des mains levées, pas du haut de la tête,
+et la cliente n'en a rien dit.
+
+Les originaux du shooting **ne sont plus sur la machine** (`../BAPZ/content`
+ne contient plus que deux PNG) : le recadrage repart donc du fichier 1086 x 944
+lui-même. Fenêtre de même rapport, calée en bas pour ne rien perdre du corps,
+puis retour à 1086 x 944 — 989 x 860 à (49, 84) pour Léna, 1038 x 902 à
+(24, 42) pour Lara, soit un agrandissement de 9,8 % et 4,7 %. Il compense une
+netteté en baisse de 27 % et 22 % : `sharpen({ sigma: 0.5, m1: 0.3, m2: 2 })`
+la ramène à 40,4 et 44,4 (contre 42,8 et 41,5 avant), sans halo visible ni
+grain ajouté dans le fond gris. **Si les originaux reviennent, refaire le
+cadrage depuis eux** plutôt que d'empiler un second agrandissement.
+
+**Changer ces fichiers ne change rien au site tant qu'ils ne sont pas
+renvoyés dans Payload** : les portraits sont servis depuis
+Payload/UploadThing, pas depuis ce dossier. Les images du seed vivent hors de
+`public/` pour ne pas être publiées avec le site.
+
+Pour cela, `pnpm seed:portraits confirmer` (`src/seed/portraits.ts`) : il
+remplace le fichier des seuls médias déjà rattachés aux profs et ne supprime
+rien — les fiches, les cours et les réglages ne bougent pas, contrairement à
+`pnpm seed`, qui vide tout et effacerait les saisies de la cliente. Sans
+`confirmer` il dit seulement ce qu'il remplacerait, et il ignore un portrait
+dont le poids est inchangé pour ne pas consommer le quota UploadThing.
 
 ## Identité du studio
 

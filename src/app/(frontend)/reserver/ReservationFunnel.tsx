@@ -418,7 +418,7 @@ export function ReservationFunnel({
             {erreur && (
               <p
                 role="alert"
-                className="mt-5 text-center text-petit text-secondary"
+                className="mt-5 text-center text-petit text-erreur"
               >
                 {erreur}
               </p>

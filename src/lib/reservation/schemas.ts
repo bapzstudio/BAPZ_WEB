@@ -83,10 +83,13 @@ const coordonneesSchema = z.object({
     .max(80, "80 caractères au maximum"),
   // En minuscules : la limite d'un accusé de réception par adresse ne doit pas
   // se contourner en changeant une majuscule.
+  // `min(1)` avant `email()` : sur un champ laissé vide, zod annonçait sinon
+  // une adresse « invalide » là où il n'y avait rien à corriger.
   email: z
     .string()
     .trim()
     .toLowerCase()
+    .min(1, "Indique ton e-mail")
     .email("Cette adresse e-mail semble invalide")
     .max(200, "200 caractères au maximum"),
   telephone: z

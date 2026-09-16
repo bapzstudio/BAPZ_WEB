@@ -21,6 +21,12 @@ export function Titre({ children }: { children: ReactNode }) {
   );
 }
 
+/*
+ * Un champ et son message. Le message n'est pas un `role="alert"` : il vit
+ * dans le `<label>`, donc les lecteurs d'écran le lisent déjà avec le nom du
+ * champ. L'annonce, elle, revient au récapitulatif ci-dessous, une seule fois
+ * pour tous les champs.
+ */
 export function Champ({
   label,
   erreur,
@@ -34,12 +40,59 @@ export function Champ({
     <label className="flex flex-col gap-2">
       <span className={LIBELLE}>{label}</span>
       {children}
-      {erreur && (
-        <span role="alert" className="text-petit text-secondary">
-          {erreur}
-        </span>
-      )}
+      {erreur && <span className="text-petit text-erreur">{erreur}</span>}
     </label>
+  );
+}
+
+export type ErreurChamp = {
+  /** `id` de l'input, pour y amener le focus depuis le récapitulatif. */
+  id: string;
+  label: string;
+  message: string;
+  /** Champ laissé vide, par opposition à une saisie à corriger. */
+  vide: boolean;
+};
+
+/**
+ * Récapitulatif des champs à reprendre, en tête d'étape (demandé le
+ * 2026-09-16 : « savoir ce qu'il manque comme informations »). Le bouton
+ * « Suivant » est hors de l'étape, en bas de la colonne : sans ce bloc, une
+ * validation refusée ne se voyait qu'en parcourant les champs un à un, et les
+ * messages étaient du même gris que le reste de la page.
+ */
+export function ResumeErreurs({ erreurs }: { erreurs: ErreurChamp[] }) {
+  if (erreurs.length === 0) return null;
+
+  const manquants = erreurs.filter((e) => e.vide).length;
+  const titre =
+    manquants === erreurs.length
+      ? erreurs.length > 1
+        ? `Il manque ${erreurs.length} informations`
+        : "Il manque une information"
+      : erreurs.length > 1
+        ? `${erreurs.length} informations sont à corriger`
+        : "Une information est à corriger";
+
+  return (
+    <div role="alert" className="bloc-erreur flex flex-col gap-2">
+      <p className="font-mono text-label uppercase tracking-widest">{titre}</p>
+      <ul className="flex flex-col gap-1">
+        {erreurs.map((erreur) => (
+          <li key={erreur.id}>
+            {/* Amène au champ concerné : sur téléphone, il peut être hors écran. */}
+            <button
+              type="button"
+              onClick={() => document.getElementById(erreur.id)?.focus()}
+              className="text-left text-petit underline decoration-1 underline-offset-4 opacity-90 transition-opacity hover:opacity-100"
+            >
+              <span className="font-semibold">{erreur.label}</span> —{" "}
+              {erreur.message}
+            </button>
+          </li>
+        ))}
+      </ul>
+    </div>
   );
 }
 

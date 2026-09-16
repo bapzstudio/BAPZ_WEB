@@ -7,7 +7,20 @@ import {
   type DetailsData,
   type TypeDemande,
 } from "@/lib/reservation/schemas";
-import { Champ, LIBELLE, Titre } from "../ui";
+import {
+  Champ,
+  LIBELLE,
+  ResumeErreurs,
+  Titre,
+  type ErreurChamp,
+} from "../ui";
+
+/** Ordre d'affichage, donc ordre du récapitulatif des erreurs. */
+const CHAMPS = [
+  { id: "dateSouhaitee", label: "Date souhaitée" },
+  { id: "personnes", label: "Nombre de personnes" },
+  { id: "message", label: "Message" },
+] as const;
 
 const INVITES: Record<TypeDemande, string> = {
   essai: "Une question, une contrainte, une envie particulière…",
@@ -30,6 +43,7 @@ export function StepDetails({
     register,
     handleSubmit,
     setValue,
+    getValues,
     control,
     formState: { errors },
   } = useForm<DetailsData>({
@@ -40,6 +54,15 @@ export function StepDetails({
   // `useWatch` plutôt que `watch` : compatible avec la mémoïsation de React.
   const niveau = useWatch({ control, name: "niveau" });
   const location = type === "location";
+
+  // Tout est facultatif ici : ces messages portent sur une saisie à corriger
+  // (un nombre en toutes lettres, un message trop long), jamais sur un oubli.
+  const valeurs = getValues();
+  const erreurs: ErreurChamp[] = CHAMPS.flatMap((champ) => {
+    const message = errors[champ.id]?.message;
+    if (!message) return [];
+    return [{ ...champ, message, vide: !(valeurs[champ.id] ?? "").trim() }];
+  });
 
   return (
     <form
@@ -54,6 +77,8 @@ export function StepDetails({
             ? "Parle-nous de ton projet"
             : "Parle-nous de toi"}
       </Titre>
+
+      <ResumeErreurs erreurs={erreurs} />
 
       {!location && (
         <fieldset>
@@ -84,6 +109,7 @@ export function StepDetails({
           >
             <input
               {...register("dateSouhaitee")}
+              id="dateSouhaitee"
               aria-invalid={errors.dateSouhaitee ? true : undefined}
               placeholder="Ex : un samedi après-midi en juin"
               className="champ"
@@ -95,6 +121,7 @@ export function StepDetails({
           >
             <input
               {...register("personnes")}
+              id="personnes"
               aria-invalid={errors.personnes ? true : undefined}
               inputMode="numeric"
               placeholder="Ex : 12"
@@ -107,6 +134,7 @@ export function StepDetails({
       <Champ label="Message (facultatif)" erreur={errors.message?.message}>
         <textarea
           {...register("message")}
+          id="message"
           aria-invalid={errors.message ? true : undefined}
           rows={4}
           placeholder={type ? INVITES[type] : undefined}
