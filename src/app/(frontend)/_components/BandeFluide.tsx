@@ -30,10 +30,14 @@ const REPETITIONS = 8;
  * - `reserveRef`, facultatif : l'élément que le texte défilant ne doit pas
  *   recouvrir, mesuré à chaque entrée. Sans lui, la zone libre à droite est
  *   celle du « + » de la FAQ (`--bande-reserve`, 5,5 rem).
+ * - `defiler`, à `false` pour la FAQ (depuis le 2026-09-22) : la bande glisse
+ *   toujours à l'entrée et à la sortie, mais son texte reste immobile, sans
+ *   quoi une question déjà longue devenait dure à lire en défilant.
  */
 export function useBandeFluide(
   racineRef: RefObject<HTMLElement | null>,
   reserveRef?: RefObject<HTMLElement | null>,
+  { defiler = true }: { defiler?: boolean } = {},
 ) {
   const bandeRef = useRef<HTMLDivElement>(null);
   const pisteRef = useRef<HTMLDivElement>(null);
@@ -80,23 +84,25 @@ export function useBandeFluide(
     }
 
     // La boucle parcourt exactement une copie : la suivante prend sa place.
-    if (!defilement.current) {
-      const copie = piste.firstElementChild as HTMLElement | null;
-      const largeur = copie?.offsetWidth ?? 0;
-      if (largeur > 0) {
-        defilement.current = gsap.fromTo(
-          piste,
-          { x: 0 },
-          {
-            x: -largeur,
-            duration: largeur / VITESSE,
-            ease: "none",
-            repeat: -1,
-          },
-        );
+    if (defiler) {
+      if (!defilement.current) {
+        const copie = piste.firstElementChild as HTMLElement | null;
+        const largeur = copie?.offsetWidth ?? 0;
+        if (largeur > 0) {
+          defilement.current = gsap.fromTo(
+            piste,
+            { x: 0 },
+            {
+              x: -largeur,
+              duration: largeur / VITESSE,
+              ease: "none",
+              repeat: -1,
+            },
+          );
+        }
+      } else {
+        defilement.current.play();
       }
-    } else {
-      defilement.current.play();
     }
 
     const haut = parLeHaut(event);
@@ -152,12 +158,15 @@ export function BandeFluide({
   bandeRef,
   pisteRef,
   tailleTexte = "text-base sm:text-lg",
+  repetitions = REPETITIONS,
 }: {
   texte: string;
   bandeRef: RefObject<HTMLDivElement | null>;
   pisteRef: RefObject<HTMLDivElement | null>;
   /** Classes de taille du texte défilant, à accorder à celle de la ligne. */
   tailleTexte?: string;
+  /** Copies du texte dans la bande. 1 pour un texte immobile (`defiler: false`). */
+  repetitions?: number;
 }) {
   return (
     <div
@@ -171,13 +180,13 @@ export function BandeFluide({
           Léger fondu à gauche pour que le texte n'arrive pas coupé net. */}
       <div className="bande-fluide-masque h-full">
         <div ref={pisteRef} className="flex h-full w-max items-center">
-          {Array.from({ length: REPETITIONS }, (_, index) => (
+          {Array.from({ length: repetitions }, (_, index) => (
             <span
               key={index}
               className={`flex shrink-0 items-center gap-6 pr-6 font-black uppercase leading-none whitespace-nowrap text-background ${tailleTexte}`}
             >
               {texte}
-              <span className="opacity-40">✦</span>
+              {repetitions > 1 && <span className="opacity-40">✦</span>}
             </span>
           ))}
         </div>

@@ -9,11 +9,12 @@ import { BioParagraph } from "./BioText";
  * Une question fréquente, animée au survol et à l'ouverture.
  *
  * Survol — la bande de `BandeFluide` (inspirée de FlowingMenu) glisse sur la
- * ligne de la question, qui y défile. Le `<details>` natif reste la
- * structure : ouverture au clic et au clavier, réponse présente dans la page
- * pour Google, bande limitée à la ligne de la question. Le « + » passe
- * au-dessus de la bande, en sombre, et le texte défilant s'efface avant lui :
- * on voit toujours que la ligne s'ouvre.
+ * ligne de la question ; son texte, lui, reste immobile depuis le
+ * 2026-09-22 (`defiler: false`, `repetitions={1}`) — une question longue
+ * devenait dure à lire en défilant. Le `<details>` natif reste la structure :
+ * ouverture au clic et au clavier, réponse présente dans la page pour
+ * Google, bande limitée à la ligne de la question. Le « + » passe au-dessus
+ * de la bande, en sombre : on voit toujours que la ligne s'ouvre.
  *
  * Ouverture — la réponse se déplie en hauteur, son filet se trace de haut en
  * bas (comme les filets du calendrier) et ses paragraphes glissent depuis la
@@ -36,7 +37,11 @@ export function QuestionFluide({
   const reponseRef = useRef<HTMLDivElement>(null);
   const filetRef = useRef<HTMLSpanElement>(null);
   const texteRef = useRef<HTMLDivElement>(null);
-  const { bandeRef, pisteRef, entrer, sortir } = useBandeFluide(detailsRef);
+  const { bandeRef, pisteRef, entrer, sortir } = useBandeFluide(
+    detailsRef,
+    undefined,
+    { defiler: false },
+  );
 
   const paragraphes = answer
     .split(/\n\s*\n/)
@@ -166,7 +171,12 @@ export function QuestionFluide({
           +
         </span>
 
-        <BandeFluide texte={question} bandeRef={bandeRef} pisteRef={pisteRef} />
+        <BandeFluide
+          texte={question}
+          bandeRef={bandeRef}
+          pisteRef={pisteRef}
+          repetitions={1}
+        />
       </summary>
 
       {/* Cadre de la hauteur animée. La réponse est décalée derrière un filet
