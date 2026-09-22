@@ -879,6 +879,24 @@ main:has(.hero-glow)::before {
   );
 }
 
+/* Texte immobile (FAQ, `repetitions={1}`) : pas de fondu à gauche, qui
+   n'a de sens que pour un texte qui défile en continu — sur un texte fixe il
+   mangeait en permanence les premières lettres de la question. */
+.bande-fluide-masque--immobile {
+  -webkit-mask-image: linear-gradient(
+    to right,
+    #000 0,
+    #000 calc(100% - var(--bande-reserve, 5.5rem) - 2rem),
+    transparent calc(100% - var(--bande-reserve, 5.5rem))
+  );
+  mask-image: linear-gradient(
+    to right,
+    #000 0,
+    #000 calc(100% - var(--bande-reserve, 5.5rem) - 2rem),
+    transparent calc(100% - var(--bande-reserve, 5.5rem))
+  );
+}
+
 @media (prefers-reduced-motion: reduce) {
   .bande-fluide {
     display: none;
