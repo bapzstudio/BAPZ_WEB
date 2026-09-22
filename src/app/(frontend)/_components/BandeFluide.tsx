@@ -177,8 +177,12 @@ export function BandeFluide({
       {/* Masque en dégradé sur le texte seul (le fond de la bande reste plein) :
           le défilement s'efface avant ce qui reste lisible à droite. Sans lui,
           les capitales passaient sous le « + » et le rendaient illisible.
-          Léger fondu à gauche pour que le texte n'arrive pas coupé net. */}
-      <div className="bande-fluide-masque h-full">
+          Léger fondu à gauche pour que le texte n'arrive pas coupé net —
+          sauf texte immobile (`repetitions <= 1`), où ce fondu mangerait ses
+          premières lettres en permanence plutôt qu'au passage. */}
+      <div
+        className={`bande-fluide-masque h-full ${repetitions > 1 ? "" : "bande-fluide-masque--immobile"}`}
+      >
         <div ref={pisteRef} className="flex h-full w-max items-center">
           {Array.from({ length: repetitions }, (_, index) => (
             <span
