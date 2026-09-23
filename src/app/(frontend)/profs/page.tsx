@@ -8,7 +8,7 @@ import { getTeachers } from "@/lib/queries";
 import { pageMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = pageMetadata({
-  title: "Les profs",
+  title: "Les profs de danse du studio à Metz",
   description:
     "L'équipe de BAPZ Studio à Metz : Léna Bapz (heels), Lara (street dance) et Alessia (contemporain lyrical).",
   path: "/profs",

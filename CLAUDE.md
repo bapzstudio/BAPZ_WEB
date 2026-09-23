@@ -581,6 +581,18 @@ l'accueil.
 `http://localhost:3000` suffit. Au déploiement : d'abord l'URL `.vercel.app`,
 puis le vrai domaine.
 
+**Le build de production échoue si elle est vide** (`seo.ts`, depuis le
+2026-09-23), et c'est voulu : la variable existait sur Vercel mais sans valeur,
+donc *falsy*, donc repliée sur `localhost` — le site servait des URL
+canoniques, un `og:image` et un sitemap en `http://localhost:3000` sans que
+rien n'échoue. Un build rouge vaut mieux qu'un site invisible. Le garde-fou ne
+se déclenche que sur `VERCEL_ENV === "production"` : un `pnpm build` en local
+passe toujours sans la variable. Côté Vercel elle doit être de type **Config**
+et non **Secret** — un secret est en écriture seule, donc impossible à
+reconvertir, et le préfixe `NEXT_PUBLIC_` impose de toute façon une valeur
+publique, inlinée dans le bundle au build. **Changer sa valeur n'a d'effet
+qu'après un redéploiement.**
+
 Les données structurées (`DanceSchool`) sont injectées par le layout et
 alimentent le référencement local. La fourchette de prix est déduite des tarifs
 saisis, donc elle suit ce que la cliente modifie. **Les champs absents ne sont

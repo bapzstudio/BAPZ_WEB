@@ -4,6 +4,28 @@ import type { Metadata } from "next";
 import { lienInstagram } from "./instagram";
 import type { SiteSettings } from "./types";
 
+const adresseConfiguree = process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "");
+
+/*
+ * Le repli `localhost` est utile en local, catastrophique en production : il
+ * fait partir CHAQUE page avec une URL canonique, un `og:image` et un sitemap
+ * pointant sur `http://localhost:3000` — sans que rien n'échoue. Le site
+ * s'affiche normalement et devient invisible pour Google. C'est arrivé : la
+ * variable existait sur Vercel mais vide, donc falsy, donc repliée (constaté le
+ * 2026-09-22).
+ *
+ * Le garde-fou ne vise que le déploiement de production : `VERCEL_ENV` n'est
+ * posé que par l'hébergeur. Un `pnpm build` en local continue donc de passer
+ * sans la variable, comme l'annonce `.env.example`.
+ */
+if (!adresseConfiguree && process.env.VERCEL_ENV === "production") {
+  throw new Error(
+    "NEXT_PUBLIC_SITE_URL est vide : le site partirait avec des URL canoniques " +
+      "en localhost. Renseigne l'adresse publique dans les variables Vercel " +
+      "(type Config, pas Secret), puis redéploie.",
+  );
+}
+
 /**
  * Adresse publique du site.
  *
@@ -12,9 +34,7 @@ import type { SiteSettings } from "./types";
  * domaine n'est pas acheté, on renseigne l'URL `.vercel.app` ; en local, le
  * repli suffit et rien n'est bloqué.
  */
-export const SITE_URL =
-  process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "") ||
-  "http://localhost:3000";
+export const SITE_URL = adresseConfiguree || "http://localhost:3000";
 
 export const SITE_NAME = "BAPZ Studio";
 
@@ -96,6 +116,17 @@ export function decouperAdresse(adresse: string): {
     rue: adresse.slice(0, virgule).trim(),
     commune: adresse.slice(virgule + 1).trim() || undefined,
   };
+}
+
+/**
+ * « 310 € » -> 310, « 16,50 € » -> 16.5. Un prix est saisi en texte libre dans
+ * l'admin (avec sa devise) : tout ce qui le lit comme un nombre passe par ici.
+ * Ses deux lecteurs sont la fourchette de prix des données structurées et la
+ * description de `/tarifs`.
+ */
+export function montantTarif(prix: string): number | undefined {
+  const valeur = Number(prix.replace(/[^0-9,.]/g, "").replace(",", "."));
+  return Number.isFinite(valeur) && valeur > 0 ? valeur : undefined;
 }
 
 /** Texte libre ramené sur une ligne : les retours à la ligne calent la mise en page du site, pas une donnée structurée. */

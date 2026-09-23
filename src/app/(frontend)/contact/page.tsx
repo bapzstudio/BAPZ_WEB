@@ -8,7 +8,7 @@ import { getSiteSettings } from "@/lib/queries";
 import { pageMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = pageMetadata({
-  title: "Contact & accès",
+  title: "Contact et accès, studio de danse à Metz",
   description:
     "Adresse, horaires et formulaire de contact de BAPZ Studio, Metz.",
   path: "/contact",

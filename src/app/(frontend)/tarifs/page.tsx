@@ -7,14 +7,51 @@ import { Reveal } from "../_components/Reveal";
 import { RoomCard } from "../_components/RoomCard";
 import { TrialBanner } from "../_components/TrialBanner";
 import { getPricingPlans, getRooms } from "@/lib/queries";
-import { pageMetadata } from "@/lib/seo";
+import { montantTarif, pageMetadata } from "@/lib/seo";
+import type { PricingPlan } from "@/lib/types";
 
-export const metadata: Metadata = pageMetadata({
-  title: "Tarifs",
-  description:
-    "Tarifs des cours de danse à BAPZ Studio, Metz : cours à l'unité 17 €, carte de 10 cours 160 €, abonnements à l'année à partir de 310 €. Location de salle.",
-  path: "/tarifs",
-});
+/**
+ * Description construite depuis les tarifs saisis, jamais écrite en dur : les
+ * prix y figuraient en toutes lettres, et le jour où la cliente en change un
+ * dans l'admin, l'extrait affiché par Google se serait mis à mentir.
+ *
+ * Seules les formules à la carte sont nommées ; les quatre abonnements ne
+ * diffèrent que par un nombre de cours, donc seul le moins cher est annoncé.
+ */
+function descriptionTarifs(plans: PricingPlan[]): string {
+  const duGroupe = (groupe: PricingPlan["group"]) =>
+    plans.filter((p) => p.group === groupe);
+
+  const morceaux: string[] = [];
+
+  const essai = duGroupe("essai")[0];
+  if (essai) morceaux.push(`cours d'essai ${essai.price}`);
+
+  for (const plan of duGroupe("carte")) {
+    morceaux.push(`${plan.name.toLowerCase()} ${plan.price}`);
+  }
+
+  const abonnements = duGroupe("abonnement")
+    .map((p) => montantTarif(p.price))
+    .filter((m): m is number => m !== undefined);
+  if (abonnements.length) {
+    morceaux.push(
+      `abonnement à l'année à partir de ${Math.min(...abonnements)} €`,
+    );
+  }
+
+  return morceaux.length
+    ? `Tarifs du studio de danse BAPZ à Metz : ${morceaux.join(", ")}.`
+    : "Tarifs des cours de danse et location de salle à BAPZ Studio, près de Metz.";
+}
+
+export async function generateMetadata(): Promise<Metadata> {
+  return pageMetadata({
+    title: "Tarifs des cours de danse à Metz",
+    description: descriptionTarifs(await getPricingPlans()),
+    path: "/tarifs",
+  });
+}
 
 export default async function TarifsPage() {
   const [plans, rooms] = await Promise.all([getPricingPlans(), getRooms()]);
