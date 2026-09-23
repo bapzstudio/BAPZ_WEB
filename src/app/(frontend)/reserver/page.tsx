@@ -6,7 +6,7 @@ import { pageMetadata } from "@/lib/seo";
 import { ReservationFunnel } from "./ReservationFunnel";
 
 export const metadata: Metadata = pageMetadata({
-  title: "Réserver",
+  title: "Réserver un cours de danse à Metz",
   description:
     "Demande un cours d'essai, une inscription, une location de salle ou un cours privé à BAPZ Studio, en quelques étapes.",
   path: "/reserver",

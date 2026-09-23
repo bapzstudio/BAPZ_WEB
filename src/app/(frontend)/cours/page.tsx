@@ -6,7 +6,7 @@ import { getCourses } from "@/lib/queries";
 import { pageMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = pageMetadata({
-  title: "Calendrier des cours",
+  title: "Planning des cours de danse à Metz",
   description:
     "Planning des cours de danse à Metz : heels, hip hop/commercial, street enfant. Tous niveaux.",
   path: "/cours",

@@ -3,7 +3,7 @@ import { Archivo, Space_Mono } from "next/font/google";
 import { Footer } from "./_components/Footer";
 import { Nav } from "./_components/Nav";
 import { getPricingPlans, getSiteSettings } from "@/lib/queries";
-import { SITE_NAME, SITE_URL, structuredData } from "@/lib/seo";
+import { montantTarif, SITE_NAME, SITE_URL, structuredData } from "@/lib/seo";
 import "./globals.css";
 
 // Seules les graisses réellement employées : chaque graisse déclarée est un
@@ -39,8 +39,8 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
   // Fourchette de prix pour les données structurées, déduite des tarifs saisis
   // plutôt qu'écrite en dur : elle suit ce que la cliente modifie.
   const montants = plans
-    .map((p) => Number(p.price.replace(/[^0-9,.]/g, "").replace(",", ".")))
-    .filter((n) => Number.isFinite(n) && n > 0);
+    .map((p) => montantTarif(p.price))
+    .filter((n): n is number => n !== undefined);
   const priceRange = montants.length
     ? `${Math.min(...montants)}€ - ${Math.max(...montants)}€`
     : undefined;

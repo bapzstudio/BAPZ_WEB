@@ -10,7 +10,7 @@ import { getGalleryItems, getSiteSettings } from "@/lib/queries";
 import { pageMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = pageMetadata({
-  title: "Galerie",
+  title: "Photos du studio de danse à Metz",
   description:
     "Photos du studio et des cours de BAPZ Studio, studio de danse à Metz.",
   path: "/galerie",

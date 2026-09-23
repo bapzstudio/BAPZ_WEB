@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
 import { notFound } from "next/navigation";
-import { BioParagraph } from "../../_components/BioText";
+import { accrocheBio, BioParagraph } from "../../_components/BioText";
 import { CourseCard } from "../../_components/CourseCard";
 import { FoldText } from "../../_components/FoldText";
 import { PageTransition } from "../../_components/PageTransition";
@@ -26,10 +26,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     title: teacher.discipline
       ? `${teacher.name}, ${teacher.discipline}`
       : teacher.name,
-    // La première phrase de la bio, débarrassée des marqueurs de gras.
+    // Les premières phrases de la bio, comme l'accroche de l'accueil : une
+    // coupe au 160e caractère tronquait en plein mot, sans points de
+    // suspension, et Google affichait la description comme cassée.
     description:
-      teacher.bio?.[0]?.replace(/\*\*/g, "").slice(0, 160) ??
-      `${teacher.name}, professeur·e à BAPZ Studio.`,
+      accrocheBio(teacher.bio, 140)?.replace(/\*\*/g, "") ??
+      `${teacher.name}, professeur·e à BAPZ Studio, studio de danse à Metz.`,
     path: `/profs/${teacher.slug}`,
   });
 }

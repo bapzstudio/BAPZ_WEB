@@ -22,9 +22,12 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priorite: 0.6,
   }));
 
+  // Pas de `lastModified` : il valait `new Date()`, donc chaque build annonçait
+  // à Google que l'intégralité du site venait de changer — un signal qui ne
+  // veut plus rien dire, et qu'il vaut mieux taire que mentir. À remettre le
+  // jour où Payload remontera la vraie date de modification de chaque page.
   return [...pages, ...profs].map(({ chemin, priorite }) => ({
     url: `${SITE_URL}${chemin === "/" ? "" : chemin}`,
-    lastModified: new Date(),
     priority: priorite,
   }));
 }
