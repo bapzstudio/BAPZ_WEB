@@ -41,36 +41,51 @@ export function Nav({
     const reduit =
       window.matchMedia?.("(prefers-reduced-motion: reduce)").matches ?? false;
 
+    // Un placement instantané passe par `gsap.set`, qui s'applique dans la
+    // foulée, et non par un `gsap.to` de durée nulle, rendu seulement au tick
+    // suivant. Au premier affichage, ce décalage d'une trame faisait
+    // disparaître l'onglet actif : `data-pastille`, posé tout de suite, lui
+    // retirait son fond propre alors que la pastille n'était pas encore
+    // dessinée — texte `#080808` sur la nav `#080808`.
+    // `killTweensOf` tient le rôle de l'`overwrite` des glissades : sans lui,
+    // un placement instantané pendant une glissade serait rattrapé par
+    // celle-ci, d'où un aller-retour de la pastille.
+    const poser = (valeurs: gsap.TweenVars, duree: number) => {
+      if (duree === 0) {
+        gsap.killTweensOf(pastille);
+        gsap.set(pastille, valeurs);
+        return;
+      }
+      gsap.to(pastille, {
+        ...valeurs,
+        duration: duree,
+        ease: "power3.out",
+        overwrite: true,
+      });
+    };
+
     const placer = (anime: boolean) => {
       const lien = nav.querySelector<HTMLElement>(
         `[data-nav-lien="${pathname}"]`,
       );
       const duree = anime && !reduit ? 0.35 : 0;
       if (!lien) {
-        gsap.to(pastille, {
-          opacity: 0,
-          duration: duree,
-          ease: "power3.out",
-          overwrite: true,
-        });
+        poser({ opacity: 0 }, duree);
         return;
       }
       // Revenir d'une page sans onglet : la pastille réapparaît sur place au
       // lieu de glisser depuis l'ancien onglet.
       const reapparait = Number(gsap.getProperty(pastille, "opacity")) === 0;
-      gsap.to(pastille, {
-        x: lien.offsetLeft,
-        y: lien.offsetTop,
-        width: lien.offsetWidth,
-        height: lien.offsetHeight,
-        opacity: 1,
-        duration: reapparait ? 0 : duree,
-        ease: "power3.out",
-        // Un placement remplace le précédent : sans cela, un placement
-        // instantané pendant une glissade était rattrapé par la glissade
-        // encore en cours, d'où un aller-retour de la pastille.
-        overwrite: true,
-      });
+      poser(
+        {
+          x: lien.offsetLeft,
+          y: lien.offsetTop,
+          width: lien.offsetWidth,
+          height: lien.offsetHeight,
+          opacity: 1,
+        },
+        reapparait ? 0 : duree,
+      );
     };
 
     placer(dejaPlacee.current);
