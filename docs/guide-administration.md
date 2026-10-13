@@ -149,10 +149,25 @@ Ouvre le cours, change l'heure, enregistre. C'est tout.
 > déjà partagés vers ce cours ne fonctionneraient plus. Il est normal qu'il ne
 > corresponde plus exactement à l'horaire après un changement.
 
+### Masquer un cours sans le supprimer
+
+Dans la colonne de droite, décoche **« Afficher sur le site »** et enregistre.
+Le cours disparaît aussitôt du calendrier, de « Prochains cours » sur
+l'accueil, de la page de son prof et de la liste proposée aux visiteurs qui
+réservent. Recoche la case et il revient tel quel.
+
+C'est ce qu'il faut utiliser pour un cours **suspendu, annulé ou en pause** :
+rien n'est perdu, ni son horaire, ni son identifiant de lien.
+
+`[Capture : la case « Afficher sur le site » dans la colonne de droite]`
+
 ### Supprimer un cours
 
 Ouvre le cours → menu en haut à droite → **Supprimer**. Il disparaît de toutes
 les pages. Les anciennes demandes qui le mentionnaient restent consultables.
+
+> **Supprimer ou masquer ?** Supprime seulement si le cours ne reviendra pas.
+> Dans le doute, décoche « Afficher sur le site » : c'est réversible.
 
 ---
 
@@ -166,6 +181,16 @@ elle reste choisissable comme prof d'un cours, mais n'est pas présentée.
 
 C'est pratique pour préparer une fiche tranquillement : elle ne sera visible
 qu'une fois complète.
+
+### Masquer une prof
+
+Même principe que pour un cours : décoche **« Afficher sur le site »** dans la
+colonne de droite. Elle disparaît de la page Profs et de l'accueil, et sa page
+personnelle n'est plus accessible.
+
+> **Ses cours, eux, restent au calendrier** — simplement sans son nom. Masquer
+> une personne ne retire jamais de cours du planning : si tu veux aussi retirer
+> ses cours, il faut les masquer un par un.
 
 ### Remplir une fiche
 
@@ -270,7 +295,7 @@ Renvoie plutôt vers la page concernée (« le détail est sur la page Tarifs »
 ### Coordonnées
 
 - **Adresse** : le numéro et la rue, **puis la commune après une virgule**
-  (`2A rue du Jardin d'Écosse, Ars-Laquenexy`). Le site lit ce qui suit la
+  (`2 rue du Jardin d'Écosse, Ars-Laquenexy`). Le site lit ce qui suit la
   dernière virgule comme la commune.
 - **Code postal** : transmis à Google avec l'adresse.
 - **Ville de référence** : la grande ville la plus proche (`Metz`), là où les

@@ -223,6 +223,10 @@ export interface Course {
    */
   room?: string | null;
   /**
+   * Décoche pour retirer ce cours du site sans le supprimer : il disparaît du calendrier, de l'accueil et des réservations, et revient dès que tu recoches. Pratique pour un cours suspendu ou annulé.
+   */
+  visible?: boolean | null;
+  /**
    * Les plus petits nombres passent en premier (1, 2, 3…).
    */
   order?: number | null;
@@ -262,6 +266,10 @@ export interface Teacher {
         id?: string | null;
       }[]
     | null;
+  /**
+   * Décoche pour retirer cette personne de la page Profs et de l'accueil sans la supprimer. Ses cours restent au calendrier, simplement sans son nom : masquer un prof ne retire jamais de cours du planning.
+   */
+  visible?: boolean | null;
   /**
    * Ordre sur la page Profs : les plus petits nombres passent en premier (1, 2, 3…).
    */
@@ -582,6 +590,7 @@ export interface CoursesSelect<T extends boolean = true> {
   endTime?: T;
   teacher?: T;
   room?: T;
+  visible?: T;
   order?: T;
   updatedAt?: T;
   createdAt?: T;
@@ -601,6 +610,7 @@ export interface TeachersSelect<T extends boolean = true> {
         text?: T;
         id?: T;
       };
+  visible?: T;
   order?: T;
   updatedAt?: T;
   createdAt?: T;
@@ -778,7 +788,7 @@ export interface SiteSetting {
       }[]
     | null;
   /**
-   * Numéro et rue, puis la commune après une virgule : 2A rue du Jardin d'Écosse, Ars-Laquenexy. Le texte après la dernière virgule est lu comme la commune. Affichée sur l'accueil et la page Contact, et transmise à Google.
+   * Numéro et rue, puis la commune après une virgule : 2 rue du Jardin d'Écosse, Ars-Laquenexy. Le texte après la dernière virgule est lu comme la commune. Affichée sur l'accueil et la page Contact, et transmise à Google.
    */
   address?: string | null;
   /**

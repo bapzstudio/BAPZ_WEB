@@ -326,8 +326,45 @@ l'accueil lit le prix du tarif « Offre d'essai » ; les heures passent toutes p
 règle « un prof a une fiche » vit dans `queries.ts`, pour `/profs` comme pour
 les pages de prof.
 
+**« Afficher sur le site »** (case des cours et des profs, demandée par la
+cliente le 2026-10-13) : le filtre vit dans `queries.ts` et nulle part
+ailleurs. Un cours décoché sort du calendrier, de l'accueil, des pages de prof
+**et du catalogue de réservation** — sans quoi un vieux lien
+`?cours=<slug>` permettrait encore de réserver un cours annulé. Une prof
+décochée sort de `/profs`, de l'accueil, de sa page et du sitemap, par la règle
+`aUneFiche` déjà existante.
+
+**Masquer une prof ne masque pas ses cours** : ils restent au planning, privés
+de son nom (`toCourse` écarte un prof masqué, le cours s'affiche alors comme
+un cours sans prof attitré). Décision de la cliente : l'inverse viderait la
+moitié du calendrier d'un seul clic.
+
+Une case cochée vaut « visible », plutôt qu'une case « Masquer » : une case à
+décocher pour faire disparaître se lit sans double négation.
+
 **Après un changement de collection** : `pnpm generate:types`, puis
 `pnpm payload migrate:create <nom>` et `pnpm payload migrate`.
+
+**Les migrations s'appliquent au déploiement** (`vercel-build` dans
+`package.json`, depuis le 2026-10-13) : Vercel préfère ce script à `build`, qui
+reste donc intact en local. Pousser le code suffit à migrer la base.
+
+**Ni `migrate:create` ni `generate:types` n'ont besoin d'une base** — vérifié
+le 2026-10-13 contre une base injoignable. Le diff se calcule sur les
+instantanés drizzle versionnés à côté de chaque migration (les `.json` de
+`src/migrations/`), pas sur le schéma réel. Une migration peut donc être écrite
+et générée depuis n'importe quel poste, y compris sans `.env`.
+
+Deux conditions à ne pas perdre de vue :
+
+- **La migration doit rester additive.** Un `ADD COLUMN` ne pose aucune
+  question ; une suppression déclenche la question « perte de données ? », et
+  sans terminal le build Vercel attend jusqu'au timeout au lieu d'échouer
+  franchement. Le jour où un champ disparaît, l'appliquer à la main.
+- **Les instantanés font foi.** La migration générée n'est juste que s'ils
+  décrivent le schéma réel de la production. C'est le cas tant que la
+  production n'est alimentée que par des migrations, jamais par un push de
+  schéma.
 
 En développement Payload **pousse le schéma directement en base**, sans passer
 par les migrations. Trois conséquences :

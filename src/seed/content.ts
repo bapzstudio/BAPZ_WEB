@@ -312,7 +312,7 @@ export const siteSettings: SiteSettings = {
         "Oui, **la salle se loue à l'heure** pour des répétitions, des cours ou des projets. Sa surface et son tarif sont indiqués sur la page Tarifs, et la demande se fait en ligne.",
     },
   ],
-  address: "2A rue du Jardin d'Écosse, Ars-Laquenexy",
+  address: "2 rue du Jardin d'Écosse, Ars-Laquenexy",
   // Code postal d'Ars-Laquenexy, à confirmer avec la cliente.
   postalCode: "57530",
   city: "Metz",
