@@ -108,7 +108,7 @@ export const SiteSettings: GlobalConfig = {
           label: "Adresse",
           admin: {
             description:
-              "Numéro et rue, puis la commune après une virgule : 2A rue du Jardin d'Écosse, Ars-Laquenexy. Le texte après la dernière virgule est lu comme la commune. Affichée sur l'accueil et la page Contact, et transmise à Google.",
+              "Numéro et rue, puis la commune après une virgule : 2 rue du Jardin d'Écosse, Ars-Laquenexy. Le texte après la dernière virgule est lu comme la commune. Affichée sur l'accueil et la page Contact, et transmise à Google.",
           },
         },
         {

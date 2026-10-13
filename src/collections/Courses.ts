@@ -86,6 +86,19 @@ export const Courses: CollectionConfig = {
       },
     },
     {
+      // Case cochée = visible, plutôt qu'une case « Masquer » : une case à
+      // décocher pour faire disparaître se lit sans double négation.
+      name: "visible",
+      type: "checkbox",
+      label: "Afficher sur le site",
+      defaultValue: true,
+      admin: {
+        position: "sidebar",
+        description:
+          "Décoche pour retirer ce cours du site sans le supprimer : il disparaît du calendrier, de l'accueil et des réservations, et revient dès que tu recoches. Pratique pour un cours suspendu ou annulé.",
+      },
+    },
+    {
       name: "order",
       type: "number",
       label: "Ordre d'affichage",

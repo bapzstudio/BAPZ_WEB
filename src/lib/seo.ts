@@ -101,7 +101,7 @@ export function pageMetadata({
 }
 
 /**
- * « 2A rue du Jardin d'Écosse, Ars-Laquenexy » -> rue et commune.
+ * « 2 rue du Jardin d'Écosse, Ars-Laquenexy » -> rue et commune.
  *
  * La commune est ce qui suit la dernière virgule : c'est la règle affichée
  * sous le champ Adresse de l'admin, et celle que suit déjà la page Contact.

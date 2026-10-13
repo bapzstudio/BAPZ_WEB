@@ -5,7 +5,7 @@ Notes brutes collectées au fil des échanges, à intégrer dans Sanity Studio
 dans `web/` - passer par le CMS.
 
 Adresse unique confirmée pour tous les cours (→ champ `siteSettings.address`) :
-**Bapz Studio - 2A rue du Jardin d'Écosse, Ars-Laquenexy**
+**Bapz Studio - 2 rue du Jardin d'Écosse, Ars-Laquenexy**
 
 ## Reçu le 2026-09-01 (2e et 3e shoot photo)
 

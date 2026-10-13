@@ -61,6 +61,17 @@ export const Teachers: CollectionConfig = {
       ],
     },
     {
+      name: "visible",
+      type: "checkbox",
+      label: "Afficher sur le site",
+      defaultValue: true,
+      admin: {
+        position: "sidebar",
+        description:
+          "Décoche pour retirer cette personne de la page Profs et de l'accueil sans la supprimer. Ses cours restent au calendrier, simplement sans son nom : masquer un prof ne retire jamais de cours du planning.",
+      },
+    },
+    {
       name: "order",
       type: "number",
       label: "Ordre d'affichage",

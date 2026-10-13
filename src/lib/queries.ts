@@ -107,6 +107,19 @@ export async function getSiteSettings(): Promise<SiteSettings> {
   };
 }
 
+/**
+ * « Afficher sur le site » décoché dans l'admin.
+ *
+ * `not_equals: false` plutôt qu'`equals: true` : la migration donne `true` par
+ * défaut aux lignes existantes, mais ce filtre ne dépend ainsi d'aucune
+ * valeur précise, seulement du refus explicite.
+ */
+const VISIBLE = { visible: { not_equals: false } };
+
+/** Un prof masqué n'est plus nommé nulle part, ses cours restent au planning. */
+const estVisible = (input: unknown) =>
+  (input as Record<string, unknown>).visible !== false;
+
 const toCourse = (input: unknown): Course => {
   const doc = input as Record<string, unknown>;
   return {
@@ -118,18 +131,32 @@ const toCourse = (input: unknown): Course => {
     startTime: String(doc.startTime ?? ""),
     endTime: String(doc.endTime ?? ""),
     room: (doc.room as string) || undefined,
-    // `depth: 1` remplace la référence par le document complet.
+    // `depth: 1` remplace la référence par le document complet. Un prof masqué
+    // est écarté ici plutôt que dans chaque composant : le cours s'affiche
+    // alors sans nom, comme un cours qui n'a pas de prof attitré.
     teacher:
-      doc.teacher && typeof doc.teacher === "object"
+      doc.teacher && typeof doc.teacher === "object" && estVisible(doc.teacher)
         ? toTeacher(doc.teacher)
         : undefined,
   };
 };
 
+/**
+ * Le planning affiché. Le filtre de visibilité vit ici, donc un cours décoché
+ * disparaît d'un seul coup du calendrier, de « Prochains cours », des pages de
+ * prof et du catalogue de réservation — qui passent tous par cette fonction ou
+ * par le même `where`.
+ */
 export async function getCourses(): Promise<Course[]> {
   const { docs } = await (
     await payload()
-  ).find({ collection: "courses", limit: 100, sort: "order", depth: 1 });
+  ).find({
+    collection: "courses",
+    where: VISIBLE,
+    limit: 100,
+    sort: "order",
+    depth: 1,
+  });
 
   return docs.map(toCourse);
 }
@@ -142,6 +169,9 @@ export async function getCourses(): Promise<Course[]> {
 const aUneFiche = (input: unknown) => {
   const doc = input as Record<string, unknown>;
   return (
+    // « Afficher sur le site » décoché : plus de page, plus de listing, plus
+    // d'entrée au sitemap. La règle reste unique, donc les trois suivent.
+    estVisible(doc) &&
     Boolean(doc.slug) &&
     Boolean(doc.photo) &&
     Array.isArray(doc.bio) &&
@@ -175,7 +205,9 @@ export async function getTeacherBySlug(
 
   const { docs: courses } = await client.find({
     collection: "courses",
-    where: { teacher: { equals: doc.id } },
+    // Même filtre de visibilité que `getCourses` : cette requête ne passe pas
+    // par elle, un cours masqué réapparaîtrait sinon sur la page de son prof.
+    where: { and: [{ teacher: { equals: doc.id } }, VISIBLE] },
     limit: 100,
     sort: "order",
     depth: 1,
