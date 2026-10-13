@@ -349,6 +349,15 @@ décocher pour faire disparaître se lit sans double négation.
 `package.json`, depuis le 2026-10-13) : Vercel préfère ce script à `build`, qui
 reste donc intact en local. Pousser le code suffit à migrer la base.
 
+Le build passe par `pnpm migrer` (`scripts/migrer.ts`), **pas par
+`payload migrate`** : sur une base qui a déjà servi à un `pnpm dev`, ce dernier
+pose la question « mode dev » et reste bloqué sans terminal, sans rien migrer —
+c'est ce qui a fait échouer le premier build de la PR #5. Le script retire
+cette marque (une ligne au lot -1 de `payload_migrations`, aucune donnée du
+site), migre, puis fait échouer le build si une migration manque. Ne jamais
+brancher `pnpm dev` sur la base de production : la marque reviendrait, et le
+schéma poussé en dev pourrait diverger des migrations.
+
 **Ni `migrate:create` ni `generate:types` n'ont besoin d'une base** — vérifié
 le 2026-10-13 contre une base injoignable. Le diff se calcule sur les
 instantanés drizzle versionnés à côté de chaque migration (les `.json` de
