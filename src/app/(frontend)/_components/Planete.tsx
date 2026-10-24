@@ -1,7 +1,7 @@
 import Image from "next/image";
 
 /**
- * La planète en fil de fer du logo, en élément décoratif : menu mobile, page
+ * La planète du logo, en élément décoratif : menu mobile, page
  * 404, galerie vide, confirmation de demande. Le hero, lui, utilise le logo
  * vectoriel qui se dessine (`PlaneteDessinee`). Invisible pour les lecteurs
  * d'écran.

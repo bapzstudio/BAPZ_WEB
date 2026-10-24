@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { attributsCouleur } from "@/lib/couleurs";
 import { formaterHeure } from "@/lib/reservation/format";
 import { lienReservation } from "@/lib/reservation/liens";
 import type { Course } from "@/lib/types";
@@ -26,12 +27,18 @@ export function CourseCard({
           bordure comme partout ailleurs. */}
       <div
         data-glow-card
+        {...attributsCouleur(course.color)}
         className="card card-interactive cal-glow relative flex h-full flex-col p-6 sm:p-[30px]"
       >
         <div className="flex items-baseline justify-between gap-4">
           {/* La maquette affiche ce libellé très sombre (#3c3c3c) : remonté au
-              gris discret, lisible et au-dessus du seuil de contraste. */}
-          <div className="font-mono text-label uppercase tracking-[0.12em] text-discret">
+              gris discret, lisible et au-dessus du seuil de contraste. Sur la
+              carte d'un événement, il prend sa couleur. */}
+          <div
+            className={`font-mono text-label uppercase tracking-[0.12em] ${
+              course.color ? "text-[rgb(var(--couleur-rgb))]" : "text-discret"
+            }`}
+          >
             {course.dayOfWeek} - {formaterHeure(course.startTime)}
           </div>
           {/* Sur téléphone, une flèche remplace la pastille « Réserver » : la

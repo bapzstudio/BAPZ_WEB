@@ -1,6 +1,8 @@
 // Les formes que consomment les composants. Elles ignorent tout de Payload :
 // changer de CMS ne toucherait que `queries.ts`.
 
+import type { CouleurCours } from "./couleurs";
+
 export interface Teacher {
   _id: string;
   /** Fin de l'adresse de sa page : /profs/<slug>. */
@@ -28,6 +30,8 @@ export interface Course {
   room?: string;
   /** Identifiant stable dans les liens de réservation (ex : heels-mardi-19-00). */
   slug?: string;
+  /** Couleur de la carte, pour faire ressortir un événement (cf. `lib/couleurs.ts`). */
+  color?: CouleurCours;
 }
 
 export interface PricingPlan {

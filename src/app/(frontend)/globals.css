@@ -650,6 +650,55 @@ main:has(.hero-glow)::before {
     0 0 44px rgb(var(--glow-rgb) / 0.16);
 }
 
+/* Carte d'un événement : champ « Couleur de la carte » des cours, demandé par
+   la cliente le 2026-10-24. Teintes et raisons dans `lib/couleurs.ts`, qui
+   écrit `--couleur-rgb` sur la carte. Aucune maquette : même recette que la
+   formule mise en avant ci-dessus (le halo blanc mesuré, plus un second halo
+   coloré), avec en plus le contour et un voile de 6 % dans la couleur. Le
+   halo de proximité (`.cal-glow`) prend la couleur lui aussi. L'horaire passe
+   dans la couleur (WeekSchedule, CourseCard) : sur le fond teinté, le gris
+   discret tombait à 4,4:1, sous le seuil. */
+[data-couleur] {
+  --glow-rgb: var(--couleur-rgb);
+  --voile-couleur: linear-gradient(
+    rgb(var(--couleur-rgb) / 0.06),
+    rgb(var(--couleur-rgb) / 0.06)
+  );
+}
+
+.cal-card[data-couleur] {
+  /* Le contour plein de la carte blanche (0,5) donnait une couleur terne. */
+  --cal-card-border-alpha: 0.8;
+
+  background:
+    var(--voile-couleur) padding-box,
+    linear-gradient(var(--card), var(--card)) padding-box,
+    linear-gradient(
+        90deg,
+        rgb(var(--couleur-rgb) / calc(var(--cal-card-border-alpha) * 0.84)),
+        rgb(var(--couleur-rgb) / var(--cal-card-border-alpha))
+      )
+      border-box;
+  box-shadow:
+    0 0 22px rgba(255, 255, 255, 0.16),
+    0 0 44px rgb(var(--couleur-rgb) / 0.16);
+}
+
+/* Accueil et pages de prof (`.card`, bordure plate) : le halo coloré est là dès
+   le repos, le halo blanc s'y ajoute au survol comme sur les autres cartes. */
+.card[data-couleur] {
+  border-color: rgb(var(--couleur-rgb) / 0.6);
+  background: var(--voile-couleur), var(--card);
+  box-shadow: 0 0 44px rgb(var(--couleur-rgb) / 0.16);
+}
+
+.card-interactive[data-couleur]:hover,
+.card-interactive[data-couleur]:focus-visible {
+  box-shadow:
+    0 0 22px rgba(255, 255, 255, 0.16),
+    0 0 44px rgb(var(--couleur-rgb) / 0.16);
+}
+
 /* Halo de proximité sur la bordure d'une `.cal-card` (cf. composant
    ProximityGlow). Les variables sont écrites par le composant ; à zéro, la
    carte est strictement identique à ce qu'elle était.

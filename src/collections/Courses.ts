@@ -1,4 +1,5 @@
 import type { CollectionConfig } from "payload";
+import { COULEURS_COURS } from "../lib/couleurs";
 import { slugField } from "./fields/slug";
 import { hooksRevalidation } from "./hooks/revalider";
 
@@ -83,6 +84,19 @@ export const Courses: CollectionConfig = {
       admin: {
         description:
           "Affichée en haut à droite de la carte du calendrier, ex : Studio A.",
+      },
+    },
+    {
+      name: "color",
+      type: "select",
+      label: "Couleur de la carte",
+      options: Object.entries(COULEURS_COURS).map(([value, { label }]) => ({
+        label,
+        value,
+      })),
+      admin: {
+        description:
+          "Pour faire ressortir un événement (stage, workshop, soirée…) : sa carte prend cette couleur dans le calendrier, sur l'accueil et sur la page de son ou sa prof. Laisser vide pour un cours habituel.",
       },
     },
     {

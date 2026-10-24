@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { attributsCouleur } from "@/lib/couleurs";
 import { formaterHeure, JOURS, minutes } from "@/lib/reservation/format";
 import { lienReservation } from "@/lib/reservation/liens";
 import type { Course } from "@/lib/types";
@@ -50,12 +51,18 @@ function CalendarCard({ course }: { course: Course }) {
           1440 px, la carte est dans la liste et garde ses valeurs fixes. */}
       <div
         data-glow-card
+        {...attributsCouleur(course.color)}
         className="cal-card cal-glow relative flex h-full flex-col p-5 min-[1440px]:p-[clamp(14px,1.04vw,20px)]"
       >
         {/* Horaire et salle ne se coupent jamais : quand la colonne est trop
             étroite, la salle passe sous l'horaire au lieu que chacun se casse
-            sur deux lignes. */}
-        <div className="flex flex-wrap items-baseline justify-between gap-x-2 gap-y-0.5 font-mono text-label text-discret">
+            sur deux lignes. Sur la carte d'un événement, ils prennent sa
+            couleur (cf. `.cal-card[data-couleur]`). */}
+        <div
+          className={`flex flex-wrap items-baseline justify-between gap-x-2 gap-y-0.5 font-mono text-label ${
+            course.color ? "text-[rgb(var(--couleur-rgb))]" : "text-discret"
+          }`}
+        >
           {/* Même format d'heure que le reste du site (« 19h00 »), en capitales
             comme sur la maquette : la salle, elle, garde sa casse. */}
           <span className="whitespace-nowrap uppercase">

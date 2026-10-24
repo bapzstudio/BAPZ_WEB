@@ -9,15 +9,18 @@ const useIsomorphicLayoutEffect =
   typeof window !== "undefined" ? useLayoutEffect : useEffect;
 
 /**
- * Anime le SVG de `PlaneteDessinee` : chaque ligne de la planète se trace, puis
- * se remplit, et le mot BAPZ apparaît par-dessus.
+ * Anime le SVG de `PlaneteDessinee` : le contour de chaque trait de la planète
+ * se trace, puis le trait se remplit et la planète s'estompe à son dosage du
+ * logo pendant que le mot BAPZ apparaît par-dessus.
  *
  * Le tracé progressif joue sur le contour (`stroke-dasharray` égal à la
  * longueur du tracé, `stroke-dashoffset` ramené à zéro) : c'est la technique
  * de `createDrawable` d'anime.js, faite ici avec GSAP pour garder une seule
- * bibliothèque d'animation. Les lignes du logo étant des formes pleines très
- * fines, leur contour dessiné se lit comme la ligne elle-même ; le
- * remplissage prend ensuite le relais pour retrouver le rendu exact du logo.
+ * bibliothèque d'animation. Les traits du logo étant des formes pleines au
+ * pinceau, leur contour se lit comme une esquisse ; le remplissage prend
+ * ensuite le relais pour retrouver le rendu exact du logo. Le contour est
+ * dessiné à pleine opacité : à celle de la planète finie (20 % du mot), il ne
+ * se voyait presque pas.
  *
  * Ne rend rien : un repère invisible permet de retrouver le SVG voisin.
  */
@@ -31,6 +34,7 @@ export function DessinPlanete() {
       );
     if (!svg) return undefined;
 
+    const planete = svg.querySelector<SVGGElement>("[data-dessin-planete]");
     const lignes = Array.from(
       svg.querySelectorAll<SVGPathElement>("[data-dessin-planete] path"),
     );
@@ -52,6 +56,9 @@ export function DessinPlanete() {
       strokeDasharray: (i: number) => longueurs[i],
       strokeDashoffset: (i: number) => longueurs[i],
     });
+    // L'opacité finale reste celle de l'attribut, posé par le serveur.
+    const opaciteFinale = Number(planete?.getAttribute("opacity") ?? 1);
+    gsap.set(planete, { opacity: 1 });
     gsap.set(lettres, { opacity: 0, y: 30 });
     svg.removeAttribute("data-dessin-pending");
 
@@ -69,6 +76,11 @@ export function DessinPlanete() {
         ">-0.25",
       )
       .to(
+        planete,
+        { opacity: opaciteFinale, duration: 0.8, ease: "power1.inOut" },
+        "<",
+      )
+      .to(
         lettres,
         { opacity: 1, y: 0, duration: 0.6, ease: "power3.out", stagger: 0.07 },
         "<",
@@ -76,7 +88,7 @@ export function DessinPlanete() {
 
     return () => {
       animation.kill();
-      gsap.set([...lignes, ...lettres], { clearProps: "all" });
+      gsap.set([planete, ...lignes, ...lettres], { clearProps: "all" });
     };
   }, []);
 

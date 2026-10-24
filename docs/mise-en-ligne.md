@@ -139,3 +139,26 @@ avec des mentions « À compléter ».
   suppression manuelle**, à faire depuis l'administration.
 - Prévoir un point à un mois : contenus ajoutés, premières demandes reçues,
   éventuelles retouches.
+- **Chaque déploiement migre la base** (`vercel-build` → `pnpm migrer`), y
+  compris un déploiement **Preview** : les variables Preview pointent sur la
+  même base que la production (section 3). Une branche poussée migre donc la
+  production avant même d'être fusionnée — d'où des migrations toujours
+  compatibles avec le code encore en ligne.
+
+### Modifications du 2026-10-24 (logos, couleur des événements, adresse)
+
+Tout passe par le déploiement, sans commande à lancer. À vérifier une fois
+en ligne :
+
+- [ ] **Adresse** : « 2 rue du Jardin d'Écosse » (sans « A ») sur `/contact`,
+      `/mentions-legales` et dans le lien « Itinéraire ». La migration
+      `reglages_adresse_logo` a corrigé les Réglages et la FAQ.
+- [ ] **Logo de la nav**, le seul rangé en base : la même migration a remplacé
+      son fichier chez UploadThing. S'il montre encore l'ancienne planète en
+      fil de fer, le journal du build porte « Logo de la nav NON remplacé » :
+      l'envoyer à la main, *Réglages du site → Logo*, avec
+      `public/images/marque/bapz-planete.png`.
+- [ ] **Icône d'onglet** : le navigateur la garde en cache ; la vérifier dans
+      une fenêtre privée.
+- [ ] **Fiche Google Business** : même adresse, « 2 rue », sans quoi Google
+      voit deux adresses différentes.

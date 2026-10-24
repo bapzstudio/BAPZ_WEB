@@ -223,6 +223,10 @@ export interface Course {
    */
   room?: string | null;
   /**
+   * Pour faire ressortir un événement (stage, workshop, soirée…) : sa carte prend cette couleur dans le calendrier, sur l'accueil et sur la page de son ou sa prof. Laisser vide pour un cours habituel.
+   */
+  color?: ('bleu' | 'violet' | 'rose' | 'orange' | 'vert') | null;
+  /**
    * Décoche pour retirer ce cours du site sans le supprimer : il disparaît du calendrier, de l'accueil et des réservations, et revient dès que tu recoches. Pratique pour un cours suspendu ou annulé.
    */
   visible?: boolean | null;
@@ -590,6 +594,7 @@ export interface CoursesSelect<T extends boolean = true> {
   endTime?: T;
   teacher?: T;
   room?: T;
+  color?: T;
   visible?: T;
   order?: T;
   updatedAt?: T;

@@ -1,11 +1,20 @@
 import { DessinPlanete } from "./DessinPlanete";
-import { TRACES_MOT, TRACES_PLANETE, VIEWBOX } from "./logo-vectoriel";
+import {
+  OPACITE_PLANETE,
+  TRACES_MOT,
+  TRACES_PLANETE,
+  VIEWBOX,
+} from "./logo-vectoriel";
 
 /**
  * Le logo du studio (le mot posé sur sa planète) en SVG, tel que dessiné par
- * la graphiste, qui se trace ligne par ligne à l'arrivée sur la page.
+ * la graphiste, qui se trace trait par trait à l'arrivée sur la page.
  *
- * Composant serveur : les tracés (environ 45 Ko) partent dans le HTML, pas
+ * La planète garde le dosage du logo (`OPACITE_PLANETE`, 20 % du mot) : ses
+ * traits au pinceau sont aussi épais que les lettres, et à égalité le mot se
+ * perdait dans la grille. C'est aussi l'état sans JavaScript.
+ *
+ * Composant serveur : les tracés (environ 57 Ko) partent dans le HTML, pas
  * dans le JavaScript. Seule l'animation, `DessinPlanete`, est côté client.
  * Décoratif, invisible pour les lecteurs d'écran ; placement et opacité
  * viennent de `className`.
@@ -19,7 +28,7 @@ export function PlaneteDessinee({ className = "" }: { className?: string }) {
         data-dessin=""
         data-dessin-pending=""
       >
-        <g data-dessin-planete="">
+        <g data-dessin-planete="" opacity={OPACITE_PLANETE}>
           {TRACES_PLANETE.map((d, i) => (
             <path key={i} d={d} fill="#fff" />
           ))}
