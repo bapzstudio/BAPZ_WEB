@@ -1,8 +1,9 @@
 import Link from "next/link";
 import { attributsCouleur } from "@/lib/couleurs";
-import { formaterHeure } from "@/lib/reservation/format";
+import { formaterHeure, jourDuCours } from "@/lib/reservation/format";
 import { lienReservation } from "@/lib/reservation/liens";
 import type { Course } from "@/lib/types";
+import { estEvenement, PastilleEvenement } from "./PastilleEvenement";
 
 export function CourseCard({
   course,
@@ -39,7 +40,7 @@ export function CourseCard({
               course.color ? "text-[rgb(var(--couleur-rgb))]" : "text-discret"
             }`}
           >
-            {course.dayOfWeek} - {formaterHeure(course.startTime)}
+            {jourDuCours(course)} - {formaterHeure(course.startTime)}
           </div>
           {/* Sur téléphone, une flèche remplace la pastille « Réserver » : la
               carte entière est déjà le lien, la pastille répétée sur chaque
@@ -49,7 +50,13 @@ export function CourseCard({
           </span>
         </div>
 
-        <div className="mt-4 text-[clamp(24px,1.55vw,29px)] font-black uppercase leading-none tracking-tight sm:mt-6">
+        <PastilleEvenement course={course} className="mt-4 sm:mt-5" />
+
+        <div
+          className={`${
+            estEvenement(course) ? "mt-3" : "mt-4 sm:mt-6"
+          } text-[clamp(24px,1.55vw,29px)] font-black uppercase leading-none tracking-tight`}
+        >
           {course.title}
         </div>
 

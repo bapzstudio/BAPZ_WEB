@@ -64,6 +64,16 @@ export const SiteSettings: GlobalConfig = {
           },
         },
         {
+          name: "introPhoto",
+          type: "upload",
+          relationTo: "media",
+          label: "Photo de la présentation",
+          admin: {
+            description:
+              "À droite du texte de présentation sur ordinateur, en dessous sur téléphone. Format paysage, au moins 1200 px de large ; elle est recadrée pour suivre la hauteur du texte, garder le sujet au centre. Sans photo, un emplacement rayé « photo — le studio » s'affiche à sa place.",
+          },
+        },
+        {
           name: "teamIntro",
           type: "textarea",
           label: "Mot sur l'équipe",

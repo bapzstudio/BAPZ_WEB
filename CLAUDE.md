@@ -357,6 +357,34 @@ couleur tient 7:1 au moins (mesuré pour les cinq). Une couleur ajoutée à
 `COULEURS_COURS` change l'enum Postgres : migration (`ALTER TYPE … ADD VALUE`).
 **Écart sans maquette, à valider par la cliente.**
 
+**Événements datés** (champ « Date (événement ponctuel) » des cours, depuis le
+2026-10-24) : le calendrier est une semaine type, un stage n'a lieu qu'une
+fois. Une date renseignée :
+
+- **masque le champ Jour**, que le hook `beforeValidate` de `Courses` déduit
+  de la date (à Paris). Payload ne valide pas un champ masqué : la colonne
+  `day_of_week` est donc devenue facultative en base, le hook la remplit
+  toujours ;
+- entre dans l'**identifiant de lien** (`stage-heels-2026-11-14-14-00`) à la
+  place du jour : deux stages du même nom au même horaire se seraient
+  disputé le même `slug`, qui est unique ;
+- **retire le cours du site le lendemain** : `estAVenir` (`lib/planning.ts`),
+  appliqué dans `getCourses` et `getTeacherBySlug`, donc calendrier, accueil,
+  pages de prof et catalogue de réservation. Les pages qui l'affichent sont
+  régénérées toutes les heures (`revalidate = 3600` sur l'accueil, `/cours` et
+  `/profs/[slug]`) : sans quoi un événement passé y resterait jusqu'à la
+  prochaine modification dans l'admin ;
+- s'affiche devant l'horaire (« 14 NOV. · 14H00 ») au calendrier, et en
+  « Samedi 14 nov. » ailleurs (`jourDuCours`) ;
+- compte à sa vraie date dans « Prochains cours » : il n'y entre que s'il
+  passe avant les cours de la semaine, et en sort une fois commencé ;
+- ne figure pas dans « Les cours de danse » de l'accueil, qui regroupe des
+  disciplines : son jour seul l'y ferait passer pour un cours hebdomadaire.
+
+**Libellé « Événement »** (`PastilleEvenement`) sur toute carte datée ou
+colorée, dans la couleur de la carte : la couleur seule ne se lit ni par
+qui la perçoit mal ni par un lecteur d'écran (WCAG 1.4.1).
+
 **Après un changement de collection** : `pnpm generate:types`, puis
 `pnpm payload migrate:create <nom>` et `pnpm payload migrate`.
 
@@ -370,7 +398,12 @@ applique donc ses migrations avant d'être fusionnée, et le code en ligne doit
 les supporter : colonnes ajoutées, jamais retirées ni renommées.
 
 **Les données passent aussi par des migrations** quand personne ne peut
-lancer de commande : `20261024_100054_reglages_adresse_logo` corrige l'adresse
+lancer de commande. **Dans une migration, lire en SQL, pas par l'API de
+Payload** (`find`, `findGlobal`) : elle interroge le schéma de la config
+actuelle, colonnes des migrations suivantes comprises. `reglages_adresse_logo`
+lisait les Réglages par `findGlobal` et échouait, sur une base qui n'avait pas
+encore la colonne `intro_photo_id` ajoutée juste après (vu en rejouant une
+base vierge, corrigé avant la mise en ligne). Exemple : `20261024_100054_reglages_adresse_logo` corrige l'adresse
 (« 2A » -> « 2 », par une expression régulière limitée à la rue du Jardin
 d'Écosse, dans les Réglages et la FAQ) et remplace le fichier du logo de la
 nav. Ce téléversement passe par UploadThing pendant le build : il tourne hors
@@ -627,7 +660,7 @@ bouge dans les composants) — à relancer si un logo change :
 
 | Fichier | Variante | Où |
 |---|---|---|
-| `public/images/marque/planete.png` | planète seule | composant `Planete` : menu mobile (filigrane), 404, galerie vide, écran « Demande envoyée », bloc « Où nous trouver » de la page Contact (avec un point bleu pulsant et un lien « Itinéraire » vers Google Maps, mentionné dans Confidentialité) |
+| `public/images/marque/planete.png` | planète seule | composant `Planete` : menu mobile (filigrane), 404, galerie vide, écran « Demande envoyée », bloc « Où nous trouver » de la page Contact (avec un lien « Itinéraire » vers Google Maps, mentionné dans Confidentialité ; le point bleu pulsant posé sur la planète a été retiré le 2026-10-24, il jurait avec le pinceau) |
 | `public/images/marque/bapz-mot.png` | mot seul | pied de page, à la place du texte « BAPZ STUDIO » |
 | `public/images/marque/bapz-planete.png` | V2 | logo et icône de l'admin (`src/admin/`), inversés en thème clair par `custom.scss` |
 | `src/seed/assets/images/logo/bapz-logo.png` | V2 | logo de la nav, envoyé dans Payload par le seed et par la migration du 2026-10-24 |
@@ -652,12 +685,18 @@ seule. Ne pas partir d'une vectorisation automatique d'un PNG : un seul tracé
 en escalier, impossible à dessiner trait par trait.
 
 Le logo de la nav est le média des Réglages (variante V2, carrée), seul logo
-rangé en base : la migration `20261024_100054_reglages_adresse_logo` remplace
+rangé en base. Rendu dans son rond de 40 px, le mot et le globe y restent
+lisibles (vérifié le 2026-10-24) ; la variante « mot + petite planète » a été
+essayée au pied de page et écartée : à 16 px de haut, la planète n'y fait
+qu'un point et le mot rapetisse. La migration
+`20261024_100054_reglages_adresse_logo` remplace
 son fichier chez UploadThing au déploiement (cf. « Les migrations
 s'appliquent au déploiement »).
 
 Aucune maquette pour ces emplacements : la planète reste discrète (opacité
-0,12 à 0,14, dérive lente coupée si le visiteur réduit les animations) et ne
+0,06 à 0,07 en filigrane — moitié moins qu'avec l'ancienne en fil de fer, le
+globe au pinceau portant 4,5 fois plus d'encre, mesuré ; dérive lente coupée
+si le visiteur réduit les animations) et ne
 change jamais la mise en page — vérifié, hauteurs de page et bande du pied de
 page identiques.
 
@@ -950,8 +989,11 @@ entre dans ce cadre et n'est donc plus un point ouvert.
   plus après le dernier échange. Aucune suppression automatique : c'est une
   opération manuelle, décrite dans le guide.
 - « Cours privés » : poste du devis absent de toutes les maquettes reçues.
-- Photo de la présentation de l'accueil : emplacement provisoire à droite du
-  texte (`.photo-attente`, rayures et libellé « [ photo — le studio ] »),
-  demandé le 2026-09-15. Aucun champ dans l'admin pour l'instant : à la
-  réception de la photo, ajouter un média aux Réglages (migration) et
-  remplacer l'emplacement par l'image.
+- Photo de la présentation de l'accueil : champ « Photo de la présentation »
+  des Réglages depuis le 2026-10-24, à remplir par la cliente. Tant qu'il est
+  vide, l'emplacement provisoire (`.photo-attente`, rayures et libellé
+  « [ photo — le studio ] ») reste affiché.
+
+Planning, informations légales, photos et prix : **la cliente les saisit
+elle-même** dans l'admin (dit par Matthias le 2026-10-24). Ce ne sont plus des
+points de développement.

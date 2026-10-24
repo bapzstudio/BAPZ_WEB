@@ -16,7 +16,13 @@ import type {
   SiteSettings,
   Teacher,
 } from "./types";
-import { formaterHeure, minutes, ordreJour } from "./reservation/format";
+import { dateDeParis, estAVenir } from "./planning";
+import {
+  formaterHeure,
+  jourDuCours,
+  minutes,
+  ordreJour,
+} from "./reservation/format";
 import {
   NIVEAU_LABELS,
   TYPE_LABELS,
@@ -41,6 +47,13 @@ const toImage = (media: unknown) => {
   // Domaine de l'application plutôt que `utfs.io` : seul autorisé par
   // l'optimiseur d'images (cf. `lib/uploadthing.ts`).
   return { src: adresseUploadThing(m.url), width: m.width, height: m.height };
+};
+
+/** Une image et sa description, pour une photo qui porte du sens. */
+const toPhoto = (media: unknown) => {
+  const image = toImage(media);
+  if (!image) return undefined;
+  return { ...image, alt: String((media as PayloadUpload).alt ?? "") };
 };
 
 /** Payload renvoie les listes imbriquées sous forme d'objets : on aplatit. */
@@ -75,6 +88,7 @@ export async function getSiteSettings(): Promise<SiteSettings> {
     heroSubtitle: String(doc.heroSubtitle ?? ""),
     introTitle: (doc.introTitle as string) || undefined,
     introText: (doc.introText as string) || undefined,
+    introPhoto: toPhoto(doc.introPhoto),
     teamIntro: (doc.teamIntro as string) || undefined,
     faq: Array.isArray(doc.faq)
       ? doc.faq
@@ -133,6 +147,8 @@ const toCourse = (input: unknown): Course => {
     endTime: String(doc.endTime ?? ""),
     room: (doc.room as string) || undefined,
     color: estCouleurCours(doc.color) ? doc.color : undefined,
+    // Payload rend la date en instant ISO : on n'en garde que le jour, à Paris.
+    date: doc.date ? dateDeParis(new Date(String(doc.date))) : undefined,
     // `depth: 1` remplace la référence par le document complet. Un prof masqué
     // est écarté ici plutôt que dans chaque composant : le cours s'affiche
     // alors sans nom, comme un cours qui n'a pas de prof attitré.
@@ -144,10 +160,11 @@ const toCourse = (input: unknown): Course => {
 };
 
 /**
- * Le planning affiché. Le filtre de visibilité vit ici, donc un cours décoché
- * disparaît d'un seul coup du calendrier, de « Prochains cours », des pages de
- * prof et du catalogue de réservation — qui passent tous par cette fonction ou
- * par le même `where`.
+ * Le planning affiché. Les filtres vivent ici, donc un cours décoché — ou un
+ * événement dont la date est passée — disparaît d'un seul coup du calendrier,
+ * de « Prochains cours », des pages de prof et du catalogue de réservation,
+ * qui passent tous par cette fonction ou par les mêmes filtres. Les pages qui
+ * l'affichent sont régénérées toutes les heures pour que la date passée suffise.
  */
 export async function getCourses(): Promise<Course[]> {
   const { docs } = await (
@@ -160,7 +177,8 @@ export async function getCourses(): Promise<Course[]> {
     depth: 1,
   });
 
-  return docs.map(toCourse);
+  const maintenant = new Date();
+  return docs.map(toCourse).filter((c) => estAVenir(c, maintenant));
 }
 
 /**
@@ -215,7 +233,11 @@ export async function getTeacherBySlug(
     depth: 1,
   });
 
-  return { teacher: toTeacher(doc), courses: courses.map(toCourse) };
+  const maintenant = new Date();
+  return {
+    teacher: toTeacher(doc),
+    courses: courses.map(toCourse).filter((c) => estAVenir(c, maintenant)),
+  };
 }
 
 /**
@@ -297,13 +319,14 @@ export async function getReservationCatalog(): Promise<CatalogueReservation> {
       .sort(
         (a, b) =>
           ordreJour(a.dayOfWeek) - ordreJour(b.dayOfWeek) ||
+          (a.date ?? "").localeCompare(b.date ?? "") ||
           minutes(a.startTime) - minutes(b.startTime),
       )
       .map((c) => ({
         slug: c.slug as string,
         titre: c.title,
         detail: [
-          c.dayOfWeek,
+          jourDuCours(c),
           `${formaterHeure(c.startTime)} - ${formaterHeure(c.endTime)}`,
           c.room,
         ]
@@ -403,7 +426,7 @@ export async function enregistrerDemande(
   if (coursLu) {
     choix = {
       label: "Cours",
-      valeur: `${coursLu.title} - ${coursLu.dayOfWeek} ${formaterHeure(coursLu.startTime)}`,
+      valeur: `${coursLu.title} - ${jourDuCours(coursLu)} ${formaterHeure(coursLu.startTime)}`,
     };
   } else if (formule) {
     choix = { label: "Formule", valeur: `${formule.name} - ${formule.price}` };

@@ -12,6 +12,10 @@ export const metadata: Metadata = pageMetadata({
   path: "/cours",
 });
 
+// Un événement daté sort du planning une fois passé : la page, statique, est
+// régénérée toutes les heures en plus des modifications faites dans l'admin.
+export const revalidate = 3600;
+
 export default async function CoursPage() {
   const courses = await getCourses();
 

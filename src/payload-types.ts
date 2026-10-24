@@ -205,7 +205,11 @@ export interface Course {
    * Ligne sous le titre. Pas seulement un niveau : aussi une tranche d'âge (10-14 ans) ou une modalité (Sous demande de réservation).
    */
   level?: string | null;
-  dayOfWeek: 'Lundi' | 'Mardi' | 'Mercredi' | 'Jeudi' | 'Vendredi' | 'Samedi' | 'Dimanche';
+  /**
+   * Seulement pour un événement qui n'a lieu qu'une fois (stage, soirée…). Il s'affiche avec sa date jusqu'au jour J, puis disparaît tout seul du site. Le jour de la semaine se déduit de la date. Laisser vide pour un cours de chaque semaine.
+   */
+  date?: string | null;
+  dayOfWeek?: ('Lundi' | 'Mardi' | 'Mercredi' | 'Jeudi' | 'Vendredi' | 'Samedi' | 'Dimanche') | null;
   /**
    * Format 24h, ex : 19:00 ou 8:00.
    */
@@ -589,6 +593,7 @@ export interface CoursesSelect<T extends boolean = true> {
   title?: T;
   slug?: T;
   level?: T;
+  date?: T;
   dayOfWeek?: T;
   startTime?: T;
   endTime?: T;
@@ -779,6 +784,10 @@ export interface SiteSetting {
    */
   introText?: string | null;
   /**
+   * À droite du texte de présentation sur ordinateur, en dessous sur téléphone. Format paysage, au moins 1200 px de large ; elle est recadrée pour suivre la hauteur du texte, garder le sujet au centre. Sans photo, un emplacement rayé « photo — le studio » s'affiche à sa place.
+   */
+  introPhoto?: (number | null) | Media;
+  /**
    * Deux ou trois phrases au-dessus des profs, sur l'accueil. Sous chaque prof s'affiche ensuite le début de sa bio : pas besoin de les présenter ici une par une. Laisser vide : les profs s'affichent sans texte au-dessus.
    */
   teamIntro?: string | null;
@@ -877,6 +886,7 @@ export interface SiteSettingsSelect<T extends boolean = true> {
   heroSubtitle?: T;
   introTitle?: T;
   introText?: T;
+  introPhoto?: T;
   teamIntro?: T;
   faq?:
     | T

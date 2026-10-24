@@ -74,6 +74,7 @@ export default async function Home() {
         <AccueilPresentation
           titre={settings.introTitle}
           texte={settings.introText}
+          photo={settings.introPhoto}
         />
         <AccueilDisciplines courses={courses} />
         <AccueilEquipe teachers={teachers} intro={settings.teamIntro} />

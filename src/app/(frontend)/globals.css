@@ -820,37 +820,6 @@ main:has(.hero-glow)::before {
   }
 }
 
-/* Point « où nous trouver » posé sur la planète de la page Contact : le bleu du
-   halo du hero, avec une onde qui s'élargit et s'efface. */
-.point-studio {
-  width: 10px;
-  height: 10px;
-  border-radius: 999px;
-  background: var(--glow);
-  box-shadow: 0 0 14px rgb(var(--glow-rgb) / 0.9);
-  transform: translate(-50%, -50%);
-}
-
-.point-studio::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border: 1px solid rgb(var(--glow-rgb) / 0.8);
-  border-radius: inherit;
-  animation: point-studio-onde 2.4s ease-out infinite;
-}
-
-@keyframes point-studio-onde {
-  from {
-    transform: scale(1);
-    opacity: 0.9;
-  }
-  to {
-    transform: scale(3.4);
-    opacity: 0;
-  }
-}
-
 /* Dérive de la planète du logo (cf. composant Planete) : lente et de faible
    amplitude, dans le même esprit que le halo du hero. Animée en `transform`
    seulement, ce qui laisse les `translate-*` de Tailwind intacts. */
@@ -1165,7 +1134,6 @@ body:has(.funnel) footer {
   .marquee-track,
   .invite-defiler,
   .planete-derive,
-  .point-studio::after,
   .hero-glow::before,
   .hero-glow::after {
     animation: none !important;
