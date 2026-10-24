@@ -627,7 +627,7 @@ bouge dans les composants) — à relancer si un logo change :
 
 | Fichier | Variante | Où |
 |---|---|---|
-| `public/images/marque/planete.png` | planète seule | composant `Planete` : menu mobile (filigrane), 404, galerie vide, écran « Demande envoyée », bloc « Où nous trouver » de la page Contact (avec un point bleu pulsant et un lien « Itinéraire » vers Google Maps, mentionné dans Confidentialité) |
+| `public/images/marque/planete.png` | planète seule | composant `Planete` : menu mobile (filigrane), 404, galerie vide, écran « Demande envoyée », bloc « Où nous trouver » de la page Contact (avec un lien « Itinéraire » vers Google Maps, mentionné dans Confidentialité ; le point bleu pulsant posé sur la planète a été retiré le 2026-10-24, il jurait avec le pinceau) |
 | `public/images/marque/bapz-mot.png` | mot seul | pied de page, à la place du texte « BAPZ STUDIO » |
 | `public/images/marque/bapz-planete.png` | V2 | logo et icône de l'admin (`src/admin/`), inversés en thème clair par `custom.scss` |
 | `src/seed/assets/images/logo/bapz-logo.png` | V2 | logo de la nav, envoyé dans Payload par le seed et par la migration du 2026-10-24 |

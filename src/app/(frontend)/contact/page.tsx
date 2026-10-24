@@ -99,18 +99,18 @@ export default async function ContactPage() {
               </div>
             )}
 
-            {/* « Où nous trouver » : la planète du logo, un point bleu sur le
-                studio et le lien d'itinéraire. Pas de carte autour, il occupe
+            {/* « Où nous trouver » : la planète du logo et le lien
+                d'itinéraire. Le point bleu pulsant posé dessus a été retiré le
+                2026-10-24 : il jurait avec la planète au pinceau. Pas de carte autour, il occupe
                 l'espace libre sous les rubriques (`flex-1`) ; sa taille reste
                 modérée pour que la page tienne dans l'écran. */}
             {itineraire && (
               <div className="flex flex-1 items-center gap-6 py-4 sm:gap-8">
                 <div
                   aria-hidden
-                  className="relative size-28 shrink-0 sm:size-36 lg:size-44"
+                  className="size-28 shrink-0 sm:size-36 lg:size-44"
                 >
                   <Planete sizes="176px" className="size-full opacity-40" />
-                  <span className="point-studio absolute top-[38%] left-[57%]" />
                 </div>
                 <div>
                   <p className="eyebrow">OÙ NOUS TROUVER</p>
