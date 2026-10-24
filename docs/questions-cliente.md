@@ -105,30 +105,32 @@ ajustements. Sept méritent ton accord.
    défiler. La maquette faisait tenir tout l'accueil dans un seul écran.
 2. **Le texte d'introduction grossit sur les grands écrans.** À la taille de la
    maquette, il paraissait perdu à côté d'un titre très grand.
-3. **L'icône d'onglet** (la petite image dans la barre du navigateur) reprend
-   ta planète, mais simplifiée et inversée : disque blanc, traits noirs. Ton
-   logo d'origine, tout en traits fins blancs, devient une tache noire à cette
-   taille — c'est une contrainte technique, pas un choix esthétique.
-4. **Sur la page Tarifs, les formules sont présentées en lignes** plutôt qu'en
+3. **Sur la page Tarifs, les formules sont présentées en lignes** plutôt qu'en
    cartes : le nom, la description et le prix sur une ligne, comme une carte de
    menu. La maquette montrait des cartes, mais ton offre réelle compte six
    formules, et six cartes presque identiques rendaient la page lourde, surtout
    sur téléphone (une fois et demie plus longue à faire défiler). Le cours d'essai et
    les salles, eux, restent en cartes.
-5. **Le fond n'est plus un noir uni.** Un grain très fin, comme celui d'une
+4. **Le fond n'est plus un noir uni.** Un grain très fin, comme celui d'une
    pellicule photo, couvre tout le site, et un halo bleu très doux éclaire le
    haut et le bas de chaque page, dans le bleu du halo de l'accueil. D'une page
    à l'autre, le noir de la maquette paraissait trop plat. Les textes restent
    aussi lisibles ; si tu préfères le noir uni, c'est un réglage à retirer.
-6. **Le haut de l'accueil s'anime.** Derrière le grand titre, une nappe de
+5. **Le haut de l'accueil s'anime.** Derrière le grand titre, une nappe de
    bleu sombre ondule lentement, dans les couleurs du site, à la place du halo
    fixe de la maquette. Elle s'arrête dès qu'elle sort de l'écran, et les
    personnes qui ont réglé leur appareil pour limiter les animations voient une
    image fixe. Les textes restent bien lisibles par-dessus.
-7. **Les portraits de Léna et Lara sont cadrés un peu plus haut** que sur la
+6. **Les portraits de Léna et Lara sont cadrés un peu plus haut** que sur la
    maquette : elles y paraissaient basses à côté d'Alessia, avec beaucoup de
    vide au-dessus de la tête. Les photos elles-mêmes sont inchangées, seul le
    cadrage se resserre par le haut.
+7. **Les couleurs des événements.** Aucune maquette ne les prévoyait : j'ai
+   pris le bleu du halo de l'accueil et décliné cinq teintes de même clarté
+   (bleu, violet, rose, orange, vert), pour qu'aucune ne crie plus fort que
+   les autres et que les horaires restent lisibles. Pas de jaune, qui tournait
+   au kaki sur fond noir, ni de rouge, réservé aux erreurs dans les
+   formulaires. Une autre teinte se demande facilement.
 
 ---
 

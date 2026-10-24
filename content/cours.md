@@ -23,6 +23,7 @@ Remarques :
 ## Reçu - logo & photos (intégrés au site le 2026-09-01)
 
 - Logo officiel "BAPZ" (police blackletter + globe wireframe), fourni en `.ai` et `.png` (fond noir / fond transparent, versions complète et "simple"). Intégré dans la nav (`web/public/images/logo/bapz-logo.png`), recadré depuis `DOSSIER PNG/FOND TRANSPARENT`.
+- **Remplacé le 2026-10-24** par les quatre SVG reçus de la cliente (`content/logos/`) : même mot, planète redessinée au pinceau. Les anciens fichiers ne sont plus dans le dépôt (historique git).
 - 4 photos de shooting (`0V5A8226/8269/8484/8713.JPG`), réorientées (EXIF) et compressées dans `web/public/images/gallery/shoot-1..4.jpg`. Intégrées dans la section Galerie.
 - **Non attribuées** : on ne sait pas laquelle de ces photos correspond à Lena Bapz vs Lara - elles sont utilisées en galerie générique, pas comme portraits de profs. À confirmer avec la cliente si on veut les réutiliser en photo de profil.
 - `2.png`/`3.png` = planches d'exploration typo pour le wordmark (Faseh, imbue, wasbusstickNP…) - utiles pour comprendre le choix de police du logo, pas à intégrer tel quel au site.

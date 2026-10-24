@@ -22,6 +22,7 @@ import {
   TYPE_LABELS,
   type DemandeData,
 } from "./reservation/schemas";
+import { estCouleurCours } from "./couleurs";
 import { adresseUploadThing } from "./uploadthing";
 
 const payload = async () => getPayload({ config });
@@ -131,6 +132,7 @@ const toCourse = (input: unknown): Course => {
     startTime: String(doc.startTime ?? ""),
     endTime: String(doc.endTime ?? ""),
     room: (doc.room as string) || undefined,
+    color: estCouleurCours(doc.color) ? doc.color : undefined,
     // `depth: 1` remplace la référence par le document complet. Un prof masqué
     // est écarté ici plutôt que dans chaque composant : le cours s'affiche
     // alors sans nom, comme un cours qui n'a pas de prof attitré.

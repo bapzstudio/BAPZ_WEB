@@ -342,6 +342,21 @@ moitié du calendrier d'un seul clic.
 Une case cochée vaut « visible », plutôt qu'une case « Masquer » : une case à
 décocher pour faire disparaître se lit sans double négation.
 
+**Couleur des événements** (champ « Couleur de la carte » des cours, demandé
+par la cliente le 2026-10-24) : un stage, un workshop ou une soirée se
+distingue dans le calendrier, sur l'accueil et sur la page de sa prof. Vide =
+la carte de la maquette, intacte. Les teintes vivent dans `lib/couleurs.ts`,
+seule source du champ comme du rendu : cinq teintes de la clarté et de la
+saturation de `--glow` (oklch), dont seule la teinte tourne ; ni jaune (kaki à
+cette clarté) ni rouge (réservé aux erreurs). `attributsCouleur` pose
+`data-couleur` et `--couleur-rgb` sur la carte ; `globals.css` en tire le
+contour, un voile de 6 %, le halo de `.cal-card-avant` dans la couleur et le
+halo de proximité (`--glow-rgb` redéfini sur la carte). **L'horaire passe dans
+la couleur** : sur le fond teinté, le gris discret tombait à 4,4:1 ; la
+couleur tient 7:1 au moins (mesuré pour les cinq). Une couleur ajoutée à
+`COULEURS_COURS` change l'enum Postgres : migration (`ALTER TYPE … ADD VALUE`).
+**Écart sans maquette, à valider par la cliente.**
+
 **Après un changement de collection** : `pnpm generate:types`, puis
 `pnpm payload migrate:create <nom>` et `pnpm payload migrate`.
 
@@ -349,14 +364,34 @@ décocher pour faire disparaître se lit sans double négation.
 `package.json`, depuis le 2026-10-13) : Vercel préfère ce script à `build`, qui
 reste donc intact en local. Pousser le code suffit à migrer la base.
 
+**Un déploiement Preview migre aussi la production** : ses variables pointent
+sur la même base (`docs/mise-en-ligne.md`, section 3). Une branche poussée
+applique donc ses migrations avant d'être fusionnée, et le code en ligne doit
+les supporter : colonnes ajoutées, jamais retirées ni renommées.
+
+**Les données passent aussi par des migrations** quand personne ne peut
+lancer de commande : `20261024_100054_reglages_adresse_logo` corrige l'adresse
+(« 2A » -> « 2 », par une expression régulière limitée à la rue du Jardin
+d'Écosse, dans les Réglages et la FAQ) et remplace le fichier du logo de la
+nav. Ce téléversement passe par UploadThing pendant le build : il tourne hors
+de la transaction de la migration (une mise à jour Payload sans `req`, donc
+annulée en entier si l'envoi échoue) et **son échec n'arrête pas le
+déploiement** — un avertissement au journal, le logo se remplace aussi depuis
+l'admin. Sans logo rattaché ou sans `UPLOADTHING_TOKEN` (base locale, base
+vierge), il ne fait rien : la base se reconstruit toujours depuis les seules
+migrations. Vérifié sur une base locale portant « 2A », « 2a, rue »,
+« 12A rue du Jardin » et « 2 avenue » : seuls les deux premiers changent.
+
 Le build passe par `pnpm migrer` (`scripts/migrer.ts`), **pas par
 `payload migrate`** : sur une base qui a déjà servi à un `pnpm dev`, ce dernier
 pose la question « mode dev » et reste bloqué sans terminal, sans rien migrer —
 c'est ce qui a fait échouer le premier build de la PR #5. Le script retire
 cette marque (une ligne au lot -1 de `payload_migrations`, aucune donnée du
-site), migre, puis fait échouer le build si une migration manque. Ne jamais
-brancher `pnpm dev` sur la base de production : la marque reviendrait, et le
-schéma poussé en dev pourrait diverger des migrations.
+site), migre, puis fait échouer le build si une migration manque. Sur une base
+vierge, il échoue d'entrée (la table `payload_migrations` n'existe pas encore) :
+y passer par `pnpm payload migrate`. Ne jamais brancher `pnpm dev` sur la base
+de production : la marque reviendrait, et le schéma poussé en dev pourrait
+diverger des migrations.
 
 **Ni `migrate:create` ni `generate:types` n'ont besoin d'une base** — vérifié
 le 2026-10-13 contre une base injoignable. Le diff se calcule sur les
@@ -579,31 +614,47 @@ dont le poids est inchangé pour ne pas consommer le quota UploadThing.
 
 ## Identité du studio
 
-Les logos fournis par la cliente sont dans `content/DOSSIER PNG/` (fond noir et
-fond transparent) : le mot seul (« SIMPLE »), le mot avec une petite planète, le
-mot posé sur sa planète (« V2 ») et la planète seule. Les fichiers du site en
-sont tirés, rognés, dans `public/images/marque/` :
+Les logos de la cliente sont dans `content/logos/` : quatre SVG reçus le
+2026-10-24, qui remplacent ceux de septembre (planète en fil de fer, PNG et
+SVG, retirés du dépôt — ils restent dans l'historique git). Le mot seul
+(« SIMPLE »), le mot avec une petite planète, le mot posé sur sa planète
+(« V2 ») et la planète seule, désormais un globe **dessiné au pinceau**.
+Chaque fichier pose un rectangle noir de 3000 x 3000 sous le dessin.
+
+**Tout ce qui en est tiré est généré** par `scripts/generer-marque.mjs`
+(fond retiré, rognage au plus près, mêmes dimensions qu'avant pour que rien ne
+bouge dans les composants) — à relancer si un logo change :
 
 | Fichier | Variante | Où |
 |---|---|---|
-| `planete.png` | planète seule | composant `Planete` : menu mobile (filigrane), 404, galerie vide, écran « Demande envoyée », bloc « Où nous trouver » de la page Contact (avec un point bleu pulsant et un lien « Itinéraire » vers Google Maps, mentionné dans Confidentialité) |
-| `bapz-mot.png` | mot seul | pied de page, à la place du texte « BAPZ STUDIO » |
-| `bapz-planete.png` | V2 | logo et icône de l'admin (`src/admin/`), inversés en thème clair par `custom.scss` |
+| `public/images/marque/planete.png` | planète seule | composant `Planete` : menu mobile (filigrane), 404, galerie vide, écran « Demande envoyée », bloc « Où nous trouver » de la page Contact (avec un point bleu pulsant et un lien « Itinéraire » vers Google Maps, mentionné dans Confidentialité) |
+| `public/images/marque/bapz-mot.png` | mot seul | pied de page, à la place du texte « BAPZ STUDIO » |
+| `public/images/marque/bapz-planete.png` | V2 | logo et icône de l'admin (`src/admin/`), inversés en thème clair par `custom.scss` |
+| `src/seed/assets/images/logo/bapz-logo.png` | V2 | logo de la nav, envoyé dans Payload par le seed et par la migration du 2026-10-24 |
+| `src/app/icon.png`, `apple-icon.png` | planète seule | icônes (cf. « Icônes ») |
+| `public/partage.jpg` | V2 | image de partage, sur la photo `shoot-2` assombrie |
 
-**Le hero dessine le logo** (le mot sur sa planète) à partir du SVG de la
-graphiste, `content/LOGO BAPZ- white.svg` : 75 tracés pour la planète, 4 pour
-le mot (un 76ᵉ tracé, sans remplissage ni contour, est invisible et écarté). `scripts/extraire-logo-vectoriel.mjs` les copie dans
-`_components/logo-vectoriel.ts` (généré, à relancer si le logo change).
+**Le hero dessine le logo** (le mot sur sa planète) à partir de la V2,
+`content/logos/LOGO BAPZ V2 - LÉNA.svg` : 30 tracés pour la planète (un par
+coup de pinceau), 4 pour le mot. `scripts/extraire-logo-vectoriel.mjs` les
+copie dans `_components/logo-vectoriel.ts` (généré, à relancer si le logo
+change), avec un viewBox carré centré sur la planète — mesuré sur un rendu —
+et l'opacité de la planète lue dans le fichier (`OPACITE_PLANETE`, 0,2).
 `PlaneteDessinee` (serveur) rend le SVG, `DessinPlanete` (client) l'anime avec
-GSAP : chaque ligne se trace (technique du `stroke-dashoffset`), se remplit,
-puis le mot apparaît. Il reste ensuite fixe : la dérive lente, qui tourne de
+GSAP : le contour de chaque trait se trace (technique du `stroke-dashoffset`)
+à pleine opacité, puis le trait se remplit et la planète s'estompe à 20 % du
+mot pendant que le mot apparaît. **Ne pas remettre la planète à égalité avec le
+mot** : ses traits au pinceau sont aussi épais que les lettres, et le mot BAPZ
+se perdait dans la grille (vu le 2026-10-24) ; 20 %, c'est le dosage de la
+graphiste. Le logo reste ensuite fixe : la dérive lente, qui tourne de
 quelques degrés, faisait pencher le mot BAPZ ; elle est réservée à la planète
-seule. Ne pas partir d'une vectorisation automatique du PNG : un seul tracé en
-escalier, impossible à dessiner ligne par ligne.
+seule. Ne pas partir d'une vectorisation automatique d'un PNG : un seul tracé
+en escalier, impossible à dessiner trait par trait.
 
-Le logo de la nav est le média des Réglages (variante V2, carrée) ; les icônes
-d'onglet et Apple sont la planète redessinée (cf. « Icônes »). L'image de
-partage (`public/partage.jpg`) pose la V2 sur la photo `shoot-2`.
+Le logo de la nav est le média des Réglages (variante V2, carrée), seul logo
+rangé en base : la migration `20261024_100054_reglages_adresse_logo` remplace
+son fichier chez UploadThing au déploiement (cf. « Les migrations
+s'appliquent au déploiement »).
 
 Aucune maquette pour ces emplacements : la planète reste discrète (opacité
 0,12 à 0,14, dérive lente coupée si le visiteur réduit les animations) et ne
@@ -644,6 +695,10 @@ alimentent le référencement local. La fourchette de prix est déduite des tari
 saisis, donc elle suit ce que la cliente modifie. **Les champs absents ne sont
 pas inventés** : horaires d'ouverture et téléphone apparaîtront dès qu'ils
 seront fournis et ajoutés à `SiteSettings`.
+
+**L'adresse est « 2 rue du Jardin d'Écosse »**, sans « A » : avec « 2A »,
+les GPS ne trouvaient pas le studio (cliente, 2026-10-24). Corrigée en base par
+migration ; la fiche Google Business doit dire la même chose.
 
 **L'adresse y est découpée** (`decouperAdresse`) : la rue, puis la commune
 réelle — ce qui suit la dernière virgule du champ Adresse, Ars-Laquenexy —, le
@@ -779,17 +834,14 @@ décalage de mise en page de 0,46 sur `/reserver`.
 logo, posée sur `#080808` — le logo est blanc sur transparent, invisible sur un
 onglet clair.
 
-La planète y est **redessinée, pleine et inversée** : disque blanc, trois
-méridiens et trois parallèles sombres, inclinés de 18° comme le logo
-(`scripts/generer-icones.mjs`, à relancer après tout réglage). L'onglet reçoit
-le disque seul, coins transparents et cerclé de sombre pour tenir sur un onglet
-clair comme sombre ; l'icône Apple garde son carré `#080808`, iOS posant
-lui-même le masque arrondi et remplissant la transparence en noir. Le tracé
-d'origine — 75 traits fins et blancs — disparaît à cette taille : à 16 et 32px
-la moyenne des pixels donne un rond presque noir, même en épaississant les
-traits (plusieurs variantes essayées, toutes illisibles). Le mot du logo, lui,
-restait lisible : c'était l'icône précédente. Choix à montrer à la cliente,
-puisqu'il simplifie et retourne son logo.
+Depuis le 2026-10-24, c'est **la planète de la graphiste telle quelle**,
+blanche, aux 88 % de l'icône : sur un disque `#080808` aux coins transparents
+pour l'onglet (visible sur un onglet clair comme sombre), sur un carré
+`#080808` pour l'icône Apple, iOS posant lui-même le masque arrondi et
+remplissant la transparence en noir. Ses traits au pinceau tiennent à 32 px et
+se devinent à 16. L'ancienne planète — 75 traits fins — disparaissait à ces
+tailles (la moyenne des pixels donnait un rond presque noir) et avait dû être
+redessinée, pleine et inversée : ce n'est plus nécessaire.
 
 **Mesures.** Lighthouse 12, mobile, build de production local, le 2026-09-14 :
 
@@ -843,7 +895,8 @@ est à relire au déploiement.
 
 ## Contenu
 
-`content/` contient les notes reçues de la cliente et le logo vectoriel. Les
+`content/` contient les notes reçues de la cliente et ses logos vectoriels
+(`content/logos/`). Les
 exports Figma et les fichiers sources lourds (photos brutes du shooting, `.ai`)
 restent hors du repo, dans `../BAPZ/maquette` et `../BAPZ/content`.
 

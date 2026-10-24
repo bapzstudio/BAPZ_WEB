@@ -9,6 +9,8 @@ import * as migration_20260911_074738_retrait_bouton_essai from './20260911_0747
 import * as migration_20260915_065627_reglages_accueil_seo from './20260915_065627_reglages_accueil_seo';
 import * as migration_20260915_072855_reglages_accueil_equipe from './20260915_072855_reglages_accueil_equipe';
 import * as migration_20261013_132242_visibilite_cours_profs from './20261013_132242_visibilite_cours_profs';
+import * as migration_20261024_100042_couleur_cours from './20261024_100042_couleur_cours';
+import * as migration_20261024_100054_reglages_adresse_logo from './20261024_100054_reglages_adresse_logo';
 
 export const migrations = [
   {
@@ -64,6 +66,16 @@ export const migrations = [
   {
     up: migration_20261013_132242_visibilite_cours_profs.up,
     down: migration_20261013_132242_visibilite_cours_profs.down,
-    name: '20261013_132242_visibilite_cours_profs'
+    name: '20261013_132242_visibilite_cours_profs',
+  },
+  {
+    up: migration_20261024_100042_couleur_cours.up,
+    down: migration_20261024_100042_couleur_cours.down,
+    name: '20261024_100042_couleur_cours',
+  },
+  {
+    up: migration_20261024_100054_reglages_adresse_logo.up,
+    down: migration_20261024_100054_reglages_adresse_logo.down,
+    name: '20261024_100054_reglages_adresse_logo'
   },
 ];

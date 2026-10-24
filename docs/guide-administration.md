@@ -137,8 +137,22 @@ cours proposés pour un **essai**.
      (`19:00`, `20:30`) ;
    - **Professeur·e** : à choisir dans la liste (vide si pas de prof
      attitré·e) ;
-   - **Salle** : ex : `Studio A`.
+   - **Salle** : ex : `Studio A` ;
+   - **Couleur de la carte** : vide pour un cours habituel (voir ci-dessous).
 3. **Enregistrer**.
+
+### Faire ressortir un événement
+
+Pour un stage, un workshop, une soirée… choisis une **Couleur de la carte**
+(bleu, violet, rose, orange ou vert) et enregistre. Sa carte prend cette
+couleur — contour, léger halo, horaire — partout où le cours apparaît : le
+calendrier, « Prochains cours » sur l'accueil et la page de sa prof. Pour
+revenir à une carte normale, vide le champ avec la petite croix.
+
+Une même couleur pour un même genre d'événement (par exemple rose pour les
+stages, violet pour les soirées) aide les visiteurs à s'y retrouver.
+
+`[Capture : le champ « Couleur de la carte » ouvert sur la liste des couleurs]`
 
 ### Modifier un horaire
 
@@ -296,7 +310,10 @@ Renvoie plutôt vers la page concernée (« le détail est sur la page Tarifs »
 
 - **Adresse** : le numéro et la rue, **puis la commune après une virgule**
   (`2 rue du Jardin d'Écosse, Ars-Laquenexy`). Le site lit ce qui suit la
-  dernière virgule comme la commune.
+  dernière virgule comme la commune. Écrire **2** et non 2A : avec « 2A », les
+  GPS ne trouvaient pas le studio. Cette adresse sert partout — contact,
+  accueil, bouton « Itinéraire », mentions légales, Google — : la changer ici
+  suffit.
 - **Code postal** : transmis à Google avec l'adresse.
 - **Ville de référence** : la grande ville la plus proche (`Metz`), là où les
   gens cherchent. Affichée dans la bannière et en pied de page.
@@ -321,7 +338,11 @@ façons différentes dessert le référencement local.
   disciplines phares.
 - **Logo** : affiché dans un petit rond en haut à gauche. Utiliser une image
   **carrée**, sur fond transparent, dont le visuel remplit tout le cadre (le
-  logo posé sur sa planète) : une marge vide autour le rendrait illisible.
+  logo posé sur sa planète) : une marge vide autour le rendrait illisible. Le
+  fichier prêt à l'emploi est `bapz-planete.png` (dans
+  `public/images/marque/` du code source). Les autres logos du site (pied de
+  page, planète décorative, icône d'onglet, admin) ne se changent pas ici :
+  ils font partie du site lui-même.
 
 ### Informations légales
 
