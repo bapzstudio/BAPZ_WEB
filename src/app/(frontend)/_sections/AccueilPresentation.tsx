@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { Reveal } from "../_components/Reveal";
 import { ESPACE_SECTION, EnteteSection } from "./EnteteSection";
 
@@ -9,9 +10,11 @@ import { ESPACE_SECTION, EnteteSection } from "./EnteteSection";
 export function AccueilPresentation({
   titre,
   texte,
+  photo,
 }: {
   titre?: string;
   texte?: string;
+  photo?: { src: string; width: number; height: number; alt: string };
 }) {
   const paragraphes = (texte ?? "")
     .split(/\n\s*\n/)
@@ -35,15 +38,28 @@ export function AccueilPresentation({
             ))}
           </Reveal>
         </div>
-        {/* Photo pas encore fournie : emplacement provisoire, masqué aux
-            lecteurs d'écran. */}
+        {/* Photo des Réglages, recadrée pour suivre la hauteur du texte ; même
+            boîte que l'emplacement provisoire, rayon des cartes. Tant qu'il
+            n'y en a pas : l'emplacement, masqué aux lecteurs d'écran. */}
         <Reveal className="h-full">
-          <div
-            aria-hidden
-            className="photo-attente aspect-video h-full font-mono text-petit text-discret lg:aspect-auto lg:min-h-72"
-          >
-            [ photo — le studio ]
-          </div>
+          {photo ? (
+            <div className="relative aspect-video h-full overflow-hidden rounded-[15px] lg:aspect-auto lg:min-h-72">
+              <Image
+                src={photo.src}
+                alt={photo.alt}
+                fill
+                sizes="(min-width: 1024px) 50vw, 100vw"
+                className="object-cover"
+              />
+            </div>
+          ) : (
+            <div
+              aria-hidden
+              className="photo-attente aspect-video h-full font-mono text-petit text-discret lg:aspect-auto lg:min-h-72"
+            >
+              [ photo — le studio ]
+            </div>
+          )}
         </Reveal>
       </div>
     </section>

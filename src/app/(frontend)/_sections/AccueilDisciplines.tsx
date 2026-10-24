@@ -14,14 +14,19 @@ type Discipline = {
 
 /**
  * Les cours regroupés par discipline : un même titre donné plusieurs jours
- * forme une seule carte. Ordre : le premier créneau de la semaine.
+ * forme une seule carte. Ordre : le premier créneau de la semaine. Les
+ * événements datés n'en sont pas : un stage n'est pas une discipline, et son
+ * jour seul le ferait passer pour un cours de chaque semaine. Ils restent dans
+ * « Prochains cours » et au calendrier.
  */
 function regrouper(courses: Course[]): Discipline[] {
-  const tries = [...courses].sort(
-    (a, b) =>
-      ordreJour(a.dayOfWeek) - ordreJour(b.dayOfWeek) ||
-      minutes(a.startTime) - minutes(b.startTime),
-  );
+  const tries = courses
+    .filter((cours) => !cours.date)
+    .sort(
+      (a, b) =>
+        ordreJour(a.dayOfWeek) - ordreJour(b.dayOfWeek) ||
+        minutes(a.startTime) - minutes(b.startTime),
+    );
   const parTitre = new Map<string, Discipline>();
   const ajouter = (liste: string[], valeur?: string) => {
     if (valeur && !liste.includes(valeur)) liste.push(valeur);

@@ -22,7 +22,7 @@ export default function NotFound() {
     <div className="container-page relative isolate pt-[var(--vr-104)] pb-8.5">
       <Planete
         sizes="(min-width: 768px) 420px, 1px"
-        className="planete-derive absolute right-10 top-[var(--vr-104)] -z-10 hidden w-[min(34vw,420px)] opacity-[0.14] md:block"
+        className="planete-derive absolute right-10 top-[var(--vr-104)] -z-10 hidden w-[min(34vw,420px)] opacity-[0.07] md:block"
       />
       <p className="eyebrow">ERREUR 404</p>
       <h1 className="mt-6 titre-page">

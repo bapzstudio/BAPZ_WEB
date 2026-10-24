@@ -141,6 +141,24 @@ cours proposés pour un **essai**.
    - **Couleur de la carte** : vide pour un cours habituel (voir ci-dessous).
 3. **Enregistrer**.
 
+### Ajouter un événement (stage, workshop, soirée…)
+
+Crée-le comme un cours, avec en plus :
+
+- **Date (événement ponctuel)** : le jour où il a lieu. Le champ **Jour**
+  disparaît alors : il se déduit de la date. L'événement s'affiche avec sa
+  date (« 14 nov. ») au calendrier, sur « Prochains cours » quand il approche,
+  sur la page de sa prof et dans le formulaire de réservation — puis
+  **disparaît tout seul du site le lendemain**. Rien à supprimer.
+- **Couleur de la carte** (facultatif) : voir ci-dessous.
+
+Une carte datée ou colorée porte le petit libellé **« Événement »**, pour
+qu'on la repère même sans voir les couleurs.
+
+Laisse la date vide pour un cours qui revient chaque semaine.
+
+`[Capture : le champ « Date (événement ponctuel) » rempli, le champ Jour masqué]`
+
 ### Faire ressortir un événement
 
 Pour un stage, un workshop, une soirée… choisis une **Couleur de la carte**
@@ -285,13 +303,20 @@ Le bouton blanc « Cours d'essai » reprend tout seul le prix du tarif d'essai
 
 Sous les prochains cours, l'accueil présente un aperçu de chaque page du site.
 Les cours, les profs, les tarifs et l'adresse s'y affichent tout seuls, à
-partir de ce que tu saisis ailleurs. Seuls deux textes s'écrivent ici :
+partir de ce que tu saisis ailleurs. Seuls ces textes et une photo
+s'écrivent ici :
 
 - **Titre** et **Texte de présentation** : quelques phrases sur le studio,
   de 80 à 150 mots. Laisse une ligne vide entre deux paragraphes. C'est le
   principal texte que Google lit sur l'accueil : décris le studio avec les mots
   que les gens tapent pour te trouver (danse, heels, Metz…). Si le titre ou le
   texte est vide, la présentation n'apparaît pas.
+- **Photo de la présentation** : à droite du texte sur ordinateur, en dessous
+  sur téléphone. Une photo **en largeur** (paysage), d'au moins 1200 pixels ;
+  elle est recadrée pour suivre la hauteur du texte, garde donc le sujet au
+  milieu. Remplis bien sa **description** (« La grande salle du studio ») :
+  Google et les personnes malvoyantes la lisent. Tant qu'il n'y a pas de
+  photo, un cadre rayé « photo — le studio » tient sa place.
 - **Mot sur l'équipe** : deux ou trois phrases affichées au-dessus des profs.
   Sous chaque prof, l'accueil montre ensuite **le début de sa bio** (ses
   premières phrases), pris automatiquement : soigne l'ouverture de chaque bio,

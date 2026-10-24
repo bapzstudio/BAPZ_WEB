@@ -226,7 +226,7 @@ export function MobileMenu({
           <div className="pointer-events-none absolute inset-0 -z-10 overflow-hidden">
             <Planete
               sizes="320px"
-              className="absolute -right-24 -bottom-24 w-80 opacity-[0.12]"
+              className="absolute -right-24 -bottom-24 w-80 opacity-[0.06]"
             />
           </div>
         )}

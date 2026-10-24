@@ -7,7 +7,9 @@ import Image from "next/image";
  * d'écran.
  *
  * Tailles et placement viennent de `className` : il n'y a pas de maquette pour
- * ces emplacements, la planète reste donc discrète (faible opacité) et ne
+ * ces emplacements, la planète reste donc discrète (faible opacité : 0,06 à
+ * 0,07 en filigrane, moitié moins qu'avec l'ancienne planète en fil de fer,
+ * le globe au pinceau portant 4,5 fois plus d'encre) et ne
  * modifie jamais la mise en page — toujours positionnée en absolu, sauf sur la
  * confirmation où elle remplace le ✓.
  */

@@ -11,6 +11,7 @@ import * as migration_20260915_072855_reglages_accueil_equipe from './20260915_0
 import * as migration_20261013_132242_visibilite_cours_profs from './20261013_132242_visibilite_cours_profs';
 import * as migration_20261024_100042_couleur_cours from './20261024_100042_couleur_cours';
 import * as migration_20261024_100054_reglages_adresse_logo from './20261024_100054_reglages_adresse_logo';
+import * as migration_20261024_105754_date_evenements_photo_presentation from './20261024_105754_date_evenements_photo_presentation';
 
 export const migrations = [
   {
@@ -76,6 +77,11 @@ export const migrations = [
   {
     up: migration_20261024_100054_reglages_adresse_logo.up,
     down: migration_20261024_100054_reglages_adresse_logo.down,
-    name: '20261024_100054_reglages_adresse_logo'
+    name: '20261024_100054_reglages_adresse_logo',
+  },
+  {
+    up: migration_20261024_105754_date_evenements_photo_presentation.up,
+    down: migration_20261024_105754_date_evenements_photo_presentation.down,
+    name: '20261024_105754_date_evenements_photo_presentation'
   },
 ];

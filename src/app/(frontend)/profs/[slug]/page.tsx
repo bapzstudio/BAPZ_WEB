@@ -12,6 +12,10 @@ import { pageMetadata } from "@/lib/seo";
 
 type Props = { params: Promise<{ slug: string }> };
 
+// Ses cours comprennent les événements datés, qui disparaissent une fois
+// passés : régénérée toutes les heures, comme l'accueil et le calendrier.
+export const revalidate = 3600;
+
 export async function generateStaticParams() {
   return (await getTeacherSlugs()).map((slug) => ({ slug }));
 }

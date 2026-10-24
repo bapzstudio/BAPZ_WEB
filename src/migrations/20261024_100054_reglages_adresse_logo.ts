@@ -42,15 +42,22 @@ export async function up({ db, payload, req }: MigrateUpArgs): Promise<void> {
   // Réglages) : les autres sont des fichiers du dépôt, déjà remplacés. On
   // remplace le fichier du média rattaché, comme `pnpm seed:portraits` : même
   // fiche, même texte alternatif.
-  const reglagesSite = await payload.findGlobal({ slug: 'site-settings', depth: 1, req })
-  const logo = typeof reglagesSite.logo === 'object' ? reglagesSite.logo : null
+  // Lu en SQL, pas par `payload.findGlobal` : l'API de Payload interroge le
+  // schéma de la config ACTUELLE, colonnes ajoutées par les migrations
+  // suivantes comprises (`intro_photo_id`), absentes de la base à cette étape.
+  // `payload.update` sur `media` reste possible tant que cette collection ne
+  // gagne pas de colonne ; sur une base vierge on ne l'atteint jamais.
+  const { rows } = await db.execute(sql`
+    SELECT "media"."id", "media"."filesize" FROM "site_settings"
+    JOIN "media" ON "media"."id" = "site_settings"."logo_id" LIMIT 1`)
+  const logo = rows[0] as { id: number; filesize: string | number | null } | undefined
   const fichier = path.resolve(dirname, '../seed/assets/images/logo/bapz-logo.png')
   if (!logo) {
     // Base neuve ou logo retiré par la cliente : rien à remplacer.
     payload.logger.info('Logo de la nav : aucun logo dans les Réglages, rien à remplacer.')
     return
   }
-  if (logo.filesize === fs.statSync(fichier).size) {
+  if (Number(logo.filesize) === fs.statSync(fichier).size) {
     payload.logger.info('Logo de la nav : déjà le nouveau logo.')
     return
   }

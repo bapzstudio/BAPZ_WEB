@@ -32,6 +32,11 @@ export interface Course {
   slug?: string;
   /** Couleur de la carte, pour faire ressortir un événement (cf. `lib/couleurs.ts`). */
   color?: CouleurCours;
+  /**
+   * Jour d'un événement ponctuel, à Paris (« 2026-11-15 »). Absent pour un
+   * cours de chaque semaine. `dayOfWeek` est alors déduit de cette date.
+   */
+  date?: string;
 }
 
 export interface PricingPlan {
@@ -125,6 +130,8 @@ export interface SiteSettings {
   introTitle?: string;
   /** Paragraphes séparés par une ligne vide. */
   introText?: string;
+  /** Photo à côté de la présentation ; sans elle, un emplacement provisoire. */
+  introPhoto?: { src: string; width: number; height: number; alt: string };
   /** Texte au-dessus des profs, dans la section Équipe de l'accueil. */
   teamIntro?: string;
   /** Questions fréquentes de l'accueil, reprises dans les données structurées. */

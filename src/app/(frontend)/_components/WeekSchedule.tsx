@@ -1,10 +1,16 @@
 import Link from "next/link";
 import { attributsCouleur } from "@/lib/couleurs";
-import { formaterHeure, JOURS, minutes } from "@/lib/reservation/format";
+import {
+  formaterDate,
+  formaterHeure,
+  JOURS,
+  minutes,
+} from "@/lib/reservation/format";
 import { lienReservation } from "@/lib/reservation/liens";
 import type { Course } from "@/lib/types";
 import { CalendrierAnimations } from "./CalendrierAnimations";
 import { CalendrierGrille } from "./CalendrierGrille";
+import { estEvenement, PastilleEvenement } from "./PastilleEvenement";
 import { ProximityGlow } from "./ProximityGlow";
 
 // Modèle déduit de la maquette : les cartes ne sont pas proportionnelles à la
@@ -64,8 +70,11 @@ function CalendarCard({ course }: { course: Course }) {
           }`}
         >
           {/* Même format d'heure que le reste du site (« 19h00 »), en capitales
-            comme sur la maquette : la salle, elle, garde sa casse. */}
+            comme sur la maquette : la salle, elle, garde sa casse. Un
+            événement daté porte sa date devant l'horaire : la colonne dit
+            déjà le jour de la semaine. */}
           <span className="whitespace-nowrap uppercase">
+            {course.date && `${formaterDate(course.date)} · `}
             {formaterHeure(course.startTime)} - {formaterHeure(course.endTime)}
           </span>
           {course.room && (
@@ -73,7 +82,11 @@ function CalendarCard({ course }: { course: Course }) {
           )}
         </div>
 
-        <div className="mt-5 text-lg font-black uppercase leading-tight hyphens-auto min-[1440px]:text-[clamp(14px,0.94vw,18px)]">
+        <PastilleEvenement course={course} className="mt-4" />
+
+        <div
+          className={`${estEvenement(course) ? "mt-2.5" : "mt-5"} text-lg font-black uppercase leading-tight hyphens-auto min-[1440px]:text-[clamp(14px,0.94vw,18px)]`}
+        >
           {course.title}
         </div>
 
