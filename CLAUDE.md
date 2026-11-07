@@ -112,8 +112,8 @@ bandeau : c'est `page.tsx`, après les sections. Sur la
 landing, le sous-titre suit la fenêtre au-delà de ~1400px
 (`clamp(17px,1.45vw,24px)`) : à la taille de la maquette, 16px, il paraissait
 perdu à côté d'un titre de 158px. Écart assumé, limité à la landing. La
-maquette, elle, fait tenir tout l'accueil dans un écran : **écart assumé, à
-montrer à la cliente**. Sur la landing, le titre est calé haut et la planète
+maquette, elle, fait tenir tout l'accueil dans un écran : **écart validé par
+la graphiste le 2026-09-25**. Sur la landing, le titre est calé haut et la planète
 basse : au milieu, le mot BAPZ du logo passait sous la fin du titre. Le bord
 droit de la planète tombe sur la ligne du conteneur comme tout le reste du site
 (`right-0` porterait sur la boîte du conteneur, gouttière comprise, et la
@@ -221,13 +221,14 @@ parcours de réservation. Au survol, la bande de la FAQ (`BandeFluide`) glisse
 dessus ; le prix et la flèche restent au-dessus, en sombre, et le texte
 défilant s'arrête avant le prix, mesuré à chaque entrée (`--bande-reserve`).
 Le bandeau d'essai et les salles restent des cartes : ils ont davantage à
-montrer. **Écart avec la maquette TARIFS, à montrer à la cliente.** Mesuré :
+montrer. **Écart avec la maquette TARIFS, validé par la graphiste le
+2026-09-25.** Mesuré :
 3 560 → 2 351 px de haut à 390 px ; à 1920 la hauteur ne change pas
 (2 169 px), c'est la densité qui baisse.
 
 **Fond : grain et halos de page** (`globals.css`, depuis le 2026-09-15). Le
-noir plat de la maquette paraissait trop sobre. **Écart avec les maquettes, à
-valider par la cliente.** Réglages en tête de `globals.css` : `--grain-opacite`
+noir plat de la maquette paraissait trop sobre. **Écart validé par la
+graphiste le 2026-09-25.** Réglages en tête de `globals.css` : `--grain-opacite`
 (0,05), `--halo-haut-intensite` (12 %, le halo du hero culmine à 22 %),
 `--halo-bas-intensite` (7 %).
 
@@ -257,8 +258,8 @@ valider par la cliente.** Réglages en tête de `globals.css` : `--grain-opacite
 **Dégradé animé du hero** (`DegradeHero`, depuis le 2026-09-15). Shader repris
 de Grainient (reactbits.dev), **WebGL 2 écrit à la main, sans dépendance** (cf.
 « Coût »).
-**Écart avec la maquette, à valider par la cliente.** Deux essais écartés avant
-lui : les fibres de GhostFibers (jugées trop chargées, sous-titre à 3,2:1) et
+**Écart avec la maquette, validé par la graphiste le 2026-09-25.** Deux essais
+écartés avant lui : les fibres de GhostFibers (jugées trop chargées, sous-titre à 3,2:1) et
 les vagues de GradientWaves.
 
 - **Palette tirée de `--glow`** : base `#080808`, accent x 0,25, clair x 0,4.
@@ -714,8 +715,12 @@ celui du layout, image comprise — vérifié, `og:image` ne sortait alors que s
 l'accueil.
 
 `NEXT_PUBLIC_SITE_URL` porte l'adresse publique. Vide en local, le repli
-`http://localhost:3000` suffit. Au déploiement : d'abord l'URL `.vercel.app`,
-puis le vrai domaine.
+`http://localhost:3000` suffit.
+
+**Le site vit sur `https://bapzstudio.fr` depuis le 2026-11-07** (domaine OVH,
+zone DNS chez OVH, `A` sur la racine et `CNAME` sur `www` vers Vercel).
+`www.bapzstudio.fr` et `bapz-web.vercel.app` redirigent en 308 vers l'apex :
+une seule adresse sert le site, les autres y renvoient.
 
 **Le build de production échoue si elle est vide** (`seo.ts`, depuis le
 2026-09-23), et c'est voulu : la variable existait sur Vercel mais sans valeur,
@@ -951,11 +956,17 @@ restent hors du repo, dans `../BAPZ/maquette` et `../BAPZ/content`.
 
 ## État
 
+**Le site est en ligne sur `https://bapzstudio.fr` depuis le 2026-11-07.**
+Domaine, certificat, URL canoniques, anti-robot et les deux e-mails
+(notification au studio et accusé de réception au visiteur) ont été vérifiés
+de bout en bout ce jour-là. Le déroulé et ce qui reste sont dans
+`docs/mise-en-ligne.md`.
+
 | Page | État |
 |---|---|
-| Accueil | Maquette pour le deuxième écran ; landing plein écran, sections de contenu, grain, halos et dégradé animé du hero en écarts assumés (à valider, cf. `docs/questions-cliente.md`) |
+| Accueil | Maquette pour le deuxième écran ; landing plein écran, sections de contenu, grain, halos et dégradé animé du hero, tous validés par la graphiste le 2026-09-25 |
 | Calendrier (`/cours`), Profs | Conformes aux maquettes |
-| Tarifs | Tarifs de la cliente ; formules en lignes (écart avec la maquette du 2026-09-15, à valider) ; section « Locations de salle » d'après la maquette TARIFS du 2026-09-10 |
+| Tarifs | Tarifs de la cliente ; formules en lignes (écart avec la maquette du 2026-09-15, validé le 2026-09-25) ; section « Locations de salle » d'après la maquette TARIFS du 2026-09-10 |
 | Location (`/location`) | Redirigée vers `/tarifs#locations`, où sont les salles |
 | Contact | Formulaire branché ; téléphone et horaires éditables, encore vides |
 | Galerie | Branchée sur la rubrique Galerie ; vide, elle renvoie vers Instagram |
@@ -967,9 +978,10 @@ restent hors du repo, dans `../BAPZ/maquette` et `../BAPZ/content`.
 descriptifs, textes de bannière, infos de location. Le cours d'essai à 10 €
 entre dans ce cadre et n'est donc plus un point ouvert.
 
-- Planning du calendrier : la maquette et les horaires transmis ne coïncident
-  pas sur tous les cours. Détail dans `content/cours.md`. Il s'agit d'un
-  conflit entre deux sources, pas d'un manque : à trancher avec elle.
+- ~~Planning du calendrier~~ : **tranché le 2026-09-25**. La cliente a validé
+  le planning tel qu'il est en ligne. Le conflit entre la maquette et les
+  horaires transmis, décrit dans `content/cours.md`, n'a plus lieu d'être : ce
+  fichier garde une trace de l'historique, pas une question ouverte.
 - Galerie : aucune photo saisie. En attendant, la page invite à suivre le
   studio sur Instagram.
 - Nombre de cours par saison : le champ « Nombre de cours inclus » des tarifs
