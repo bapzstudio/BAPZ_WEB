@@ -1,10 +1,33 @@
 # Ce qu'il manque pour mettre le site en ligne
 
+> **Document historique, tenu à jour le 2026-11-07.**
+> Le site est **en ligne sur `https://bapzstudio.fr`**. L'essentiel de ce qui
+> suit est réglé ; le détail reste ici parce qu'il garde la trace des
+> décisions prises et de leurs raisons.
+>
+> **Réglé :** le planning (validé tel quel le 2026-09-25) · les sept écarts
+> avec les maquettes de la §5 (validés par la graphiste le 2026-09-25) · le
+> nom de domaine de la §6 (`bapzstudio.fr`, en ligne) · les textes de
+> l'accueil de la §7 (relus).
+>
+> **Passé à la cliente :** informations légales, photos, prix, horaires,
+> téléphone, galerie, planning — elle les saisit elle-même dans l'admin, qui
+> lui a été remis. Ce ne sont plus des points de développement.
+>
+> **Reste vraiment ouvert**, et ce sont des décisions, pas des champs à
+> remplir :
+> - les **trois arbitrages du parcours de réservation** (§4) : délai de
+>   réponse annoncé, téléphone obligatoire ou non, places limitées par cours ;
+> - les **« cours privés »** (§4), toujours proposés dans le tunnel sans
+>   figurer sur aucune maquette ;
+> - le **forfait 5 h des salles** (§3) : les 350 € et 550 € annoncés valent
+>   plus du double du tarif horaire, et aucun champ de l'admin ne permet de
+>   l'afficher — il faudrait en ajouter un, donc une migration ;
+> - l'**hébergeur dans les mentions légales**, à saisir par la cliente : la
+>   dernière mention « À compléter » du site.
+
 Le site est terminé et fonctionne. Ce document liste ce qui dépend encore de
 toi, et les quelques points où le rendu s'écarte des maquettes de ta graphiste.
-Tu peux le lire tranquillement avant qu'on en parle : rien n'est urgent au
-point d'y répondre tout de suite, mais **rien ne peut être mis en ligne sans
-les informations légales**.
 
 ---
 

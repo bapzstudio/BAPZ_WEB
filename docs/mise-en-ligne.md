@@ -1,12 +1,12 @@
-# Mise en ligne — déroulé de la séance
+# Mise en ligne
 
-Checklist à suivre dans l'ordre, avec la cliente, comptes ouverts à son nom.
-Compter une heure trente. Les comptes Neon et UploadThing existent déjà ; il
-reste l'hébergeur, le domaine, Resend et Cloudflare.
+> **Le site est en ligne sur `https://bapzstudio.fr` depuis le 2026-11-07.**
+> Les sections 1 à 7 décrivent une séance désormais faite : elles restent ici
+> parce que la table des variables et les pièges servent de référence, pas
+> parce qu'il y a quelque chose à y exécuter. Ce qui reste est en section 9.
 
-**Prérequis :** les informations légales et le planning réel doivent être
-saisis dans l'administration (cf. `questions-cliente.md`), sinon le site part
-avec des mentions « À compléter ».
+Comptes ouverts au nom de la cliente : Neon, UploadThing, Vercel, Resend,
+Cloudflare, OVH pour le domaine. Matthias y est collaborateur.
 
 ---
 
@@ -46,10 +46,15 @@ avec des mentions « À compléter ».
 | `UPLOADTHING_TOKEN` | jeton de l'application UploadThing |
 | `RESEND_API_KEY` | clé API Resend |
 | `CONTACT_TO_EMAIL` | boîte qui reçoit les messages |
-| `CONTACT_FROM_EMAIL` | `BAPZ Studio <contact@ledomaine.fr>` — **seulement une fois le domaine vérifié chez Resend** |
+| `CONTACT_FROM_EMAIL` | `BAPZ Studio <contact@bapzstudio.fr>` — posé le 2026-11-07, une fois le domaine vérifié chez Resend |
 | `NEXT_PUBLIC_TURNSTILE_SITE_KEY` | clé de site du widget Cloudflare |
 | `TURNSTILE_SECRET_KEY` | clé secrète du même widget |
-| `NEXT_PUBLIC_SITE_URL` | d'abord l'adresse `.vercel.app`, puis le vrai domaine |
+| `NEXT_PUBLIC_SITE_URL` | `https://bapzstudio.fr` depuis le 2026-11-07 |
+
+Sur Vercel, ces variables sont de type **Config** et non **Secret** : un secret
+est en écriture seule, donc impossible à relire ou à reconvertir ensuite. Une
+variable posée en Secret par erreur se supprime et se recrée, elle ne se
+convertit pas.
 
 **Pièges à connaître :**
 
@@ -162,3 +167,62 @@ en ligne :
       une fenêtre privée.
 - [ ] **Fiche Google Business** : même adresse, « 2 rue », sans quoi Google
       voit deux adresses différentes.
+
+---
+
+## 9. Bascule sur `bapzstudio.fr` — fait le 2026-11-07
+
+Domaine acheté chez **OVH**, zone DNS hébergée chez OVH (`dns103.ovh.net`,
+`ns103.ovh.net`), site servi par Vercel.
+
+**Ce qui a été posé :**
+
+| Type | Nom | Cible |
+|---|---|---|
+| `A` | racine | `216.198.79.1` |
+| `CNAME` | `www` | `f6faad3ffb5427aa.vercel-dns-017.com.` |
+
+Côté Vercel : `bapzstudio.fr` en production, `www.bapzstudio.fr` et
+`bapz-web.vercel.app` en **redirection 308** vers l'apex. Puis
+`NEXT_PUBLIC_SITE_URL` mise à jour **et redéploiement**, Resend vérifié sur le
+domaine, `CONTACT_FROM_EMAIL` renseignée, redéploiement.
+
+**Vérifié de bout en bout le jour même** : certificat HTTPS, URL canonique
+(`Ctrl+U` → `canonical`), envoi du formulaire de contact, demande complète
+dans le tunnel, réception côté studio **depuis `contact@bapzstudio.fr`**, et
+accusé de réception reçu par le visiteur — ce dernier mail n'était jamais
+parti auparavant, faute de domaine vérifié.
+
+**Trois pièges rencontrés, pour la prochaine fois :**
+
+- **Un `CNAME` ne peut coexister avec aucun autre enregistrement du même nom.**
+  OVH avait posé un `A` de parking (`213.186.33.5`) **et** un `TXT`
+  (`"3|welcome"`) sur `www` : le `CNAME` de Vercel est refusé tant que les deux
+  ne sont pas supprimés. OVH les liste dans son message d'erreur, mais la
+  cause n'est évidente que si on connaît la règle. Penser aussi à l'`AAAA` de
+  la racine, qui enverrait les visiteurs IPv6 ailleurs que les autres.
+- **L'onglet « DNS zone » d'OVH peut renvoyer vers une page de commande**, qui
+  laisse croire que la zone est payante. L'onglet « DNS servers » tranche : des
+  serveurs OVH actifs signifient que la zone existe.
+- **Changer `NEXT_PUBLIC_SITE_URL` ne suffit pas** : la valeur est inlinée dans
+  le bundle au build. Sans redéploiement, le site continue de servir
+  l'ancienne adresse en canonique, et le garde-fou de `seo.ts` ne le voit pas —
+  il ne détecte qu'une variable *vide*, jamais une variable *périmée*.
+  Décocher « Use existing Build Cache » au redéploiement.
+
+**Ce qui reste :**
+
+- [ ] **Google Search Console** : propriété créée le 2026-11-07, aucune page
+      indexée au départ, ce qui est normal. Soumettre le sitemap
+      (`https://bapzstudio.fr/sitemap.xml`) et demander l'indexation de
+      l'accueil. Compter de quelques jours à quelques semaines.
+- [ ] **Core Web Vitals** : c'est la Search Console qui dira si le dégradé
+      animé du hero coûte quelque chose en conditions réelles (cf. « Dégradé
+      animé du hero » dans `CLAUDE.md`, accueil à 57 sous Lighthouse). Compter
+      trois à quatre semaines de collecte avant de juger. Deux replis étaient
+      notés : démarrer le dégradé au premier geste du visiteur, ou passer à une
+      version CSS.
+- [ ] **Hébergeur dans les mentions légales** : à saisir par la cliente dans
+      les Réglages (Vercel, avec son adresse). Dernière mention
+      « À compléter » du site.
+- [ ] **Fiche Google Business** à aligner sur l'adresse et le domaine.
