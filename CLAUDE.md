@@ -920,9 +920,27 @@ expérimental, et rendu sans le layout. `error.tsx` couvre une page qui échoue,
 le menu restait affiché le temps que le JavaScript s'exécute : flash visible, et
 décalage de mise en page de 0,46 sur `/reserver`.
 
-**Icônes.** `app/icon.png` (512) et `app/apple-icon.png` (180) : la planète du
-logo, posée sur `#080808` — le logo est blanc sur transparent, invisible sur un
-onglet clair.
+**Icônes.** `app/icon.png` (512), `app/apple-icon.png` (180) et
+`app/favicon.ico` (16, 32, 48) : la planète du logo, posée sur `#080808` — le
+logo est blanc sur transparent, invisible sur un onglet clair.
+
+Le `.ico` a été ajouté le 2026-11-12 : Next sert `icon.png` sous une adresse à
+empreinte (`/icon.png?icon.<hash>.png`) et `/favicon.ico` répondait **404**,
+alors que c'est le chemin de repli que Google et beaucoup d'outils (lecteurs
+RSS, aperçus de liens, favoris) sondent avant de lire le `<link rel="icon">`
+de la page. Il est généré par `scripts/generer-favicon.mjs` à partir de
+`icon.png` — **à relancer après `generer-marque.mjs` si le logo change.**
+Trois tailles, dont 48 parce que Google préfère un multiple de 48 ; chaque
+image est un PNG encapsulé dans l'enveloppe ICO. Vérifié au rendu : disque
+noir et globe blanc, lisible sur le fond blanc des résultats Google comme sur
+fond sombre, à 16, 32 et 48 px.
+
+**L'icône dans Google ne dépend pas que du site.** Son index des favicons est
+alimenté par une exploration distincte de celle des pages, et il affiche un
+globe générique en attendant. Le balisage était déjà correct avant ce
+changement (`<link rel="icon">` présent, `/icon.png` en 200, rien de bloqué
+par `robots.txt`) : le `.ico` enlève le dernier manque réel, le reste est une
+question de délai.
 
 Depuis le 2026-10-24, c'est **la planète de la graphiste telle quelle**,
 blanche, aux 88 % de l'icône : sur un disque `#080808` aux coins transparents
