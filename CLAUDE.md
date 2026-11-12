@@ -173,6 +173,25 @@ son jour, pour la rattacher à sa colonne dans une grille de sept : un seul
 écouteur sur la grille, un attribut `data-actif` sur l'en-tête, et le reste en
 CSS.
 
+**Une cellule de la grille, ce n'est pas une bande de départ, c'est un groupe
+de cours dont les bandes se croisent** (`cellules`, depuis le 2026-11-12). Les
+cellules sont posées par `gridColumn` / `gridRow` : deux cellules d'une même
+colonne aux plages de lignes croisées se peignent l'une sur l'autre. Grouper
+par bande de DÉPART, comme on le faisait, laissait donc un cours qui traverse
+une frontière de bande se superposer à celui qui démarre dans la bande
+traversée — et le recouvrement est total, pas partiel, parce qu'une carte
+porte `h-full` et s'étire sur toute la hauteur de sa zone (mesuré : la carte
+de 18h30-19h30 fait 396 px et couvre entièrement celle de 19h35, le training
+libre du samedi 540 px et avale le stage du jour). Les cours d'une colonne
+sont donc fusionnés, par intersection de leurs bandes, en cellules qui ne se
+croisent jamais, et leurs cartes s'empilent — ce qui est aussi le rendu
+honnête de deux cours qui ont bien lieu en même temps. Signalé par la cliente
+le 2026-11-12 sur le jeudi et sur le samedi ; elle avait d'abord cru que cela
+tenait aux événements datés, alors que le jeudi n'en contient aucun. Changer
+les horaires n'y pouvait rien : ce sont les bandes qui placent, pas les
+heures. Le planning de la maquette, lui, produit exactement les mêmes
+cellules qu'avant.
+
 **Tous les titres de page se déplient** mot par mot au chargement (`FoldText`,
 écrit pour le hero). Seule exception, le `h2` « Locations de salle » de
 `/tarifs` : `FoldText` joue au chargement et non au défilement, donc un titre
@@ -700,6 +719,33 @@ globe au pinceau portant 4,5 fois plus d'encre, mesuré ; dérive lente coupée
 si le visiteur réduit les animations) et ne
 change jamais la mise en page — vérifié, hauteurs de page et bande du pied de
 page identiques.
+
+## Galerie
+
+Pas de maquette pour cette page. **Chaque photo est affichée entière, dans son
+propre rapport** (`Gallery`, depuis le 2026-11-12) : la boîte prend
+l'`aspect-ratio` du fichier, et une photo plus large que haute occupe deux
+colonnes au lieu d'une. La grille porte `items-start`, sans quoi la hauteur de
+la rangée l'emporterait sur le rapport et déformerait une photo plus basse que
+sa voisine.
+
+Jusque-là, toute photo entrait dans une boîte 2:3 recadrée par `object-cover`.
+Deux défauts, une seule cause :
+
+- les photos d'équipe, prises en paysage, perdaient leurs côtés — « on ne voit
+  pas toute la team » (cliente, 2026-11-12) ;
+- elles étaient floues, parce que **`sizes` décrit la largeur de la boîte**
+  alors que couvrir une boîte 2:3 avec une source paysage demande de
+  l'agrandir d'une fois et demie. Le navigateur chargeait un fichier 1,4 à
+  2 fois trop petit pour ce qu'il peignait (mesuré de 390 à 1920 px ; au pire,
+  256 px chargés pour 507 px rendus à 1024 px).
+
+Donner à la boîte le rapport de la photo fait tomber les deux ensemble : plus
+rien n'est coupé, et `sizes` redevient exact. **Si un recadrage uniforme
+revient un jour, `sizes` doit porter la largeur RENDUE, pas celle de la
+boîte.** Qualité 90, comme les portraits des profs. `Media` ne déclare aucun
+`imageSizes` : les fichiers sont stockés en pleine définition, et une photo
+qui reste floue vient d'une source basse définition, pas du site.
 
 ## SEO
 
