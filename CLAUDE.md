@@ -1033,7 +1033,7 @@ de bout en bout ce jour-là. Le déroulé et ce qui reste sont dans
 | Tarifs | Tarifs de la cliente ; formules en lignes (écart avec la maquette du 2026-09-15, validé le 2026-09-25) ; section « Locations de salle » d'après la maquette TARIFS du 2026-09-10 |
 | Location (`/location`) | Redirigée vers `/tarifs#locations`, où sont les salles |
 | Contact | Formulaire branché ; téléphone et horaires éditables, encore vides |
-| Galerie | Branchée sur la rubrique Galerie ; vide, elle renvoie vers Instagram |
+| Galerie | Deux photos d'équipe en ligne depuis le 2026-11-12 ; vide, la page renvoie vers Instagram |
 | Mentions légales, Confidentialité | Rédigées ; informations légales à saisir dans les Réglages |
 
 ## Points ouverts
@@ -1046,8 +1046,9 @@ entre dans ce cadre et n'est donc plus un point ouvert.
   le planning tel qu'il est en ligne. Le conflit entre la maquette et les
   horaires transmis, décrit dans `content/cours.md`, n'a plus lieu d'être : ce
   fichier garde une trace de l'historique, pas une question ouverte.
-- Galerie : aucune photo saisie. En attendant, la page invite à suivre le
-  studio sur Instagram.
+- ~~Galerie~~ : **la cliente a saisi ses deux premières photos le
+  2026-11-12** (2048 x 1152, paysage). La page les affiche ; sans photo, elle
+  renvoie toujours vers Instagram.
 - Nombre de cours par saison : le champ « Nombre de cours inclus » des tarifs
   affiche « soit X € le cours », ce qui rend une carte et un abonnement
   comparables. Il est rempli pour la carte 10 cours, vide pour les quatre
