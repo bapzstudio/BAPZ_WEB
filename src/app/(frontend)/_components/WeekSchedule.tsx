@@ -39,6 +39,64 @@ function place(courses: Course[]): Placed[] {
   });
 }
 
+type Cellule = {
+  day: number;
+  startBand: number;
+  endBand: number;
+  courses: Course[];
+};
+
+/**
+ * Regroupe les cours d'une colonne en cellules qui ne se croisent jamais.
+ *
+ * Chaque cellule est posée dans la grille par `gridColumn` / `gridRow` : deux
+ * cellules d'une même colonne dont les plages de lignes se croisent se
+ * peignent donc l'une sur l'autre. C'est arrivé dès qu'un cours franchissait
+ * une frontière de bande — un cours de 18h30 à 19h30 occupe l'après-midi ET le
+ * soir, et se superposait à celui qui commence à 19h35 (constaté par la
+ * cliente le 2026-11-12, sur deux colonnes à la fois). Grouper par bande de
+ * DÉPART, comme on le faisait, ne suffit pas : ce qui doit partager une
+ * cellule, c'est ce qui partage une bande, quelle qu'en soit l'origine.
+ *
+ * On fusionne donc, jour par jour, toute suite de cours dont les bandes se
+ * touchent, et leurs cartes s'empilent dans la cellule résultante — ce qui est
+ * aussi le rendu honnête de deux cours qui ont bien lieu en même temps (un
+ * training libre de 8h à 22h et un stage à 15h).
+ *
+ * Les cours sont triés par heure de début, qui donne le même ordre que la
+ * bande de départ (`bandOf` est croissante) : le tri sert donc à la fois à la
+ * fusion et à l'ordre de lecture des cartes.
+ */
+function cellules(placed: Placed[]): Cellule[] {
+  const cells: Cellule[] = [];
+
+  for (let day = 0; day < JOURS.length; day++) {
+    const duJour = placed
+      .filter((p) => p.day === day)
+      .sort(
+        (a, b) => minutes(a.course.startTime) - minutes(b.course.startTime),
+      );
+
+    let courante: Cellule | undefined;
+    for (const p of duJour) {
+      if (courante && p.startBand <= courante.endBand) {
+        courante.endBand = Math.max(courante.endBand, p.endBand);
+        courante.courses.push(p.course);
+      } else {
+        courante = {
+          day,
+          startBand: p.startBand,
+          endBand: p.endBand,
+          courses: [p.course],
+        };
+        cells.push(courante);
+      }
+    }
+  }
+
+  return cells;
+}
+
 function CalendarCard({ course }: { course: Course }) {
   return (
     // L'eyebrow de la page annonce « clique sur un cours pour réserver » : la
@@ -143,27 +201,7 @@ export function WeekSchedule({ courses }: { courses: Course[] }) {
 
   const rowOf = (band: number) => usedBands.indexOf(band) + 1;
 
-  // Les cours démarrant le même jour dans la même bande sont empilés dans la
-  // cellule plutôt que superposés.
-  const cells = new Map<
-    string,
-    { day: number; startBand: number; endBand: number; courses: Course[] }
-  >();
-  for (const p of placed) {
-    const key = `${p.day}-${p.startBand}`;
-    const cell = cells.get(key);
-    if (cell) {
-      cell.endBand = Math.max(cell.endBand, p.endBand);
-      cell.courses.push(p.course);
-    } else {
-      cells.set(key, {
-        day: p.day,
-        startBand: p.startBand,
-        endBand: p.endBand,
-        courses: [p.course],
-      });
-    }
-  }
+  const cells = cellules(placed);
 
   const daysWithCourses = JOURS.map((day, index) => ({
     day,
@@ -201,7 +239,7 @@ export function WeekSchedule({ courses }: { courses: Course[] }) {
               gridTemplateRows: `repeat(${usedBands.length}, minmax(126px, auto))`,
             }}
           >
-            {[...cells.values()].map((cell) => (
+            {cells.map((cell) => (
               <div
                 key={`${cell.day}-${cell.startBand}`}
                 data-grille-cellule={cell.day}
