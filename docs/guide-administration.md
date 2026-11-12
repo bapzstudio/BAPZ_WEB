@@ -400,9 +400,11 @@ vide, ces pages affichent « À compléter ».
   automatiquement la rubrique **Images**. **Supprimer une image** la retire
   aussi des pages qui l'utilisent.
 - **Galerie** : chaque photo ajoutée dans la rubrique **Galerie** apparaît sur
-  la page Galerie, dans l'ordre d'affichage. Elles sont recadrées en format
-  portrait (2 de large pour 3 de haut) : garder le sujet vers le centre. Tant
-  que la rubrique est vide, la page invite à suivre le studio sur Instagram.
+  la page Galerie, dans l'ordre d'affichage, **entière et dans son format
+  d'origine** — rien n'est recadré, et une photo plus large que haute occupe
+  deux emplacements. Un clic l'agrandit au centre de l'écran ; le bouton
+  **Retour**, la touche Échap ou un clic à côté ramènent à la grille. Tant que
+  la rubrique est vide, la page invite à suivre le studio sur Instagram.
 
 ---
 

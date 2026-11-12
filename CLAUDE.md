@@ -760,9 +760,49 @@ le `sizes` des portraits — à changer ensemble.
 proximité du curseur, plus `card-interactive` pour le halo blanc mesuré
 `0 0 22px rgba(255,255,255,0.16)`. S'y ajoute, propre à la galerie, un zoom de
 la photo à 1,04 en 0,5 s, recadré par l'`overflow-hidden` de la boîte. Le zoom
-est sous `motion-safe` : en mouvement réduit, seul le halo répond. Les photos
-ne sont pas cliquables — c'est la seule carte du site à porter cette
-interaction sans être un lien.
+est sous `motion-safe` : en mouvement réduit, seul le halo répond. C'est la
+seule carte du site qui ne mène nulle part : elle ouvre la visionneuse.
+
+**Au clic, la photo s'agrandit** (`GalerieVisionneuse`, depuis le 2026-11-12).
+Aucune maquette ; tout est repris de l'existant — rayon 15, bordure `#3c3c3c`,
+halo `0 0 22px rgba(255,255,255,0.16)` de la carte engagée, pastille à contour
+pour le bouton « Retour », noir du fond pour le voile.
+
+- **`<dialog>` natif ouvert par `showModal()`** : Échap ferme, le focus est
+  retenu dans la visionneuse puis rendu à la vignette, le reste de la page
+  devient inerte, et la couche supérieure passe au-dessus de tout — nav et
+  grain compris — sans qu'aucun `z-index` n'ait à être inventé.
+- **Voile** : le noir du site à 84 % et un flou de 14 px. Sur une page déjà
+  presque noire, c'est le flou qui range la grille derrière la photo ; un
+  assombrissement seul ne se verrait pas.
+- **La photo glisse de sa vignette vers le centre** (FLIP : rectangle de
+  départ, rectangle d'arrivée, écart joué à l'envers), et y retourne à la
+  fermeture. Vignette et cadre ont le même rapport, donc l'échelle est la même
+  en largeur et en hauteur : rien n'est déformé.
+- **Le cadre est dimensionné par le CSS, pas par la photo** : largeur
+  `min(1700px, 100%, (100svh - 118px) × rapport)`, le rapport du fichier étant
+  posé en ligne (`--ratio`). Le mesurer sur la photo ne marche pas — tant
+  qu'elle n'est pas chargée elle n'a aucune dimension, et le cadre partait
+  d'un carré de 2 px, l'épaisseur de sa bordure, d'où une échelle de départ de
+  96 au lieu de 0,5.
+- **La vignette déjà décodée est posée en aperçu derrière la photo** le temps
+  que la grande arrive : un flou qui se précise plutôt qu'un cadre vide.
+- **Le défilement de la page est bloqué** pendant l'ouverture — `showModal()`
+  ne le fait pas — et la largeur de la barre de défilement est rendue à la
+  page en marge : `scrollbar-gutter: stable` ne réserve rien quand le
+  défilement est `hidden` (mesuré, 1265 → 1280 px). Vérifié ensuite : carte,
+  titre, nav et pied de page ne bougent pas d'un pixel.
+- **Mouvement réduit** : ni glissement ni fondu du voile ; la photo s'affiche
+  et se referme d'un coup.
+- **Sans JavaScript, le bouton d'ouverture n'existe pas** (`globals.css`,
+  `@media (scripting: enabled)`) : il ne pourrait rien ouvrir, et la photo est
+  déjà entière dans la grille. Il est étiré sur la carte comme un
+  `.bouton-carte`, et son contour de focus est rentré de 6 px —
+  l'`overflow-hidden` de la carte le rognerait sinon.
+- **Mesuré** : à 1680 px la photo passe de 793 à 1600 px de large. Sur un
+  téléphone de 390 px elle ne gagne que la gouttière (342 → 366) : la largeur
+  de l'écran est déjà la limite dans la grille, le gain y est l'isolement et
+  le centrage, pas la taille.
 
 ## SEO
 
