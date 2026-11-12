@@ -424,7 +424,7 @@ export interface Room {
 export interface Gallery {
   id: number;
   /**
-   * Recadrée en portrait (2 de large pour 3 de haut) sur le site : garder le sujet vers le centre.
+   * Affichée entière, dans son format d'origine : rien n'est recadré. Une photo plus large que haute occupe deux fois plus de place. Envoyer le fichier en pleine définition, il est réduit automatiquement.
    */
   image: number | Media;
   /**

@@ -747,6 +747,23 @@ boîte.** Qualité 90, comme les portraits des profs. `Media` ne déclare aucun
 `imageSizes` : les fichiers sont stockés en pleine définition, et une photo
 qui reste floue vient d'une source basse définition, pas du site.
 
+**Une colonne sous 640 px**, deux jusqu'à 1024, quatre au-delà (2026-11-12).
+En deux colonnes dès le téléphone, un portrait tombait à 163 px de large à
+390 px de fenêtre — une vignette ; pleine largeur, il en fait 342 (mesuré,
+342 x 513). Le `col-span-2` du paysage attend donc `sm` : dans une grille à
+une seule colonne, il créerait une deuxième colonne implicite et déborderait.
+Les trois paliers sont écrits deux fois, dans les classes de la grille et dans
+le `sizes` des portraits — à changer ensemble.
+
+**Au survol, l'interaction commune des cartes** (2026-11-12) : `cal-glow` et
+`data-glow-card` dans un `ProximityGlow`, qui allume le contour selon la
+proximité du curseur, plus `card-interactive` pour le halo blanc mesuré
+`0 0 22px rgba(255,255,255,0.16)`. S'y ajoute, propre à la galerie, un zoom de
+la photo à 1,04 en 0,5 s, recadré par l'`overflow-hidden` de la boîte. Le zoom
+est sous `motion-safe` : en mouvement réduit, seul le halo répond. Les photos
+ne sont pas cliquables — c'est la seule carte du site à porter cette
+interaction sans être un lien.
+
 ## SEO
 
 `lib/seo.ts` est le seul fichier qui connaît l'adresse publique et la forme des
