@@ -192,6 +192,35 @@ les horaires n'y pouvait rien : ce sont les bandes qui placent, pas les
 heures. Le planning de la maquette, lui, produit exactement les mêmes
 cellules qu'avant.
 
+**`/cours` a un texte et des titres de jours** (depuis le 2026-11-16). La page
+n'offrait que **dix mots de prose** — « Calendrier » et l'invite à cliquer —
+pour 201 mots visibles, le reste étant la grille des cours écrite deux fois
+(grille et liste, toutes deux dans le HTML pour que la page tienne sans
+JavaScript : 24 cartes pour 12 cours). Elle n'avait qu'un seul titre, son
+`h1`. Google l'a explorée le 2026-11-13 et **ne l'a pas indexée**. Deux
+changements, tous deux additifs :
+
+- le nom de chaque jour est un `h2` (`DayHeader`). Aucun changement visuel : la
+  couche `base` de Tailwind ramène déjà taille, graisse et marges d'un titre à
+  celles du texte courant, et tous les sélecteurs — CSS comme JavaScript —
+  passent par `[data-jour-titre]`, jamais par la balise ;
+- un texte éditable au-dessus du planning, champ « Texte au-dessus du
+  planning » des Réglages (`scheduleIntro`), rendu comme la présentation de
+  l'accueil (une ligne vide sépare deux paragraphes, vide = rien ne
+  s'affiche). Écrit par Matthias, **posé en base par la migration
+  `20261116_104854_texte_calendrier` et modifiable par la cliente** : la
+  migration ne le pose que si le champ est vide, donc elle n'écrase jamais sa
+  version et la rejouer ne change rien.
+
+Au passage, la description de la page annonçait « street enfant » à Google,
+cours qui n'est plus au planning. **Les disciplines citées dans le texte comme
+dans la description suivent le planning réel** : heels, commercial, hip-hop,
+contemporain lyrical, training libre.
+
+Ce qui n'a pas été corrigé, faute de pouvoir l'être sans casse : le calendrier
+reste écrit deux fois dans le HTML. Supprimer une des deux vues casserait
+l'affichage sans JavaScript, qui est une règle du projet.
+
 **Tous les titres de page se déplient** mot par mot au chargement (`FoldText`,
 écrit pour le hero). Seule exception, le `h2` « Locations de salle » de
 `/tarifs` : `FoldText` joue au chargement et non au défilement, donc un titre

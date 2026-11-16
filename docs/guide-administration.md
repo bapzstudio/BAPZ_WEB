@@ -326,6 +326,13 @@ s'écrivent ici :
   et en gras), entoure-les de deux astérisques, comme dans les bios :
   `**tous les niveaux**`.
 
+### Page Calendrier
+
+- **Texte au-dessus du planning** : quelques phrases avant le calendrier, qui
+  disent ce qu'on danse, à quels niveaux et comment réserver. Un premier texte
+  est déjà écrit : modifie-le librement. Laisse-le vide si tu n'en veux pas,
+  le planning s'affiche alors seul.
+
 **N'écris ni prix, ni horaires, ni adresse dans ces textes.** Ils sont déjà
 affichés ailleurs sur le site, et ceux que tu écrirais ici ne se mettraient pas
 à jour : au premier changement de tarif, la présentation deviendrait fausse.

@@ -167,14 +167,21 @@ function DayHeader({ day }: { day: string }) {
   // Les attributs `data-jour-…` repèrent le nom et le filet pour les deux
   // affichages : CalendrierAnimations pour la liste, CalendrierGrille pour la
   // grille.
+  //
+  // Le nom du jour est un `h2` depuis le 2026-11-16 : la page n'avait qu'un
+  // seul titre, son `h1`, pour douze cours. Le rendu ne bouge pas, la couche
+  // `base` de Tailwind ramenant déjà taille et marges d'un titre à celles du
+  // texte courant. Le nom apparaît deux fois dans le HTML, comme tout le
+  // calendrier (grille et liste) ; chaque visiteur n'en voit qu'un, l'autre
+  // vue étant en `display: none`, donc ignorée des lecteurs d'écran.
   return (
     <>
-      <div
+      <h2
         data-jour-titre=""
         className="font-mono text-base uppercase tracking-widest text-discret"
       >
         {day}
-      </div>
+      </h2>
       <div data-jour-filet="" className="mt-4 h-px bg-rule-faint" />
     </>
   );

@@ -98,6 +98,7 @@ export async function getSiteSettings(): Promise<SiteSettings> {
           }))
           .filter((row) => row.question && row.answer)
       : [],
+    scheduleIntro: (doc.scheduleIntro as string) || undefined,
     address: String(doc.address ?? ""),
     postalCode: (doc.postalCode as string) || undefined,
     city: (doc.city as string) || undefined,

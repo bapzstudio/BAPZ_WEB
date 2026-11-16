@@ -136,6 +136,8 @@ export interface SiteSettings {
   teamIntro?: string;
   /** Questions fréquentes de l'accueil, reprises dans les données structurées. */
   faq?: { question: string; answer: string }[];
+  /** Texte au-dessus du planning de `/cours`. Paragraphes séparés par une ligne vide. */
+  scheduleIntro?: string;
   /** « 2 rue du Jardin d'Écosse, Ars-Laquenexy » : la commune suit la dernière virgule. */
   address: string;
   postalCode?: string;
