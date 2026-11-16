@@ -14,7 +14,7 @@ const TEXTE = [
     "de training libre, sur demande, pour répéter ou travailler seul.",
   "Chaque cours affiche son niveau : si tu débutes, vise ceux marqués " +
     "débutant ou tous niveaux, les autres demandent quelques bases. Clique " +
-    "sur un cours pour ouvrir la demande de réservation — tu peux commencer " +
+    "sur un cours pour ouvrir la demande de réservation. Tu peux commencer " +
     "par un cours d'essai avant de choisir une formule. Les stages et " +
     "événements ponctuels apparaissent à leur date, dans un cadre coloré " +
     "portant le libellé « Événement ».",

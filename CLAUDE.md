@@ -350,6 +350,13 @@ les vagues de GradientWaves.
   dégradent, deux pistes écartées pour l'instant : démarrer le dégradé au
   premier geste du visiteur, ou le remplacer par une version CSS.
 
+**Jamais de tiret cadratin « — »** (U+2014), demandé par Matthias le
+2026-11-16 : ni dans le code, ni dans les commentaires, ni dans la
+documentation, ni dans les messages de commit, ni dans les textes affichés sur
+le site. Deux-points pour annoncer, virgules pour une incise, parenthèses pour
+une précision, ou deux phrases. Le demi-cadratin « – » est à éviter de même ;
+le trait d'union « - » des mots composés reste normal.
+
 **Les libellés de l'admin sont en français**, y compris les `label`,
 `description` et `labels` des collections : c'est la cliente qui les lit.
 
