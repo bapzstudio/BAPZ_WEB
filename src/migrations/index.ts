@@ -82,6 +82,6 @@ export const migrations = [
   {
     up: migration_20261024_105754_date_evenements_photo_presentation.up,
     down: migration_20261024_105754_date_evenements_photo_presentation.down,
-    name: '20261024_105754_date_evenements_photo_presentation'
+    name: '20261024_105754_date_evenements_photo_presentation',
   },
 ];

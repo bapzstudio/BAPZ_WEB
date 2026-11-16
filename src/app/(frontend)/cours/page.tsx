@@ -7,8 +7,10 @@ import { pageMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = pageMetadata({
   title: "Planning des cours de danse à Metz",
+  // Les disciplines sont celles réellement au planning : « street enfant »
+  // y figurait encore le 2026-11-16 alors que le cours n'existe plus.
   description:
-    "Planning des cours de danse à Metz : heels, hip hop/commercial, street enfant. Tous niveaux.",
+    "Planning hebdomadaire des cours de danse de BAPZ Studio, près de Metz : heels, commercial, hip-hop et contemporain lyrical, du débutant à l'intermédiaire.",
   path: "/cours",
 });
 

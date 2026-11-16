@@ -192,6 +192,26 @@ les horaires n'y pouvait rien : ce sont les bandes qui placent, pas les
 heures. Le planning de la maquette, lui, produit exactement les mêmes
 cellules qu'avant.
 
+**Le nom de chaque jour du calendrier est un `h2`** (`DayHeader`, depuis le
+2026-11-16). La page n'avait qu'un seul titre, son `h1`, pour douze cours.
+Aucun changement visuel : la couche `base` de Tailwind ramène déjà taille,
+graisse et marges d'un titre à celles du texte courant, et tous les sélecteurs,
+CSS comme JavaScript, passent par `[data-jour-titre]`, jamais par la balise.
+
+Sa description annonçait « street enfant » à Google, cours qui n'est plus au
+planning. **Les disciplines citées suivent le planning réel** : heels,
+commercial, hip-hop, contemporain lyrical, training libre.
+
+Google a exploré `/cours` le 2026-11-13 et ne l'a pas indexée. Un paragraphe
+de présentation au-dessus du planning, éditable depuis les Réglages, a été
+écrit puis **refusé par Matthias le 2026-11-16** : la pastille « ÉVÉNEMENT »
+dit déjà ce qu'est une carte colorée, le cours d'essai est présenté sur
+l'accueil, et les niveaux se comprennent sans glose. Ne pas le reproposer.
+Restent deux faits mesurés, si la question revient : la page ne contient que
+dix mots de prose, et son calendrier est écrit deux fois dans le HTML (grille
+et liste, 24 cartes pour 12 cours), ce qu'on ne peut pas corriger sans casser
+l'affichage sans JavaScript.
+
 **Tous les titres de page se déplient** mot par mot au chargement (`FoldText`,
 écrit pour le hero). Seule exception, le `h2` « Locations de salle » de
 `/tarifs` : `FoldText` joue au chargement et non au défilement, donc un titre
@@ -320,6 +340,13 @@ les vagues de GradientWaves.
   vérifier dans la Search Console après la mise en ligne.** Si elles se
   dégradent, deux pistes écartées pour l'instant : démarrer le dégradé au
   premier geste du visiteur, ou le remplacer par une version CSS.
+
+**Jamais de tiret cadratin « — »** (U+2014), demandé par Matthias le
+2026-11-16 : ni dans le code, ni dans les commentaires, ni dans la
+documentation, ni dans les messages de commit, ni dans les textes affichés sur
+le site. Deux-points pour annoncer, virgules pour une incise, parenthèses pour
+une précision, ou deux phrases. Le demi-cadratin « – » est à éviter de même ;
+le trait d'union « - » des mots composés reste normal.
 
 **Les libellés de l'admin sont en français**, y compris les `label`,
 `description` et `labels` des collections : c'est la cliente qui les lit.
