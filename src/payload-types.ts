@@ -802,10 +802,6 @@ export interface SiteSetting {
       }[]
     | null;
   /**
-   * Quelques phrases au-dessus du calendrier, de 80 à 150 mots : les danses enseignées, les niveaux, comment réserver. Une ligne vide sépare deux paragraphes. Ne pas y recopier les horaires ni les prix, ils s'affichent déjà ailleurs. Laisser vide : le texte n'apparaît pas.
-   */
-  scheduleIntro?: string | null;
-  /**
    * Numéro et rue, puis la commune après une virgule : 2 rue du Jardin d'Écosse, Ars-Laquenexy. Le texte après la dernière virgule est lu comme la commune. Affichée sur l'accueil et la page Contact, et transmise à Google.
    */
   address?: string | null;
@@ -899,7 +895,6 @@ export interface SiteSettingsSelect<T extends boolean = true> {
         answer?: T;
         id?: T;
       };
-  scheduleIntro?: T;
   address?: T;
   postalCode?: T;
   city?: T;

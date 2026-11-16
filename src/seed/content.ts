@@ -282,11 +282,6 @@ export const siteSettings: SiteSettings = {
   // Mot sur l'équipe, au-dessus des profs de l'accueil. Il reprend la phrase
   // qui figurait dans la présentation : chaque texte a sa section, et rien
   // n'est dit deux fois. Sous chaque prof, l'accroche est tirée de sa bio.
-  // Texte au-dessus du planning de /cours. Les disciplines citées sont
-  // celles réellement au planning ; pas d'horaires ni de prix, ils
-  // s'affichent déjà sur la page et sur /tarifs.
-  scheduleIntro:
-    "Le planning ci-dessous est une semaine type : les cours reviennent aux mêmes horaires chaque semaine. On y danse le heels, le commercial et le hip-hop, et le contemporain lyrical. Le studio ouvre aussi des créneaux de training libre, sur demande, pour répéter ou travailler seul.\n\nChaque cours affiche son niveau : si tu débutes, vise ceux marqués débutant ou tous niveaux, les autres demandent quelques bases. Clique sur un cours pour ouvrir la demande de réservation. Tu peux commencer par un cours d'essai avant de choisir une formule. Les stages et événements ponctuels apparaissent à leur date, dans un cadre coloré portant le libellé « Événement ».",
   teamIntro:
     "Les cours sont donnés par une équipe passée par la scène, les compagnies, le conservatoire et les studios de Paris, Strasbourg ou Los Angeles, qui transmet autant la technique que l'attitude et la confiance en soi.",
   faq: [

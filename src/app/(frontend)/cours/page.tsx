@@ -1,9 +1,8 @@
 import type { Metadata } from "next";
 import { FoldText } from "../_components/FoldText";
 import { PageTransition } from "../_components/PageTransition";
-import { Reveal } from "../_components/Reveal";
 import { WeekSchedule } from "../_components/WeekSchedule";
-import { getCourses, getSiteSettings } from "@/lib/queries";
+import { getCourses } from "@/lib/queries";
 import { pageMetadata } from "@/lib/seo";
 
 export const metadata: Metadata = pageMetadata({
@@ -20,17 +19,7 @@ export const metadata: Metadata = pageMetadata({
 export const revalidate = 3600;
 
 export default async function CoursPage() {
-  const [courses, settings] = await Promise.all([
-    getCourses(),
-    getSiteSettings(),
-  ]);
-
-  // Texte des Réglages, découpé comme la présentation de l'accueil : une ligne
-  // vide sépare deux paragraphes. Vide, rien ne s'affiche.
-  const paragraphes = (settings.scheduleIntro ?? "")
-    .split(/\n\s*\n/)
-    .map((p) => p.trim())
-    .filter(Boolean);
+  const courses = await getCourses();
 
   return (
     <PageTransition>
@@ -42,19 +31,7 @@ export default async function CoursPage() {
           SEMAINE TYPE - CLIQUE SUR UN COURS POUR RÉSERVER
         </p>
 
-        {paragraphes.length > 0 && (
-          <Reveal className="mt-7 flex max-w-190 flex-col gap-4 text-base leading-[1.55] text-secondary sm:text-lg">
-            {paragraphes.map((paragraphe) => (
-              <p key={paragraphe}>{paragraphe}</p>
-            ))}
-          </Reveal>
-        )}
-
-        <div
-          className={
-            paragraphes.length > 0 ? "mt-[var(--vr-64)]" : "mt-[var(--vr-92)]"
-          }
-        >
+        <div className="mt-[var(--vr-92)]">
           <WeekSchedule courses={courses} />
         </div>
       </div>

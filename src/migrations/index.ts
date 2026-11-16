@@ -12,7 +12,6 @@ import * as migration_20261013_132242_visibilite_cours_profs from './20261013_13
 import * as migration_20261024_100042_couleur_cours from './20261024_100042_couleur_cours';
 import * as migration_20261024_100054_reglages_adresse_logo from './20261024_100054_reglages_adresse_logo';
 import * as migration_20261024_105754_date_evenements_photo_presentation from './20261024_105754_date_evenements_photo_presentation';
-import * as migration_20261116_104854_texte_calendrier from './20261116_104854_texte_calendrier';
 
 export const migrations = [
   {
@@ -84,10 +83,5 @@ export const migrations = [
     up: migration_20261024_105754_date_evenements_photo_presentation.up,
     down: migration_20261024_105754_date_evenements_photo_presentation.down,
     name: '20261024_105754_date_evenements_photo_presentation',
-  },
-  {
-    up: migration_20261116_104854_texte_calendrier.up,
-    down: migration_20261116_104854_texte_calendrier.down,
-    name: '20261116_104854_texte_calendrier'
   },
 ];

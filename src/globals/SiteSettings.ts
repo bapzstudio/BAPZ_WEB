@@ -109,26 +109,6 @@ export const SiteSettings: GlobalConfig = {
       ],
     },
     {
-      // Le calendrier n'offrait à Google que dix mots de prose — « Calendrier »
-      // et l'invite à cliquer —, le reste étant la grille des cours, écrite
-      // deux fois (grille et liste, cf. WeekSchedule). Google l'a explorée le
-      // 2026-11-13 et ne l'a pas indexée. Ce texte lui donne de quoi comprendre
-      // la page, et au visiteur de quoi s'y retrouver.
-      type: "collapsible",
-      label: "Page Calendrier",
-      fields: [
-        {
-          name: "scheduleIntro",
-          type: "textarea",
-          label: "Texte au-dessus du planning",
-          admin: {
-            description:
-              "Quelques phrases au-dessus du calendrier, de 80 à 150 mots : les danses enseignées, les niveaux, comment réserver. Une ligne vide sépare deux paragraphes. Ne pas y recopier les horaires ni les prix, ils s'affichent déjà ailleurs. Laisser vide : le texte n'apparaît pas.",
-          },
-        },
-      ],
-    },
-    {
       type: "collapsible",
       label: "Coordonnées",
       fields: [
