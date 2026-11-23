@@ -57,7 +57,7 @@ export function AccueilPresentation({
               aria-hidden
               className="photo-attente aspect-video h-full font-mono text-petit text-discret lg:aspect-auto lg:min-h-72"
             >
-              [ photo — le studio ]
+              [ photo du studio ]
             </div>
           )}
         </Reveal>

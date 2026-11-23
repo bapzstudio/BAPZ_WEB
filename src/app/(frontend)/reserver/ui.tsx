@@ -86,7 +86,7 @@ export function ResumeErreurs({ erreurs }: { erreurs: ErreurChamp[] }) {
               onClick={() => document.getElementById(erreur.id)?.focus()}
               className="text-left text-petit underline decoration-1 underline-offset-4 opacity-90 transition-opacity hover:opacity-100"
             >
-              <span className="font-semibold">{erreur.label}</span> —{" "}
+              <span className="font-semibold">{erreur.label}</span> :{" "}
               {erreur.message}
             </button>
           </li>

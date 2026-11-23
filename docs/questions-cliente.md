@@ -5,24 +5,26 @@
 > suit est réglé ; le détail reste ici parce qu'il garde la trace des
 > décisions prises et de leurs raisons.
 >
-> **Réglé :** le planning (validé tel quel le 2026-09-25) · les sept écarts
-> avec les maquettes de la §5 (validés par la graphiste le 2026-09-25) · le
+> **Réglé :** le planning (validé tel quel le 2026-09-25) · les six premiers
+> écarts avec les maquettes de la §5 (validés par la graphiste le 2026-09-25) · le
 > nom de domaine de la §6 (`bapzstudio.fr`, en ligne) · les textes de
 > l'accueil de la §7 (relus).
 >
 > **Passé à la cliente :** informations légales, photos, prix, horaires,
-> téléphone, galerie, planning — elle les saisit elle-même dans l'admin, qui
+> téléphone, galerie, planning : elle les saisit elle-même dans l'admin, qui
 > lui a été remis. Ce ne sont plus des points de développement.
 >
 > **Reste vraiment ouvert**, et ce sont des décisions, pas des champs à
 > remplir :
+> - la **palette des couleurs d'événement** (§5, écart n° 7), ajoutée le
+>   2026-10-24, après la validation de la graphiste ;
 > - les **trois arbitrages du parcours de réservation** (§4) : délai de
 >   réponse annoncé, téléphone obligatoire ou non, places limitées par cours ;
 > - les **« cours privés »** (§4), toujours proposés dans le tunnel sans
 >   figurer sur aucune maquette ;
 > - le **forfait 5 h des salles** (§3) : les 350 € et 550 € annoncés valent
 >   plus du double du tarif horaire, et aucun champ de l'admin ne permet de
->   l'afficher — il faudrait en ajouter un, donc une migration ;
+>   l'afficher ; il faudrait en ajouter un, donc une migration ;
 > - l'**hébergeur dans les mentions légales**, à saisir par la cliente : la
 >   dernière mention « À compléter » du site.
 
@@ -31,7 +33,7 @@ toi, et les quelques points où le rendu s'écarte des maquettes de ta graphiste
 
 ---
 
-## 1. Le planning des cours — le point le plus important
+## 1. Le planning des cours, le point le plus important
 
 Deux sources se contredisent, et il faut trancher.
 
@@ -51,13 +53,13 @@ et Hannane).
 
 Aujourd'hui, c'est le planning de la maquette qui est affiché sur le site.
 
-**Ce dont j'ai besoin :** ta semaine réelle, cours par cours — jour, horaire,
+**Ce dont j'ai besoin :** ta semaine réelle, cours par cours : jour, horaire,
 niveau, prof, et la salle si tu en as plusieurs. Tu pourras ensuite la modifier
 toi-même à tout moment depuis l'administration.
 
 ---
 
-## 2. Les informations légales — obligatoires avant la mise en ligne
+## 2. Les informations légales, obligatoires avant la mise en ligne
 
 Elles s'affichent aujourd'hui « À compléter » sur les pages Mentions légales et
 Confidentialité, volontairement : une mention manquante doit se voir.
@@ -88,7 +90,7 @@ mention « ouverture 2027 » et non réservable). Deux points restent à régler
 
 Et une vérification : la « petite/moyenne salle » de ton message correspond-
 elle bien à la salle B, celle qui n'ouvre qu'en 2027 ? Si oui, tu annonces un
-tarif pour une salle pas encore disponible — ce qui se défend, mais autant que
+tarif pour une salle pas encore disponible, ce qui se défend, mais autant que
 ce soit volontaire.
 
 **La galerie.** Aucune photo pour l'instant : la page invite à te suivre sur
@@ -123,8 +125,8 @@ propose aujourd'hui. À confirmer.
 Ta graphiste a livré des maquettes fixes ; un site vivant demande quelques
 ajustements. Sept méritent ton accord.
 
-1. **L'accueil s'ouvre sur un écran plein** — le titre et le logo qui se
-   dessine — et le reste (boutons, prochains cours) apparaît quand on fait
+1. **L'accueil s'ouvre sur un écran plein** (le titre et le logo qui se
+   dessine), et le reste (boutons, prochains cours) apparaît quand on fait
    défiler. La maquette faisait tenir tout l'accueil dans un seul écran.
 2. **Le texte d'introduction grossit sur les grands écrans.** À la taille de la
    maquette, il paraissait perdu à côté d'un titre très grand.
@@ -164,7 +166,7 @@ attendant, il fonctionnera sur une adresse temporaire fournie par l'hébergeur.
 
 ---
 
-## 7. Les textes de l'accueil — à relire
+## 7. Les textes de l'accueil, à relire
 
 Pour que Google trouve de quoi référencer l'accueil, il présente maintenant un
 aperçu de chaque page (cours, profs, tarifs, adresse), un court texte sur le
@@ -178,8 +180,8 @@ tout modifier toi-même dans l'administration (Réglages du site → Accueil).
 - **« à quelques minutes de Metz »** et **« à côté de Metz »** : la formulation
   te convient-elle pour situer le studio ?
 - **Le code postal 57530** pour Ars-Laquenexy, envoyé à Google avec l'adresse.
-- **Le mot sur l'équipe** — « une équipe passée par la scène, les compagnies,
-  le conservatoire et les studios de Paris, Strasbourg ou Los Angeles » — :
+- **Le mot sur l'équipe** (« une équipe passée par la scène, les compagnies,
+  le conservatoire et les studios de Paris, Strasbourg ou Los Angeles ») :
   résumé des bios de Léna, Lara et Alessia.
 - **Le début de chaque bio**, désormais affiché sous chaque prof sur l'accueil
   pour donner envie d'ouvrir sa fiche. Il est pris automatiquement : ce sont

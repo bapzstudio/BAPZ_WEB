@@ -46,7 +46,7 @@ Cloudflare, OVH pour le domaine. Matthias y est collaborateur.
 | `UPLOADTHING_TOKEN` | jeton de l'application UploadThing |
 | `RESEND_API_KEY` | clé API Resend |
 | `CONTACT_TO_EMAIL` | boîte qui reçoit les messages |
-| `CONTACT_FROM_EMAIL` | `BAPZ Studio <contact@bapzstudio.fr>` — posé le 2026-11-07, une fois le domaine vérifié chez Resend |
+| `CONTACT_FROM_EMAIL` | `BAPZ Studio <contact@bapzstudio.fr>`, posé le 2026-11-07, une fois le domaine vérifié chez Resend |
 | `NEXT_PUBLIC_TURNSTILE_SITE_KEY` | clé de site du widget Cloudflare |
 | `TURNSTILE_SECRET_KEY` | clé secrète du même widget |
 | `NEXT_PUBLIC_SITE_URL` | `https://bapzstudio.fr` depuis le 2026-11-07 |
@@ -98,7 +98,7 @@ convertit pas.
 - [ ] Brancher le domaine dans Vercel, puis créer les enregistrements DNS chez
       le registrar. Attendre la propagation et le certificat HTTPS.
 - [ ] Mettre `NEXT_PUBLIC_SITE_URL` à jour avec le vrai domaine, puis
-      redéployer — sinon les liens de partage pointent encore sur l'adresse
+      redéployer, sinon les liens de partage pointent encore sur l'adresse
       temporaire.
 
 ---
@@ -147,7 +147,7 @@ convertit pas.
 - **Chaque déploiement migre la base** (`vercel-build` → `pnpm migrer`), y
   compris un déploiement **Preview** : les variables Preview pointent sur la
   même base que la production (section 3). Une branche poussée migre donc la
-  production avant même d'être fusionnée — d'où des migrations toujours
+  production avant même d'être fusionnée : d'où des migrations toujours
   compatibles avec le code encore en ligne.
 
 ### Modifications du 2026-10-24 (logos, couleur des événements, adresse)
@@ -170,7 +170,7 @@ en ligne :
 
 ---
 
-## 9. Bascule sur `bapzstudio.fr` — fait le 2026-11-07
+## 9. Bascule sur `bapzstudio.fr`, faite le 2026-11-07
 
 Domaine acheté chez **OVH**, zone DNS hébergée chez OVH (`dns103.ovh.net`,
 `ns103.ovh.net`), site servi par Vercel.
@@ -190,8 +190,8 @@ domaine, `CONTACT_FROM_EMAIL` renseignée, redéploiement.
 **Vérifié de bout en bout le jour même** : certificat HTTPS, URL canonique
 (`Ctrl+U` → `canonical`), envoi du formulaire de contact, demande complète
 dans le tunnel, réception côté studio **depuis `contact@bapzstudio.fr`**, et
-accusé de réception reçu par le visiteur — ce dernier mail n'était jamais
-parti auparavant, faute de domaine vérifié.
+accusé de réception reçu par le visiteur (ce dernier mail n'était jamais
+parti auparavant, faute de domaine vérifié).
 
 **Trois pièges rencontrés, pour la prochaine fois :**
 
@@ -206,7 +206,7 @@ parti auparavant, faute de domaine vérifié.
   serveurs OVH actifs signifient que la zone existe.
 - **Changer `NEXT_PUBLIC_SITE_URL` ne suffit pas** : la valeur est inlinée dans
   le bundle au build. Sans redéploiement, le site continue de servir
-  l'ancienne adresse en canonique, et le garde-fou de `seo.ts` ne le voit pas —
+  l'ancienne adresse en canonique, et le garde-fou de `seo.ts` ne le voit pas :
   il ne détecte qu'une variable *vide*, jamais une variable *périmée*.
   Décocher « Use existing Build Cache » au redéploiement.
 

@@ -1,4 +1,4 @@
-# BAPZ Studio — contexte projet
+# BAPZ Studio : contexte projet
 
 Site vitrine + interface d'administration pour BAPZ Studio (studio de danse),
 dans une seule application Next.js 16 + Payload 3. La cliente édite son contenu
@@ -27,8 +27,8 @@ pnpm lint
 ```
 
 `playwright` (dépendance de développement) n'est appelé par aucun script : il
-sert aux vérifications au navigateur — mesures au pixel, captures, parcours au
-clavier — lancées au cas par cas.
+sert aux vérifications au navigateur (mesures au pixel, captures, parcours au
+clavier), lancées au cas par cas.
 
 **pnpm uniquement.** Ne jamais lancer `npm install` ici. `@payloadcms/translations`
 est importé directement par `src/payload.config.ts` et n'est résolu que parce
@@ -40,7 +40,7 @@ hoisting comme npm le faisait.
 ```
 src/
 ├── payload.config.ts        collections, adaptateur Postgres, UploadThing, admin FR
-├── payload-types.ts         GÉNÉRÉ — ne pas éditer à la main
+├── payload-types.ts         GÉNÉRÉ, ne pas éditer à la main
 ├── collections/             un fichier par collection
 ├── globals/SiteSettings.ts  réglages éditables du site (hero, présentation, FAQ, adresse, bandeau)
 ├── migrations/              GÉNÉRÉ par `payload migrate:create`, à versionner
@@ -56,7 +56,7 @@ src/
     │   ├── _components/     composants réutilisables
     │   ├── _sections/       blocs de page (hero, sections de l'accueil)
     │   └── globals.css      tout le design
-    └── (payload)/           /admin et l'API — GÉNÉRÉ, ne pas modifier
+    └── (payload)/           /admin et l'API, GÉNÉRÉ, ne pas modifier
 ```
 
 ## Règles de ce projet
@@ -78,7 +78,7 @@ relevées au pixel sur les exports Figma, qui vivent hors du repo dans
   `#707070`, sous le seuil de contraste (4,04:1) ; `#8a8a8a` est le plus proche
   qui passe partout. `#707070` (`--rule`) reste aux filets et contours
 - Tailles nommées des petits textes : `text-label` 11 px, `text-petit` 13 px,
-  `text-courant` 15 px — pas de valeur libre à côté
+  `text-courant` 15 px, pas de valeur libre à côté
 - Erreurs de saisie en rouge `--erreur` (`#ff6b6b`, `text-erreur`), depuis le
   2026-09-16 : en gris secondaire, un champ oublié ne se distinguait pas du
   reste de la page. Aucune maquette ne donne de rouge ; celui-ci est le plus
@@ -101,9 +101,9 @@ hauts passent par les variables `--vr-*` de `globals.css`, exactes à 1080 et
 comprimées deux fois plus vite en dessous.
 
 **L'accueil fait exception depuis le 2026-09-14** : il s'ouvre sur une landing
-qui occupe l'écran entier (`100svh` moins les 67px de la nav) — l'œil-de-bœuf,
+qui occupe l'écran entier (`100svh` moins les 67px de la nav) : l'œil-de-bœuf,
 le titre qui se déplie, le sous-titre, le logo qui se dessine et une invite à
-défiler — et le reste vient au défilement : boutons et « Prochains cours »
+défiler ; le reste vient au défilement : boutons et « Prochains cours »
 (`#decouvrir`, cible de la flèche à toutes les largeurs), puis un extrait de
 chaque page (cf. « SEO »), puis le bandeau. La flèche descendait jusqu'en bas
 de page sur ordinateur tant que la suite tenait en un écran ; depuis les
@@ -172,8 +172,8 @@ de 3 px à 1680). Sous 1440 on garde la liste. Au-dessus, la carte est fluide
 entre 1440 et 1920 : titre `clamp(14px, 0.94vw, 18px)`, marge intérieure
 `clamp(14px, 1.04vw, 20px)`, valeurs de la maquette atteintes à 1920 ;
 l'horaire et la salle ne se coupent jamais, la salle passe dessous ; césure
-française en filet de sécurité. Le seuil est écrit deux fois — `min-[1440px]`
-dans `WeekSchedule`, `matchMedia` dans `CalendrierAnimations` — à changer
+française en filet de sécurité. Le seuil est écrit deux fois (`min-[1440px]`
+dans `WeekSchedule`, `matchMedia` dans `CalendrierAnimations`) : à changer
 ensemble.
 
 La grille hebdomadaire (à partir de 1440 px) a son pendant, `CalendrierGrille` :
@@ -190,12 +190,12 @@ cellules sont posées par `gridColumn` / `gridRow` : deux cellules d'une même
 colonne aux plages de lignes croisées se peignent l'une sur l'autre. Grouper
 par bande de DÉPART, comme on le faisait, laissait donc un cours qui traverse
 une frontière de bande se superposer à celui qui démarre dans la bande
-traversée — et le recouvrement est total, pas partiel, parce qu'une carte
+traversée ; et le recouvrement est total, pas partiel, parce qu'une carte
 porte `h-full` et s'étire sur toute la hauteur de sa zone (mesuré : la carte
 de 18h30-19h30 fait 396 px et couvre entièrement celle de 19h35, le training
 libre du samedi 540 px et avale le stage du jour). Les cours d'une colonne
 sont donc fusionnés, par intersection de leurs bandes, en cellules qui ne se
-croisent jamais, et leurs cartes s'empilent — ce qui est aussi le rendu
+croisent jamais, et leurs cartes s'empilent, ce qui est aussi le rendu
 honnête de deux cours qui ont bien lieu en même temps. Signalé par la cliente
 le 2026-11-12 sur le jeudi et sur le samedi ; elle avait d'abord cru que cela
 tenait aux événements datés, alors que le jeudi n'en contient aucun. Changer
@@ -255,7 +255,7 @@ Tout passe par des classes `sm:` : au-dessus, les valeurs de la maquette
 restent intactes.
 
 **Une seule interaction pour toutes les cartes cliquables.** Elles n'ont pas
-toutes la même apparence — l'accueil utilise `.card` (bordure plate, rayon 12)
+toutes la même apparence : l'accueil utilise `.card` (bordure plate, rayon 12)
 et les autres pages `.cal-card` (bordure en dégradé, rayon 15), parce que c'est
 ce que montrent les maquettes. Mais elles réagissent toutes pareil : `cal-glow`
 allume la bordure selon la proximité du curseur, et au survol toutes portent le
@@ -372,7 +372,7 @@ quel format. Le guide d'utilisation, ébauche du PDF, est
 (`collections/hooks/revalider.ts`), les réglages `revaliderApresReglages`.
 Les pages lisent Payload sans `fetch`, donc Next les fige au build : sans ce
 hook, une modification faite dans l'admin n'apparaîtrait qu'au déploiement
-suivant. `pnpm dev` rend tout à la demande et ne permet pas de le constater —
+suivant. `pnpm dev` rend tout à la demande et ne permet pas de le constater :
 seul `pnpm build && pnpm start` le montre. L'accueil est en plus régénéré
 toutes les heures (`revalidate = 3600`) : « Prochains cours » y dépend de
 l'heure (`lib/planning.ts`, calculé à l'heure de Paris, le serveur tournant en
@@ -387,7 +387,7 @@ les pages de prof.
 **« Afficher sur le site »** (case des cours et des profs, demandée par la
 cliente le 2026-10-13) : le filtre vit dans `queries.ts` et nulle part
 ailleurs. Un cours décoché sort du calendrier, de l'accueil, des pages de prof
-**et du catalogue de réservation** — sans quoi un vieux lien
+**et du catalogue de réservation**, sans quoi un vieux lien
 `?cours=<slug>` permettrait encore de réserver un cours annulé. Une prof
 décochée sort de `/profs`, de l'accueil, de sa page et du sitemap, par la règle
 `aUneFiche` déjà existante.
@@ -467,7 +467,7 @@ d'Écosse, dans les Réglages et la FAQ) et remplace le fichier du logo de la
 nav. Ce téléversement passe par UploadThing pendant le build : il tourne hors
 de la transaction de la migration (une mise à jour Payload sans `req`, donc
 annulée en entier si l'envoi échoue) et **son échec n'arrête pas le
-déploiement** — un avertissement au journal, le logo se remplace aussi depuis
+déploiement** : un avertissement au journal, le logo se remplace aussi depuis
 l'admin. Sans logo rattaché ou sans `UPLOADTHING_TOKEN` (base locale, base
 vierge), il ne fait rien : la base se reconstruit toujours depuis les seules
 migrations. Vérifié sur une base locale portant « 2A », « 2a, rue »,
@@ -475,7 +475,7 @@ migrations. Vérifié sur une base locale portant « 2A », « 2a, rue »,
 
 Le build passe par `pnpm migrer` (`scripts/migrer.ts`), **pas par
 `payload migrate`** : sur une base qui a déjà servi à un `pnpm dev`, ce dernier
-pose la question « mode dev » et reste bloqué sans terminal, sans rien migrer —
+pose la question « mode dev » et reste bloqué sans terminal, sans rien migrer ;
 c'est ce qui a fait échouer le premier build de la PR #5. Le script retire
 cette marque (une ligne au lot -1 de `payload_migrations`, aucune donnée du
 site), migre, puis fait échouer le build si une migration manque. Sur une base
@@ -484,7 +484,7 @@ y passer par `pnpm payload migrate`. Ne jamais brancher `pnpm dev` sur la base
 de production : la marque reviendrait, et le schéma poussé en dev pourrait
 diverger des migrations.
 
-**Ni `migrate:create` ni `generate:types` n'ont besoin d'une base** — vérifié
+**Ni `migrate:create` ni `generate:types` n'ont besoin d'une base**, vérifié
 le 2026-10-13 contre une base injoignable. Le diff se calcule sur les
 instantanés drizzle versionnés à côté de chaque migration (les `.json` de
 `src/migrations/`), pas sur le schéma réel. Une migration peut donc être écrite
@@ -508,7 +508,7 @@ par les migrations. Trois conséquences :
   `IF EXISTS` au SQL généré, sinon elle échoue sur « column already exists » et
   la base de développement ne peut plus rattraper l'état des migrations.
 - `payload migrate` pose alors une question interactive avertissant d'une perte
-  de données. Sans terminal — en intégration continue par exemple — la commande
+  de données. Sans terminal (en intégration continue par exemple), la commande
   reste bloquée. Une base de production, jamais poussée en mode dev, ne devrait
   pas déclencher ce garde-fou.
 - Un schéma qui « marche en local » ne prouve donc rien sur les migrations.
@@ -525,7 +525,7 @@ Les comptes Neon et UploadThing appartiennent à la cliente, conformément au
 principe posé dans `content/demande-cliente-2026-09-01.md` : elle reste
 propriétaire des outils, Matthias y est collaborateur.
 
-Neon Postgres (`eu-central-1`), via l'endpoint mis en pool — l'hôte se termine
+Neon Postgres (`eu-central-1`), via l'endpoint mis en pool : l'hôte se termine
 par `-pooler`, port 5432. La connexion directe de Neon n'est joignable qu'en
 IPv6.
 
@@ -571,7 +571,7 @@ compte** : `CONTACT_TO_EMAIL` doit donc être cette adresse. Une fois un domaine
 vérifié, renseigner `CONTACT_FROM_EMAIL` et la contrainte tombe.
 
 Anti-spam : un champ leurre `website`, hors flux et hors tabulation. Rempli, le
-message est ignoré et le visiteur voit quand même une confirmation — annoncer
+message est ignoré et le visiteur voit quand même une confirmation : annoncer
 l'échec à un robot le fait réessayer. Le leurre n'arrête que les robots naïfs :
 la vraie barrière est Cloudflare Turnstile (voir « Sécurité »).
 `delivered@resend.dev` est un destinataire simulé, pratique pour tester sans
@@ -627,7 +627,7 @@ Règles :
   visiblement rien, et les messages sous les champs étaient du même gris que
   le reste. Le bloc liste les champs à reprendre, chacun cliquable pour y
   amener le focus, et le champ concerné passe au rouge par
-  `aria-invalid` — une seule source pour l'apparence et pour les lecteurs
+  `aria-invalid`, une seule source pour l'apparence et pour les lecteurs
   d'écran. C'est lui qui porte le `role="alert"`, une fois pour tous les
   champs : les messages sous les champs vivent dans leur `<label>`, donc déjà
   lus avec le nom du champ. Titre selon le cas : « Il manque N informations »
@@ -678,13 +678,13 @@ portrait de Léna passait *sous* l'ancienne extraction, sa réduction étant de
 **Léna et Lara ont été remontées le 2026-09-16**, demandées « trop basses à
 côté d'Alessia ». Mesuré : le sujet commençait à 20,7 % de la hauteur chez
 Alessia, 32,5 % chez Léna et 29,2 % chez Lara. Les deux sont recadrées à 26 %,
-Alessia inchangée — son cadrage part des mains levées, pas du haut de la tête,
+Alessia inchangée : son cadrage part des mains levées, pas du haut de la tête,
 et la cliente n'en a rien dit.
 
 Les originaux du shooting **ne sont plus sur la machine** (`../BAPZ/content`
 ne contient plus que deux PNG) : le recadrage repart donc du fichier 1086 x 944
 lui-même. Fenêtre de même rapport, calée en bas pour ne rien perdre du corps,
-puis retour à 1086 x 944 — 989 x 860 à (49, 84) pour Léna, 1038 x 902 à
+puis retour à 1086 x 944 : 989 x 860 à (49, 84) pour Léna, 1038 x 902 à
 (24, 42) pour Lara, soit un agrandissement de 9,8 % et 4,7 %. Il compense une
 netteté en baisse de 27 % et 22 % : `sharpen({ sigma: 0.5, m1: 0.3, m2: 2 })`
 la ramène à 40,4 et 44,4 (contre 42,8 et 41,5 avant), sans halo visible ni
@@ -698,7 +698,7 @@ Payload/UploadThing, pas depuis ce dossier. Les images du seed vivent hors de
 
 Pour cela, `pnpm seed:portraits confirmer` (`src/seed/portraits.ts`) : il
 remplace le fichier des seuls médias déjà rattachés aux profs et ne supprime
-rien — les fiches, les cours et les réglages ne bougent pas, contrairement à
+rien : les fiches, les cours et les réglages ne bougent pas, contrairement à
 `pnpm seed`, qui vide tout et effacerait les saisies de la cliente. Sans
 `confirmer` il dit seulement ce qu'il remplacerait, et il ignore un portrait
 dont le poids est inchangé pour ne pas consommer le quota UploadThing.
@@ -707,14 +707,14 @@ dont le poids est inchangé pour ne pas consommer le quota UploadThing.
 
 Les logos de la cliente sont dans `content/logos/` : quatre SVG reçus le
 2026-10-24, qui remplacent ceux de septembre (planète en fil de fer, PNG et
-SVG, retirés du dépôt — ils restent dans l'historique git). Le mot seul
+SVG, retirés du dépôt, ils restent dans l'historique git). Le mot seul
 (« SIMPLE »), le mot avec une petite planète, le mot posé sur sa planète
 (« V2 ») et la planète seule, désormais un globe **dessiné au pinceau**.
 Chaque fichier pose un rectangle noir de 3000 x 3000 sous le dessin.
 
 **Tout ce qui en est tiré est généré** par `scripts/generer-marque.mjs`
 (fond retiré, rognage au plus près, mêmes dimensions qu'avant pour que rien ne
-bouge dans les composants) — à relancer si un logo change :
+bouge dans les composants), à relancer si un logo change :
 
 | Fichier | Variante | Où |
 |---|---|---|
@@ -729,7 +729,7 @@ bouge dans les composants) — à relancer si un logo change :
 `content/logos/LOGO BAPZ V2 - LÉNA.svg` : 30 tracés pour la planète (un par
 coup de pinceau), 4 pour le mot. `scripts/extraire-logo-vectoriel.mjs` les
 copie dans `_components/logo-vectoriel.ts` (généré, à relancer si le logo
-change), avec un viewBox carré centré sur la planète — mesuré sur un rendu —
+change), avec un viewBox carré centré sur la planète (mesuré sur un rendu)
 et l'opacité de la planète lue dans le fichier (`OPACITE_PLANETE`, 0,2).
 `PlaneteDessinee` (serveur) rend le SVG, `DessinPlanete` (client) l'anime avec
 GSAP : le contour de chaque trait se trace (technique du `stroke-dashoffset`)
@@ -752,10 +752,10 @@ son fichier chez UploadThing au déploiement (cf. « Les migrations
 s'appliquent au déploiement »).
 
 Aucune maquette pour ces emplacements : la planète reste discrète (opacité
-0,06 à 0,07 en filigrane — moitié moins qu'avec l'ancienne en fil de fer, le
+0,06 à 0,07 en filigrane, moitié moins qu'avec l'ancienne en fil de fer, le
 globe au pinceau portant 4,5 fois plus d'encre, mesuré ; dérive lente coupée
 si le visiteur réduit les animations) et ne
-change jamais la mise en page — vérifié, hauteurs de page et bande du pied de
+change jamais la mise en page : vérifié, hauteurs de page et bande du pied de
 page identiques.
 
 ## Galerie
@@ -770,7 +770,7 @@ sa voisine.
 Jusque-là, toute photo entrait dans une boîte 2:3 recadrée par `object-cover`.
 Deux défauts, une seule cause :
 
-- les photos d'équipe, prises en paysage, perdaient leurs côtés — « on ne voit
+- les photos d'équipe, prises en paysage, perdaient leurs côtés : « on ne voit
   pas toute la team » (cliente, 2026-11-12) ;
 - elles étaient floues, parce que **`sizes` décrit la largeur de la boîte**
   alors que couvrir une boîte 2:3 avec une source paysage demande de
@@ -787,11 +787,11 @@ qui reste floue vient d'une source basse définition, pas du site.
 
 **Une colonne sous 640 px**, deux jusqu'à 1024, quatre au-delà (2026-11-12).
 En deux colonnes dès le téléphone, un portrait tombait à 163 px de large à
-390 px de fenêtre — une vignette ; pleine largeur, il en fait 342 (mesuré,
+390 px de fenêtre, une vignette ; pleine largeur, il en fait 342 (mesuré,
 342 x 513). Le `col-span-2` du paysage attend donc `sm` : dans une grille à
 une seule colonne, il créerait une deuxième colonne implicite et déborderait.
 Les trois paliers sont écrits deux fois, dans les classes de la grille et dans
-le `sizes` des portraits — à changer ensemble.
+le `sizes` des portraits, à changer ensemble.
 
 **Au survol, l'interaction commune des cartes** (2026-11-12) : `cal-glow` et
 `data-glow-card` dans un `ProximityGlow`, qui allume le contour selon la
@@ -802,14 +802,14 @@ est sous `motion-safe` : en mouvement réduit, seul le halo répond. C'est la
 seule carte du site qui ne mène nulle part : elle ouvre la visionneuse.
 
 **Au clic, la photo s'agrandit** (`GalerieVisionneuse`, depuis le 2026-11-12).
-Aucune maquette ; tout est repris de l'existant — rayon 15, bordure `#3c3c3c`,
+Aucune maquette ; tout est repris de l'existant : rayon 15, bordure `#3c3c3c`,
 halo `0 0 22px rgba(255,255,255,0.16)` de la carte engagée, pastille à contour
 pour le bouton « Retour », noir du fond pour le voile.
 
 - **`<dialog>` natif ouvert par `showModal()`** : Échap ferme, le focus est
   retenu dans la visionneuse puis rendu à la vignette, le reste de la page
-  devient inerte, et la couche supérieure passe au-dessus de tout — nav et
-  grain compris — sans qu'aucun `z-index` n'ait à être inventé.
+  devient inerte, et la couche supérieure passe au-dessus de tout (nav et
+  grain compris) sans qu'aucun `z-index` n'ait à être inventé.
 - **Voile** : le noir du site à 84 % et un flou de 14 px. Sur une page déjà
   presque noire, c'est le flou qui range la grille derrière la photo ; un
   assombrissement seul ne se verrait pas.
@@ -819,14 +819,14 @@ pour le bouton « Retour », noir du fond pour le voile.
   en largeur et en hauteur : rien n'est déformé.
 - **Le cadre est dimensionné par le CSS, pas par la photo** : largeur
   `min(1700px, 100%, (100svh - 118px) × rapport)`, le rapport du fichier étant
-  posé en ligne (`--ratio`). Le mesurer sur la photo ne marche pas — tant
+  posé en ligne (`--ratio`). Le mesurer sur la photo ne marche pas : tant
   qu'elle n'est pas chargée elle n'a aucune dimension, et le cadre partait
   d'un carré de 2 px, l'épaisseur de sa bordure, d'où une échelle de départ de
   96 au lieu de 0,5.
 - **La vignette déjà décodée est posée en aperçu derrière la photo** le temps
   que la grande arrive : un flou qui se précise plutôt qu'un cadre vide.
-- **Le défilement de la page est bloqué** pendant l'ouverture — `showModal()`
-  ne le fait pas — et la largeur de la barre de défilement est rendue à la
+- **Le défilement de la page est bloqué** pendant l'ouverture (`showModal()`
+  ne le fait pas), et la largeur de la barre de défilement est rendue à la
   page en marge : `scrollbar-gutter: stable` ne réserve rien quand le
   défilement est `hidden` (mesuré, 1265 → 1280 px). Vérifié ensuite : carte,
   titre, nav et pied de page ne bougent pas d'un pixel.
@@ -835,7 +835,7 @@ pour le bouton « Retour », noir du fond pour le voile.
 - **Sans JavaScript, le bouton d'ouverture n'existe pas** (`globals.css`,
   `@media (scripting: enabled)`) : il ne pourrait rien ouvrir, et la photo est
   déjà entière dans la grille. Il est étiré sur la carte comme un
-  `.bouton-carte`, et son contour de focus est rentré de 6 px —
+  `.bouton-carte`, et son contour de focus est rentré de 6 px :
   l'`overflow-hidden` de la carte le rognerait sinon.
 - **Mesuré** : à 1680 px la photo passe de 793 à 1600 px de large. Sur un
   téléphone de 390 px elle ne gagne que la gouttière (342 → 366) : la largeur
@@ -852,7 +852,7 @@ un lien posté sur Instagram n'afficherait qu'une URL nue.
 L'image de partage est `public/partage.jpg`, référencée explicitement dans
 `pageMetadata`. Ne pas revenir à la convention de fichier `opengraph-image` de
 Next : elle s'attache au segment, et l'objet `openGraph` de chaque page écrase
-celui du layout, image comprise — vérifié, `og:image` ne sortait alors que sur
+celui du layout, image comprise : vérifié, `og:image` ne sortait alors que sur
 l'accueil.
 
 `NEXT_PUBLIC_SITE_URL` porte l'adresse publique. Vide en local, le repli
@@ -865,12 +865,12 @@ une seule adresse sert le site, les autres y renvoient.
 
 **Le build de production échoue si elle est vide** (`seo.ts`, depuis le
 2026-09-23), et c'est voulu : la variable existait sur Vercel mais sans valeur,
-donc *falsy*, donc repliée sur `localhost` — le site servait des URL
+donc *falsy*, donc repliée sur `localhost` : le site servait des URL
 canoniques, un `og:image` et un sitemap en `http://localhost:3000` sans que
 rien n'échoue. Un build rouge vaut mieux qu'un site invisible. Le garde-fou ne
 se déclenche que sur `VERCEL_ENV === "production"` : un `pnpm build` en local
 passe toujours sans la variable. Côté Vercel elle doit être de type **Config**
-et non **Secret** — un secret est en écriture seule, donc impossible à
+et non **Secret** : un secret est en écriture seule, donc impossible à
 reconvertir, et le préfixe `NEXT_PUBLIC_` impose de toute façon une valeur
 publique, inlinée dans le bundle au build. **Changer sa valeur n'a d'effet
 qu'après un redéploiement.**
@@ -886,7 +886,7 @@ les GPS ne trouvaient pas le studio (cliente, 2026-10-24). Corrigée en base par
 migration ; la fiche Google Business doit dire la même chose.
 
 **L'adresse y est découpée** (`decouperAdresse`) : la rue, puis la commune
-réelle — ce qui suit la dernière virgule du champ Adresse, Ars-Laquenexy —, le
+réelle (ce qui suit la dernière virgule du champ Adresse, Ars-Laquenexy), le
 code postal, et la grande ville voisine (`city`, Metz) en `areaServed`. La
 commune y était « Metz » jusqu'au 2026-09-15 alors que la rue est à
 Ars-Laquenexy : une adresse incohérente avec la fiche Google Business dessert
@@ -954,7 +954,7 @@ Mesures posées après l'audit du 2026-09-11, chacune vérifiée sur le serveur 
   Variables `NEXT_PUBLIC_TURNSTILE_SITE_KEY` et `TURNSTILE_SECRET_KEY` : en
   local, les clés de test de Cloudflare (dans `.env.example`) ; en production,
   celles d'un widget créé sur le domaine du site. **Sans clé secrète, tout envoi
-  est refusé en production** — volontairement, pour qu'un oubli se voie.
+  est refusé en production**, volontairement, pour qu'un oubli se voie.
 - **Images** : un seul `remotePatterns`, le domaine de notre application
   UploadThing (`<appId>.ufs.sh/f/**`, déduit du jeton). **Jamais `**.ufs.sh`
   ni `utfs.io`** : partagés par tous les comptes UploadThing, ils permettraient
@@ -979,8 +979,8 @@ Mesures posées après l'audit du 2026-09-11, chacune vérifiée sur le serveur 
 - **Dépendances** : `sharp` 0.35.4 ; surcharge pnpm pour `dompurify`
   (`package.json`). Restent trois alertes sans impact : `esbuild` (outil de
   développement de drizzle-kit), une faille Payload sans correctif publié, qui
-  ne concerne que des comptes aux droits différents — ici tous les comptes ont
-  les mêmes —, et `effect` < 3.20.
+  ne concerne que des comptes aux droits différents (ici tous les comptes ont
+  les mêmes), et `effect` < 3.20.
 - **Ne jamais surcharger `effect`.** UploadThing 7.3 exige exactement la 3.10.3.
   Une surcharge en 3.22 (posée puis retirée le 2026-09-11) cassait l'adaptateur :
   « ManagedRuntime disposed », images servies en 500 ou vides par
@@ -1016,7 +1016,7 @@ le menu restait affiché le temps que le JavaScript s'exécute : flash visible, 
 décalage de mise en page de 0,46 sur `/reserver`.
 
 **Icônes.** `app/icon.png` (512), `app/apple-icon.png` (180) et
-`app/favicon.ico` (16, 32, 48) : la planète du logo, posée sur `#080808` — le
+`app/favicon.ico` (16, 32, 48) : la planète du logo, posée sur `#080808` : le
 logo est blanc sur transparent, invisible sur un onglet clair.
 
 Le `.ico` a été ajouté le 2026-11-12 : Next sert `icon.png` sous une adresse à
@@ -1024,7 +1024,7 @@ empreinte (`/icon.png?icon.<hash>.png`) et `/favicon.ico` répondait **404**,
 alors que c'est le chemin de repli que Google et beaucoup d'outils (lecteurs
 RSS, aperçus de liens, favoris) sondent avant de lire le `<link rel="icon">`
 de la page. Il est généré par `scripts/generer-favicon.mjs` à partir de
-`icon.png` — **à relancer après `generer-marque.mjs` si le logo change.**
+`icon.png`, **à relancer après `generer-marque.mjs` si le logo change.**
 Trois tailles, dont 48 parce que Google préfère un multiple de 48 ; chaque
 image est un PNG encapsulé dans l'enveloppe ICO. Vérifié au rendu : disque
 noir et globe blanc, lisible sur le fond blanc des résultats Google comme sur
@@ -1042,7 +1042,7 @@ blanche, aux 88 % de l'icône : sur un disque `#080808` aux coins transparents
 pour l'onglet (visible sur un onglet clair comme sombre), sur un carré
 `#080808` pour l'icône Apple, iOS posant lui-même le masque arrondi et
 remplissant la transparence en noir. Ses traits au pinceau tiennent à 32 px et
-se devinent à 16. L'ancienne planète — 75 traits fins — disparaissait à ces
+se devinent à 16. L'ancienne planète (75 traits fins) disparaissait à ces
 tailles (la moyenne des pixels donnait un rond presque noir) et avait dû être
 redessinée, pleine et inversée : ce n'est plus nécessaire.
 
@@ -1091,8 +1091,8 @@ doit se voir avant la mise en ligne.
 le code : demandes de réservation enregistrées en base et envoyées par mail,
 messages de contact envoyés par mail sans être enregistrés, aucun cookie ni
 outil de mesure côté visiteur, saisie du parcours gardée dans le
-`sessionStorage` de l'onglet. **Toute nouvelle collecte** — mesure d'audience,
-champ de formulaire, service tiers — **doit y être ajoutée** en même temps
+`sessionStorage` de l'onglet. **Toute nouvelle collecte** (mesure d'audience,
+champ de formulaire, service tiers) **doit y être ajoutée** en même temps
 que le code. La liste des prestataires (Neon, Resend, Cloudflare, hébergeur)
 est à relire au déploiement.
 
@@ -1105,13 +1105,16 @@ restent hors du repo, dans `../BAPZ/maquette` et `../BAPZ/content`.
 
 ## Documents
 
-- `docs/guide-administration.md` — l'utilisation de l'admin, écrit pour la
+- `README.md` : le point d'entrée pour reprendre le projet (comptes,
+  déploiement, commandes, état, carte des documents) ;
+- `docs/guide-administration.md` : l'utilisation de l'admin, écrit pour la
   cliente, à tenir à jour avec l'admin ;
-- `docs/questions-cliente.md` — ce qui manque encore de son côté (planning
-  réel, informations légales, salles, galerie) et les écarts avec les maquettes
-  à lui faire valider ;
-- `docs/mise-en-ligne.md` — le déroulé de la séance de déploiement :
-  variables d'environnement, Turnstile, Resend, migrations, vérifications.
+- `docs/questions-cliente.md` : historique des questions posées à la
+  cliente, de leurs réponses et des écarts avec les maquettes ; son en-tête
+  dit ce qui reste ouvert ;
+- `docs/mise-en-ligne.md` : la séance de déploiement (variables
+  d'environnement, Turnstile, Resend, DNS, migrations, vérifications), les
+  pièges rencontrés et le suivi après la mise en ligne.
 
 ## État
 
@@ -1133,7 +1136,7 @@ de bout en bout ce jour-là. Le déroulé et ce qui reste sont dans
 
 ## Points ouverts
 
-**Le contenu que la cliente n'a pas fourni est repris de la maquette** —
+**Le contenu que la cliente n'a pas fourni est repris de la maquette** :
 descriptifs, textes de bannière, infos de location. Le cours d'essai à 10 €
 entre dans ce cadre et n'est donc plus un point ouvert.
 
@@ -1164,7 +1167,7 @@ entre dans ce cadre et n'est donc plus un point ouvert.
 - Photo de la présentation de l'accueil : champ « Photo de la présentation »
   des Réglages depuis le 2026-10-24, à remplir par la cliente. Tant qu'il est
   vide, l'emplacement provisoire (`.photo-attente`, rayures et libellé
-  « [ photo — le studio ] ») reste affiché.
+  « [ photo du studio ] ») reste affiché.
 
 Planning, informations légales, photos et prix : **la cliente les saisit
 elle-même** dans l'admin (dit par Matthias le 2026-10-24). Ce ne sont plus des

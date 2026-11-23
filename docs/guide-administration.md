@@ -1,8 +1,7 @@
-# Guide d'administration — BAPZ Studio
+# Guide d'administration de BAPZ Studio
 
-> **Ébauche** — base du futur guide PDF. Les emplacements `[Capture : …]`
-> recevront des captures d'écran une fois le site en ligne. L'adresse exacte
-> de l'administration sera connue après le choix du nom de domaine.
+> Base du guide PDF remis à la cliente. Les emplacements `[Capture : …]`
+> recevront des captures d'écran de l'administration en ligne.
 
 Ce guide explique comment faire vivre le site au quotidien : répondre aux
 demandes, tenir le planning à jour, changer un tarif, ajouter une prof ou une
@@ -28,8 +27,8 @@ photo. Aucune connaissance technique n'est nécessaire.
 
 ## 2. Se connecter
 
-1. Ouvre l'adresse du site suivie de `/admin`
-   (ex : `https://…/admin` — adresse définitive à venir).
+1. Ouvre **<https://bapzstudio.fr/admin>** (l'adresse du site suivie de
+   `/admin`). Garde-la en favori.
 2. Saisis ton e-mail et ton mot de passe.
 3. Mot de passe oublié : clique sur « Mot de passe oublié ? » sous le
    formulaire.
@@ -52,7 +51,7 @@ Dans chaque rubrique :
 
 - la **liste** montre tous les éléments ; clique sur un titre pour l'ouvrir ;
 - le bouton **« Créer »** en haut ajoute un élément ;
-- le bouton **« Enregistrer »** en haut à droite valide les modifications —
+- le bouton **« Enregistrer »** en haut à droite valide les modifications :
   tant qu'il n'est pas cliqué, rien n'est changé sur le site.
 
 `[Capture : menu et liste des demandes]`
@@ -87,7 +86,7 @@ La fiche d'une demande n'affiche que les champs utiles à son type.
 
 1. Ouvre la demande depuis la liste (les plus récentes sont en haut).
 2. **Réponds à la personne** :
-   - le plus simple : dans ta boîte mail, **réponds au mail de notification** —
+   - le plus simple : dans ta boîte mail, **réponds au mail de notification** :
      ta réponse part directement à la personne ;
    - ou appelle-la, si elle a laissé son téléphone (facultatif).
 3. **Fais avancer le statut**, à droite de la fiche, puis **Enregistrer** :
@@ -148,7 +147,7 @@ Crée-le comme un cours, avec en plus :
 - **Date (événement ponctuel)** : le jour où il a lieu. Le champ **Jour**
   disparaît alors : il se déduit de la date. L'événement s'affiche avec sa
   date (« 14 nov. ») au calendrier, sur « Prochains cours » quand il approche,
-  sur la page de sa prof et dans le formulaire de réservation — puis
+  sur la page de sa prof et dans le formulaire de réservation, puis
   **disparaît tout seul du site le lendemain**. Rien à supprimer.
 - **Couleur de la carte** (facultatif) : voir ci-dessous.
 
@@ -163,7 +162,7 @@ Laisse la date vide pour un cours qui revient chaque semaine.
 
 Pour un stage, un workshop, une soirée… choisis une **Couleur de la carte**
 (bleu, violet, rose, orange ou vert) et enregistre. Sa carte prend cette
-couleur — contour, léger halo, horaire — partout où le cours apparaît : le
+couleur (contour, léger halo, horaire) partout où le cours apparaît : le
 calendrier, « Prochains cours » sur l'accueil et la page de sa prof. Pour
 revenir à une carte normale, vide le champ avec la petite croix.
 
@@ -207,7 +206,7 @@ les pages. Les anciennes demandes qui le mentionnaient restent consultables.
 
 ### Quand une prof apparaît sur le site
 
-Une personne n'apparaît sur la page **Profs** — et n'a sa page personnelle —
+Une personne n'apparaît sur la page **Profs**, et n'a sa page personnelle,
 que si elle a **à la fois un portrait et une présentation**. Sans les deux,
 elle reste choisissable comme prof d'un cours, mais n'est pas présentée.
 
@@ -220,7 +219,7 @@ Même principe que pour un cours : décoche **« Afficher sur le site »** dans 
 colonne de droite. Elle disparaît de la page Profs et de l'accueil, et sa page
 personnelle n'est plus accessible.
 
-> **Ses cours, eux, restent au calendrier** — simplement sans son nom. Masquer
+> **Ses cours, eux, restent au calendrier**, simplement sans son nom. Masquer
 > une personne ne retire jamais de cours du planning : si tu veux aussi retirer
 > ses cours, il faut les masquer un par un.
 
@@ -231,8 +230,8 @@ personnelle n'est plus accessible.
 - **Portrait** : une photo **plus large que haute** (environ 1086 x 944), le
   visage vers le haut de l'image.
 - **Présentation** : un **paragraphe par entrée** (bouton « Ajouter un
-  paragraphe »). Pour mettre un passage en valeur — en blanc et en gras sur le
-  site — entoure-le de deux astérisques : `**les plus grands studios de Los
+  paragraphe »). Pour mettre un passage en valeur (en blanc et en gras sur le
+  site), entoure-le de deux astérisques : `**les plus grands studios de Los
   Angeles**`.
 - **Ordre d'affichage** : 1 pour la première, 2 pour la suivante…
 
@@ -293,7 +292,9 @@ Une seule page, rangée en cinq blocs.
 ### Bannière d'accueil
 
 - **Titre** : le grand titre. Un retour à la ligne dans le champ coupe le
-  titre au même endroit sur le site.
+  titre au même endroit sur le site. Sa taille s'adapte toute seule : si un
+  mot est trop long pour l'écran d'un téléphone, le titre rapetisse juste ce
+  qu'il faut pour que rien ne dépasse.
 - **Sous-titre** : le texte en dessous.
 
 Le bouton blanc « Cours d'essai » reprend tout seul le prix du tarif d'essai
@@ -316,7 +317,7 @@ s'écrivent ici :
   elle est recadrée pour suivre la hauteur du texte, garde donc le sujet au
   milieu. Remplis bien sa **description** (« La grande salle du studio ») :
   Google et les personnes malvoyantes la lisent. Tant qu'il n'y a pas de
-  photo, un cadre rayé « photo — le studio » tient sa place.
+  photo, un cadre rayé « photo du studio » tient sa place.
 - **Mot sur l'équipe** : deux ou trois phrases affichées au-dessus des profs.
   Sous chaque prof, l'accueil montre ensuite **le début de sa bio** (ses
   premières phrases), pris automatiquement : soigne l'ouverture de chaque bio,
@@ -336,8 +337,8 @@ Renvoie plutôt vers la page concernée (« le détail est sur la page Tarifs »
 - **Adresse** : le numéro et la rue, **puis la commune après une virgule**
   (`2 rue du Jardin d'Écosse, Ars-Laquenexy`). Le site lit ce qui suit la
   dernière virgule comme la commune. Écrire **2** et non 2A : avec « 2A », les
-  GPS ne trouvaient pas le studio. Cette adresse sert partout — contact,
-  accueil, bouton « Itinéraire », mentions légales, Google — : la changer ici
+  GPS ne trouvaient pas le studio. Cette adresse sert partout (contact,
+  accueil, bouton « Itinéraire », mentions légales, Google) : la changer ici
   suffit.
 - **Code postal** : transmis à Google avec l'adresse.
 - **Ville de référence** : la grande ville la plus proche (`Metz`), là où les
@@ -382,7 +383,10 @@ vide, ces pages affichent « À compléter ».
 - **SIRET** : les 14 chiffres.
 - **Responsable de la publication** : la personne responsable du contenu du
   site.
-- **Hébergeur du site** : rempli par Matthias au moment de la mise en ligne.
+- **Hébergeur du site** : le site est hébergé par **Vercel**. À saisir sous
+  la forme `Vercel Inc., 440 N Barranca Ave #4133, Covina, CA 91723,
+  États-Unis` (adresse à vérifier sur la page légale de vercel.com). C'est la
+  dernière mention « À compléter » du site.
 
 ---
 
@@ -401,7 +405,7 @@ vide, ces pages affichent « À compléter ».
   aussi des pages qui l'utilisent.
 - **Galerie** : chaque photo ajoutée dans la rubrique **Galerie** apparaît sur
   la page Galerie, dans l'ordre d'affichage, **entière et dans son format
-  d'origine** — rien n'est recadré, et une photo plus large que haute occupe
+  d'origine** : rien n'est recadré, et une photo plus large que haute occupe
   deux emplacements. Un clic l'agrandit au centre de l'écran ; le bouton
   **Retour**, la touche Échap ou un clic à côté ramènent à la grille. Tant que
   la rubrique est vide, la page invite à suivre le studio sur Instagram.
@@ -426,8 +430,11 @@ message de confirmation s'affiche en bas de l'écran.
 **Une prof n'apparaît pas sur la page Profs.**
 Il lui manque le portrait ou la présentation (voir partie 6).
 
-**Un cours d'essai n'est plus proposé aux visiteurs.**
-Le cours a peut-être été supprimé : il faut le recréer dans Cours.
+**Un cours n'apparaît plus sur le site, ni dans les cours d'essai proposés.**
+Trois raisons possibles : la case « Afficher sur le site » est décochée
+(recoche-la), c'était un événement daté dont la date est passée (il disparaît
+tout seul le lendemain), ou il a été supprimé (il faut le recréer dans
+Cours).
 
 **Je me suis trompée dans une fiche.**
 Tant que tu n'as pas enregistré, quitte simplement la page. Après
@@ -441,4 +448,4 @@ perdu. Préviens Matthias pour qu'il vérifie l'envoi.
 
 ## Besoin d'aide
 
-Matthias — `[coordonnées à compléter]`
+Matthias : `[coordonnées à compléter]`

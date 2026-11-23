@@ -784,7 +784,7 @@ export interface SiteSetting {
    */
   introText?: string | null;
   /**
-   * À droite du texte de présentation sur ordinateur, en dessous sur téléphone. Format paysage, au moins 1200 px de large ; elle est recadrée pour suivre la hauteur du texte, garder le sujet au centre. Sans photo, un emplacement rayé « photo — le studio » s'affiche à sa place.
+   * À droite du texte de présentation sur ordinateur, en dessous sur téléphone. Format paysage, au moins 1200 px de large ; elle est recadrée pour suivre la hauteur du texte, garder le sujet au centre. Sans photo, un emplacement rayé « photo du studio » s'affiche à sa place.
    */
   introPhoto?: (number | null) | Media;
   /**

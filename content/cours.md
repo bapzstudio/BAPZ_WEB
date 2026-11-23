@@ -1,5 +1,10 @@
 # Contenu reçu de la cliente - cours & profs
 
+> **Archive.** Notes prises en septembre 2026, avant le choix de Payload (elles
+> parlent encore de Sanity et d'un dossier `web/`). Le planning a été tranché
+> le 2026-09-25 et la cliente le tient à jour dans l'admin : ce fichier garde
+> l'historique, il ne décrit pas le site actuel.
+
 Notes brutes collectées au fil des échanges, à intégrer dans Sanity Studio
 (`teacher` + `course`) une fois le projet Sanity créé. Ne pas coder en dur
 dans `web/` - passer par le CMS.
@@ -39,8 +44,8 @@ graphiste). Il contredit ce que Léna a envoyé :
 | Street Enfant(s) | **Mardi** 18h-19h | **Jeudi** 18h-19h |
 | Heels | Mardi 19h-20h30, niveau intermédiaire | idem ✓ |
 | Hip Hop / Commercial | Jeudi 19h-20h30 | "Commercial / Hi-Hop", idem ✓ |
-| Cours non mentionnés par elle | — | Intervenant (lundi + mercredi), Contemporain Lyrical, Yogalates, Training libre |
-| Profs non mentionnés par elle | — | Ilan, Alessia, Hannane |
+| Cours non mentionnés par elle | (aucun) | Intervenant (lundi + mercredi), Contemporain Lyrical, Yogalates, Training libre |
+| Profs non mentionnés par elle | (aucun) | Ilan, Alessia, Hannane |
 
 À trancher avec elle avant la mise en ligne. Deux coquilles de la maquette ont
 été corrigées au passage : "Tous niveayx" → "Tous niveaux", et "CCOMMERCIAL"
