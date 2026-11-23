@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { lienReservation } from "@/lib/reservation/liens";
 import type { Course, PricingPlan, SiteSettings } from "@/lib/types";
+import { chasseDuMotLePlusLong } from "../_components/chasse-titre";
 import { CourseCard } from "../_components/CourseCard";
 import { DegradeHero } from "../_components/DegradeHero";
 import { FoldText } from "../_components/FoldText";
@@ -50,10 +51,26 @@ export function Hero({
           </p>
 
           {/* Le \n de la donnée pilote la coupe du titre (FoldText le convertit
-              en <br>). Les tailles restent portées par le h1. */}
-          <h1 className="mt-6 text-[clamp(44px,8.3vw,158px)] font-black uppercase leading-[0.94] tracking-[-0.02em]">
-            <FoldText text={settings.heroTitle} />
-          </h1>
+              en <br>). Les tailles restent portées par le h1.
+              Taille : celle de la maquette (`clamp`), plafonnée pour que le
+              mot le plus long tienne dans la largeur du titre (`cqi`, celle
+              de l'enveloppe). Un mot ne se coupe pas : à 44 px fixes,
+              « CONTEMPORAIN » débordait de 51 px à 390 px de large (relevé
+              le 2026-11-23). La chasse du mot est calculée ici, côté serveur,
+              d'après la police : ni script ni saut de mise en page. Marge de
+              2 % pour l'arrondi des chasses. */}
+          <div className="@container mt-6">
+            <h1
+              className="font-black uppercase leading-[0.94] tracking-[-0.02em]"
+              style={{
+                fontSize: `min(clamp(44px, 8.3vw, 158px), calc(100cqi / ${(
+                  chasseDuMotLePlusLong(settings.heroTitle) * 1.02
+                ).toFixed(3)}))`,
+              }}
+            >
+              <FoldText text={settings.heroTitle} />
+            </h1>
+          </div>
 
           {/* Le sous-titre reste avec le titre, sur la landing : sans lui, le
               premier écran laissait un grand vide sous le titre.

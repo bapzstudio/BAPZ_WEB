@@ -122,6 +122,17 @@ entière sous le titre, **dans l'espace qui reste sous le sous-titre** : posée
 en bas de l'écran, elle remontait derrière le texte sur les petits téléphones
 (440x680, corrigé le 2026-09-15).
 
+**Le titre de la landing s'adapte à son texte** (depuis le 2026-11-23) : il
+est saisi dans l'admin, et un mot ne se coupe pas. À 44 px fixes,
+« CONTEMPORAIN » débordait de 51 px à 390 px de large. La taille de la
+maquette (`clamp(44px,8.3vw,158px)`) est plafonnée à `100cqi` divisé par la
+chasse du mot le plus long, calculée côté serveur (`chasse-titre.ts`, chasses
+d'Archivo 900 en capitales mesurées au navigateur, marge de 2 %). Ni script ni
+saut de mise en page ; un titre aux mots courts garde la taille de la
+maquette. Vérifié sur sept saisies de 360 à 1920 px, dont des mots de
+24 lettres : aucun débordement. Une autre police ou un autre
+`tracking` demande de remesurer les chasses.
+
 **Les liens d'ancre glissent** (`scroll-behavior: smooth` sur `html`, sous
 `prefers-reduced-motion: no-preference`). Un défilement calé à la main doit donc
 viser la position **collée** d'une barre, et non sa position au moment du clic :
